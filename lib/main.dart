@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:meta_seo/meta_seo.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
@@ -36,6 +37,7 @@ Future<void> main() async {
   }
   setPathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();
+  await FastCachedImageConfig.init(clearCacheAfter: const Duration(days: 15));
   if (GetPlatform.isWeb) {
     await Firebase.initializeApp(
         options: const FirebaseOptions(
