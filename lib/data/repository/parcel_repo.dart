@@ -11,7 +11,8 @@ class ParcelRepo {
   }
 
   Future<Response> getPlaceDetails(String? placeID) async {
-    return await apiClient.getData('${AppConstants.placeDetailsUri}?placeid=$placeID');
+    return await apiClient
+        .getData('${AppConstants.placeDetailsUri}?placeid=$placeID');
   }
 
   Future<Response> getWhyChooseDetails() async {
@@ -24,7 +25,7 @@ class ParcelRepo {
   }
 
   Future<Response> getParcelInstruction(int offset) async {
-    return await apiClient.getData('${AppConstants.parcelInstructionUri}?limit=10&offset=$offset');
+    return await apiClient.getData(
+        '${AppConstants.parcelInstructionUri}?limit=10&offset=$offset');
   }
-
 }

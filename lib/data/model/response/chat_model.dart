@@ -9,14 +9,22 @@ class ChatModel {
   Conversation? conversation;
   List<Message>? messages;
 
-  ChatModel({this.totalSize, this.limit, this.offset, this.status, this.conversation, this.messages});
+  ChatModel(
+      {this.totalSize,
+      this.limit,
+      this.offset,
+      this.status,
+      this.conversation,
+      this.messages});
 
   ChatModel.fromJson(Map<String, dynamic> json) {
     totalSize = json['total_size'];
     limit = json['limit'];
     offset = json['offset'];
     status = json['status'];
-    conversation = json['conversation'] != null ? Conversation.fromJson(json['conversation']) : null;
+    conversation = json['conversation'] != null
+        ? Conversation.fromJson(json['conversation'])
+        : null;
     if (json['messages'] != null) {
       messages = <Message>[];
       json['messages'].forEach((v) {
@@ -53,20 +61,22 @@ class Message {
 
   Message(
       {this.id,
-        this.conversationId,
-        this.senderId,
-        this.message,
-        this.files,
-        this.isSeen,
-        this.createdAt,
-        this.updatedAt});
+      this.conversationId,
+      this.senderId,
+      this.message,
+      this.files,
+      this.isSeen,
+      this.createdAt,
+      this.updatedAt});
 
   Message.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     conversationId = json['conversation_id'];
     senderId = json['sender_id'];
     message = json['message'];
-    files = (json['file'] != 'null' && json['file'] != null) ? jsonDecode(json['file']).cast<String>() : [];
+    files = (json['file'] != 'null' && json['file'] != null)
+        ? jsonDecode(json['file']).cast<String>()
+        : [];
     isSeen = json['is_seen'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];

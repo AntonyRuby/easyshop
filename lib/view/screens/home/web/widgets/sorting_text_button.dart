@@ -6,13 +6,20 @@ class SortingTextButton extends StatelessWidget {
   final String title;
   final void Function()? onTap;
   final bool isSelected;
-  const SortingTextButton({Key? key, required this.title, this.onTap,  this.isSelected = false}) : super(key: key);
+  const SortingTextButton(
+      {Key? key, required this.title, this.onTap, this.isSelected = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: Text(title, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: isSelected ? Theme.of(context).primaryColor : Theme.of(context).disabledColor)),
+      child: Text(title,
+          style: robotoMedium.copyWith(
+              fontSize: Dimensions.fontSizeSmall,
+              color: isSelected
+                  ? Theme.of(context).primaryColor
+                  : Theme.of(context).disabledColor)),
     );
   }
 }

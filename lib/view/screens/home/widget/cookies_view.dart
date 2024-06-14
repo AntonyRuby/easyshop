@@ -10,15 +10,22 @@ class CookiesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double padding = (MediaQuery.of(context).size.width - Dimensions.webMaxWidth) / 2;
+    double padding =
+        (MediaQuery.of(context).size.width - Dimensions.webMaxWidth) / 2;
     return Container(
-      decoration: BoxDecoration(color: Colors.black.withOpacity(Get.isDarkMode ? 1 : 0.8)),
+      decoration: BoxDecoration(
+          color: Colors.black.withOpacity(Get.isDarkMode ? 1 : 0.8)),
       padding: EdgeInsets.symmetric(
         vertical: Dimensions.paddingSizeDefault,
-        horizontal: ResponsiveHelper.isDesktop(context) ? padding : Dimensions.paddingSizeDefault,
+        horizontal: ResponsiveHelper.isDesktop(context)
+            ? padding
+            : Dimensions.paddingSizeDefault,
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: ResponsiveHelper.isDesktop(context) ? 0 : Dimensions.paddingSizeDefault),
+        padding: EdgeInsets.symmetric(
+            horizontal: ResponsiveHelper.isDesktop(context)
+                ? 0
+                : Dimensions.paddingSizeDefault),
         child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -26,10 +33,14 @@ class CookiesView extends StatelessWidget {
             children: [
               const SizedBox(height: Dimensions.paddingSizeExtraSmall),
               Padding(
-                padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
+                padding:
+                    const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
                 child: Text(
-                  Get.find<SplashController>().configModel!.cookiesText ?? 'This is dummy cookies text',
-                  style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: Colors.white70),
+                  Get.find<SplashController>().configModel!.cookiesText ??
+                      'This is dummy cookies text',
+                  style: robotoMedium.copyWith(
+                      fontSize: Dimensions.fontSizeSmall,
+                      color: Colors.white70),
                   maxLines: 10,
                   textAlign: TextAlign.justify,
                   overflow: TextOverflow.ellipsis,
@@ -47,10 +58,14 @@ class CookiesView extends StatelessWidget {
                     },
                     child: Text(
                       'no_thanks'.tr,
-                      style: robotoRegular.copyWith(color: Colors.white70, fontSize: Dimensions.fontSizeSmall),
+                      style: robotoRegular.copyWith(
+                          color: Colors.white70,
+                          fontSize: Dimensions.fontSizeSmall),
                     )),
                 SizedBox(
-                  width: ResponsiveHelper.isDesktop(context) ? Dimensions.paddingSizeExtraLarge : Dimensions.paddingSizeLarge,
+                  width: ResponsiveHelper.isDesktop(context)
+                      ? Dimensions.paddingSizeExtraLarge
+                      : Dimensions.paddingSizeLarge,
                 ),
                 TextButton(
                     style: TextButton.styleFrom(
@@ -61,15 +76,22 @@ class CookiesView extends StatelessWidget {
                     ),
                     onPressed: () {
                       Get.find<SplashController>().saveCookiesData(true);
-                      Get.find<SplashController>()
-                          .cookiesStatusChange(Get.find<SplashController>().configModel!.cookiesText ?? "This is dummy cookies text");
+                      Get.find<SplashController>().cookiesStatusChange(
+                          Get.find<SplashController>()
+                                  .configModel!
+                                  .cookiesText ??
+                              "This is dummy cookies text");
                     },
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault, vertical: 5),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: Dimensions.paddingSizeDefault,
+                          vertical: 5),
                       child: Center(
                         child: Text(
                           'yes_accept'.tr,
-                          style: robotoRegular.copyWith(color: Colors.white70, fontSize: Dimensions.fontSizeSmall),
+                          style: robotoRegular.copyWith(
+                              color: Colors.white70,
+                              fontSize: Dimensions.fontSizeSmall),
                         ),
                       ),
                     )),

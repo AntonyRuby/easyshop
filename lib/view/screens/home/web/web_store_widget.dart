@@ -16,6 +16,7 @@ import 'package:sixam_mart/view/base/hover/on_hover.dart';
 import 'package:sixam_mart/view/base/not_available_widget.dart';
 import 'package:sixam_mart/view/base/rating_bar.dart';
 import 'package:sixam_mart/view/screens/store/store_screen.dart';
+
 class WebStoreWidget extends StatelessWidget {
   final Store? store;
   const WebStoreWidget({Key? key, required this.store}) : super(key: key);
@@ -23,7 +24,8 @@ class WebStoreWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double? discount = store!.discount != null ? store!.discount!.discount : 0;
-    String? discountType = store!.discount != null ? store!.discount!.discountType : 'percent';
+    String? discountType =
+        store!.discount != null ? store!.discount!.discountType : 'percent';
     bool isAvailable = store!.open == 1 && store!.active!;
     return OnHover(
       isItem: true,
@@ -31,10 +33,11 @@ class WebStoreWidget extends StatelessWidget {
         children: [
           InkWell(
             onTap: () {
-              if(store != null) {
-                if(Get.find<SplashController>().moduleList != null) {
-                  for(ModuleModel module in Get.find<SplashController>().moduleList!) {
-                    if(module.id == store!.moduleId) {
+              if (store != null) {
+                if (Get.find<SplashController>().moduleList != null) {
+                  for (ModuleModel module
+                      in Get.find<SplashController>().moduleList!) {
+                    if (module.id == store!.moduleId) {
                       Get.find<SplashController>().setModule(module);
                       break;
                     }
@@ -52,81 +55,116 @@ class WebStoreWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                border: Border.all(color: Theme.of(context).disabledColor.withOpacity(0.1)),
+                border: Border.all(
+                    color: Theme.of(context).disabledColor.withOpacity(0.1)),
                 // boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, spreadRadius: 1)],
               ),
               padding: const EdgeInsets.all(1),
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
-
-                Stack(children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(Dimensions.radiusSmall)),
-                    child: CustomImage(
-                      image: '${Get.find<SplashController>().configModel!.baseUrls!.storeCoverPhotoUrl}'
-                          '/${store!.coverPhoto}',
-                      height: 120, width: 500, fit: BoxFit.cover,
-                    ),
-                  ),
-                  DiscountTag(
-                    discount: discount, discountType: discountType,
-                    freeDelivery: store!.freeDelivery,
-                  ),
-                  isAvailable ? const SizedBox() : NotAvailableWidget(isStore: true, fontSize: Dimensions.fontSizeExtraSmall, isAllSideRound: false),
-                  Positioned(
-                    top: Dimensions.paddingSizeExtraSmall, right: Dimensions.paddingSizeExtraSmall,
-                    child: GetBuilder<WishListController>(builder: (wishController) {
-                      bool isWished = wishController.wishStoreIdList.contains(store!.id);
-                      return InkWell(
-                        onTap: () {
-                          if(Get.find<AuthController>().isLoggedIn()) {
-                            isWished ? wishController.removeFromWishList(store!.id, true)
-                                : wishController.addToWishList(null, store!, true);
-                          }else {
-                            showCustomSnackBar('you_are_not_logged_in'.tr);
-                          }
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                          ),
-                          child: Icon(
-                            isWished ? Icons.favorite : Icons.favorite_border,  size: 20,
-                            color: isWished ? Theme.of(context).primaryColor : Theme.of(context).disabledColor,
-                          ),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Stack(children: [
+                      ClipRRect(
+                        borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(Dimensions.radiusSmall)),
+                        child: CustomImage(
+                          image:
+                              '${Get.find<SplashController>().configModel!.baseUrls!.storeCoverPhotoUrl}'
+                              '/${store!.coverPhoto}',
+                          height: 120,
+                          width: 500,
+                          fit: BoxFit.cover,
                         ),
-                      );
-                    }),
-                  ),
-                ]),
-
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall),
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
-                      Text(
-                        store!.name!,
-                        style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall),
-                        maxLines: 1, overflow: TextOverflow.ellipsis,
                       ),
-                      const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-
-                      Text(
-                        store!.address!,
-                        style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeExtraSmall, color: Theme.of(context).disabledColor),
-                        maxLines: 1, overflow: TextOverflow.ellipsis,
+                      DiscountTag(
+                        discount: discount,
+                        discountType: discountType,
+                        freeDelivery: store!.freeDelivery,
                       ),
-                      const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-
-                      RatingBar(
-                        rating: store!.avgRating,
-                        ratingCount: store!.ratingCount,
-                        size: 15,
+                      isAvailable
+                          ? const SizedBox()
+                          : NotAvailableWidget(
+                              isStore: true,
+                              fontSize: Dimensions.fontSizeExtraSmall,
+                              isAllSideRound: false),
+                      Positioned(
+                        top: Dimensions.paddingSizeExtraSmall,
+                        right: Dimensions.paddingSizeExtraSmall,
+                        child: GetBuilder<WishListController>(
+                            builder: (wishController) {
+                          bool isWished = wishController.wishStoreIdList
+                              .contains(store!.id);
+                          return InkWell(
+                            onTap: () {
+                              if (Get.find<AuthController>().isLoggedIn()) {
+                                isWished
+                                    ? wishController.removeFromWishList(
+                                        store!.id, true)
+                                    : wishController.addToWishList(
+                                        null, store!, true);
+                              } else {
+                                showCustomSnackBar('you_are_not_logged_in'.tr);
+                              }
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(
+                                  Dimensions.paddingSizeExtraSmall),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).cardColor,
+                                borderRadius: BorderRadius.circular(
+                                    Dimensions.radiusSmall),
+                              ),
+                              child: Icon(
+                                isWished
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                size: 20,
+                                color: isWished
+                                    ? Theme.of(context).primaryColor
+                                    : Theme.of(context).disabledColor,
+                              ),
+                            ),
+                          );
+                        }),
                       ),
                     ]),
-                  ),
-                ),
-              ]),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: Dimensions.paddingSizeExtraSmall),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                store!.name!,
+                                style: robotoMedium.copyWith(
+                                    fontSize: Dimensions.fontSizeSmall),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(
+                                  height: Dimensions.paddingSizeExtraSmall),
+                              Text(
+                                store!.address!,
+                                style: robotoMedium.copyWith(
+                                    fontSize: Dimensions.fontSizeExtraSmall,
+                                    color: Theme.of(context).disabledColor),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(
+                                  height: Dimensions.paddingSizeExtraSmall),
+                              RatingBar(
+                                rating: store!.avgRating,
+                                ratingCount: store!.ratingCount,
+                                size: 15,
+                              ),
+                            ]),
+                      ),
+                    ),
+                  ]),
             ),
           ),
         ],
@@ -134,45 +172,46 @@ class WebStoreWidget extends StatelessWidget {
     );
   }
 }
+
 class WebStoreShimmer extends StatelessWidget {
   const WebStoreShimmer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return Container(
       width: 500,
       decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-          boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 1)]
-      ),
+          boxShadow: const [
+            BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 1)
+          ]),
       child: Shimmer(
         duration: const Duration(seconds: 2),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-
           Container(
-            height: 120, width: 500,
+            height: 120,
+            width: 500,
             decoration: BoxDecoration(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(Dimensions.radiusSmall)),
-                color: Colors.grey[300]
-            ),
+                borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(Dimensions.radiusSmall)),
+                color: Colors.grey[300]),
           ),
-
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
-                Container(height: 15, width: 100, color: Colors.grey[300]),
-                const SizedBox(height: 5),
-
-                Container(height: 10, width: 130, color: Colors.grey[300]),
-                const SizedBox(height: 5),
-
-                const RatingBar(rating: 0.0, size: 12, ratingCount: 0),
-              ]),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(height: 15, width: 100, color: Colors.grey[300]),
+                    const SizedBox(height: 5),
+                    Container(height: 10, width: 130, color: Colors.grey[300]),
+                    const SizedBox(height: 5),
+                    const RatingBar(rating: 0.0, size: 12, ratingCount: 0),
+                  ]),
             ),
           ),
-
         ]),
       ),
     );

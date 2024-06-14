@@ -77,7 +77,7 @@ class SearchingController extends GetxController implements GetxService {
 
   void setSearchMode(bool isSearchMode) {
     _isSearchMode = isSearchMode;
-    if(isSearchMode) {
+    if (isSearchMode) {
       _searchText = '';
       _itemResultText = '';
       _storeResultText = '';
@@ -104,33 +104,37 @@ class SearchingController extends GetxController implements GetxService {
   }
 
   void sortItemSearchList() {
-    _searchItemList= [];
+    _searchItemList = [];
     _searchItemList!.addAll(_allItemList!);
-    if(_upperValue > 0) {
-      _searchItemList!.removeWhere((product) => product.price! <= _lowerValue || product.price! > _upperValue);
+    if (_upperValue > 0) {
+      _searchItemList!.removeWhere((product) =>
+          product.price! <= _lowerValue || product.price! > _upperValue);
     }
-    if(_rating != -1) {
+    if (_rating != -1) {
       _searchItemList!.removeWhere((product) => product.avgRating! < _rating);
     }
-    if(!_veg && _nonVeg) {
+    if (!_veg && _nonVeg) {
       _searchItemList!.removeWhere((product) => product.veg == 1);
     }
-    if(!_nonVeg && _veg) {
+    if (!_nonVeg && _veg) {
       _searchItemList!.removeWhere((product) => product.veg == 0);
     }
-    if(_isAvailableItems || _isDiscountedItems) {
-      if(_isAvailableItems) {
-        _searchItemList!.removeWhere((product) => !DateConverter.isAvailable(product.availableTimeStarts, product.availableTimeEnds));
+    if (_isAvailableItems || _isDiscountedItems) {
+      if (_isAvailableItems) {
+        _searchItemList!.removeWhere((product) => !DateConverter.isAvailable(
+            product.availableTimeStarts, product.availableTimeEnds));
       }
-      if(_isDiscountedItems) {
+      if (_isDiscountedItems) {
         _searchItemList!.removeWhere((product) => product.discount == 0);
       }
     }
-    if(_sortIndex != -1) {
-      if(_sortIndex == 0) {
-        _searchItemList!.sort((a, b) => a.name!.toLowerCase().compareTo(b.name!.toLowerCase()));
-      }else {
-        _searchItemList!.sort((a, b) => a.name!.toLowerCase().compareTo(b.name!.toLowerCase()));
+    if (_sortIndex != -1) {
+      if (_sortIndex == 0) {
+        _searchItemList!.sort(
+            (a, b) => a.name!.toLowerCase().compareTo(b.name!.toLowerCase()));
+      } else {
+        _searchItemList!.sort(
+            (a, b) => a.name!.toLowerCase().compareTo(b.name!.toLowerCase()));
         Iterable iterable = _searchItemList!.reversed;
         _searchItemList = iterable.toList() as List<Item>?;
       }
@@ -141,28 +145,30 @@ class SearchingController extends GetxController implements GetxService {
   void sortStoreSearchList() {
     _searchStoreList = [];
     _searchStoreList!.addAll(_allStoreList!);
-    if(_rating != -1) {
+    if (_rating != -1) {
       _searchStoreList!.removeWhere((store) => store.avgRating! < _rating);
     }
-    if(!_veg && _nonVeg) {
+    if (!_veg && _nonVeg) {
       _searchStoreList!.removeWhere((product) => product.nonVeg == 0);
     }
-    if(!_nonVeg && _veg) {
+    if (!_nonVeg && _veg) {
       _searchStoreList!.removeWhere((product) => product.veg == 0);
     }
-    if(_isAvailableItems || _isDiscountedItems) {
-      if(_isAvailableItems) {
+    if (_isAvailableItems || _isDiscountedItems) {
+      if (_isAvailableItems) {
         _searchStoreList!.removeWhere((store) => store.open == 0);
       }
-      if(_isDiscountedItems) {
+      if (_isDiscountedItems) {
         _searchStoreList!.removeWhere((store) => store.discount == null);
       }
     }
-    if(_sortIndex != -1) {
-      if(_sortIndex == 0) {
-        _searchStoreList!.sort((a, b) => a.name!.toLowerCase().compareTo(b.name!.toLowerCase()));
-      }else {
-        _searchStoreList!.sort((a, b) => a.name!.toLowerCase().compareTo(b.name!.toLowerCase()));
+    if (_sortIndex != -1) {
+      if (_sortIndex == 0) {
+        _searchStoreList!.sort(
+            (a, b) => a.name!.toLowerCase().compareTo(b.name!.toLowerCase()));
+      } else {
+        _searchStoreList!.sort(
+            (a, b) => a.name!.toLowerCase().compareTo(b.name!.toLowerCase()));
         Iterable iterable = _searchStoreList!.reversed;
         _searchStoreList = iterable.toList() as List<Store>?;
       }
@@ -177,17 +183,21 @@ class SearchingController extends GetxController implements GetxService {
 
   void getSuggestedItems() async {
     Response response = await searchRepo.getSuggestedItems();
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       _suggestedItemList = [];
-      response.body.forEach((suggestedItem) => _suggestedItemList!.add(Item.fromJson(suggestedItem)));
-    }else {
+      response.body.forEach((suggestedItem) =>
+          _suggestedItemList!.add(Item.fromJson(suggestedItem)));
+    } else {
       ApiChecker.checkApi(response);
     }
     update();
   }
 
   void searchData(String? query, bool fromHome) async {
-    if((_isStore && query!.isNotEmpty && query != _storeResultText) || (!_isStore && query!.isNotEmpty && (query != _itemResultText || fromHome))) {
+    if ((_isStore && query!.isNotEmpty && query != _storeResultText) ||
+        (!_isStore &&
+            query!.isNotEmpty &&
+            (query != _itemResultText || fromHome))) {
       _searchHomeText = query;
       _searchText = query;
       _rating = -1;
@@ -205,7 +215,7 @@ class SearchingController extends GetxController implements GetxService {
       }
       searchRepo.saveSearchHistory(_historyList);
       _isSearchMode = false;
-      if(!fromHome) {
+      if (!fromHome) {
         update();
       }
 
@@ -222,7 +232,8 @@ class SearchingController extends GetxController implements GetxService {
             _storeResultText = query;
             _searchStoreList = [];
             _allStoreList = [];
-            _searchStoreList!.addAll(StoreModel.fromJson(response.body).stores!);
+            _searchStoreList!
+                .addAll(StoreModel.fromJson(response.body).stores!);
             _allStoreList!.addAll(StoreModel.fromJson(response.body).stores!);
           } else {
             _itemResultText = query;
@@ -284,5 +295,4 @@ class SearchingController extends GetxController implements GetxService {
     _searchHomeText = '';
     update();
   }
-
 }

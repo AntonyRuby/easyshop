@@ -10,7 +10,7 @@ import 'package:sixam_mart/util/app_constants.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
 import 'package:universal_html/html.dart' as html;
 
-class WalletController extends GetxController implements GetxService{
+class WalletController extends GetxController implements GetxService {
   final WalletRepo walletRepo;
   WalletController({required this.walletRepo});
 
@@ -37,31 +37,31 @@ class WalletController extends GetxController implements GetxService{
   String get type => _type;
   List<WalletFilterBody> get walletFilterList => _walletFilterList;
 
-
   void setWalletFilerType(String type, {bool isUpdate = true}) {
     _type = type;
-    if(isUpdate) {
+    if (isUpdate) {
       update();
     }
   }
 
-  void insertFilterList(){
+  void insertFilterList() {
     _walletFilterList = [];
-    for(int i=0; i < AppConstants.walletTransactionSortingList.length; i++){
-      _walletFilterList.add(WalletFilterBody.fromJson(AppConstants.walletTransactionSortingList[i]));
+    for (int i = 0; i < AppConstants.walletTransactionSortingList.length; i++) {
+      _walletFilterList.add(WalletFilterBody.fromJson(
+          AppConstants.walletTransactionSortingList[i]));
     }
   }
 
-  void changeDigitalPaymentName(String name, {bool isUpdate = true}){
+  void changeDigitalPaymentName(String name, {bool isUpdate = true}) {
     _digitalPaymentName = name;
-    if(isUpdate) {
+    if (isUpdate) {
       update();
     }
   }
 
-  void isTextFieldEmpty(String value, {bool isUpdate = true}){
+  void isTextFieldEmpty(String value, {bool isUpdate = true}) {
     _amountEmpty = value.isNotEmpty;
-    if(isUpdate) {
+    if (isUpdate) {
       update();
     }
   }
@@ -69,27 +69,29 @@ class WalletController extends GetxController implements GetxService{
   void setOffset(int offset) {
     _offset = offset;
   }
+
   void showBottomLoader() {
     _isLoading = true;
     update();
   }
 
-  Future<void> getWalletTransactionList(String offset, bool reload, bool isWallet, String walletType) async {
-    if(offset == '1' || reload) {
+  Future<void> getWalletTransactionList(
+      String offset, bool reload, bool isWallet, String walletType) async {
+    if (offset == '1' || reload) {
       _offsetList = [];
       _offset = 1;
       _transactionList = null;
-      if(reload) {
+      if (reload) {
         update();
       }
-
     }
     if (!_offsetList.contains(offset)) {
       _offsetList.add(offset);
       Response response;
-      if(isWallet){
-        response = await walletRepo.getWalletTransactionList(offset, walletType);
-      }else{
+      if (isWallet) {
+        response =
+            await walletRepo.getWalletTransactionList(offset, walletType);
+      } else {
         response = await walletRepo.getLoyaltyTransactionList(offset);
       }
 
@@ -106,7 +108,7 @@ class WalletController extends GetxController implements GetxService{
         ApiChecker.checkApi(response);
       }
     } else {
-      if(isLoading) {
+      if (isLoading) {
         _isLoading = false;
         update();
       }
@@ -122,7 +124,8 @@ class WalletController extends GetxController implements GetxService{
       setWalletFilerType('all');
       getWalletTransactionList('1', true, fromWallet, 'all');
       Get.find<UserController>().getUserInfo();
-      showCustomSnackBar('converted_successfully_transfer_to_your_wallet'.tr, isError: false);
+      showCustomSnackBar('converted_successfully_transfer_to_your_wallet'.tr,
+          isError: false);
     } else {
       ApiChecker.checkApi(response);
     }
@@ -137,11 +140,11 @@ class WalletController extends GetxController implements GetxService{
     if (response.statusCode == 200) {
       String redirectUrl = response.body['redirect_link'];
       Get.back();
-      if(GetPlatform.isWeb) {
-
-        html.window.open(redirectUrl,"_self");
-      } else{
-        Get.toNamed(RouteHelper.getPaymentRoute('0', 0, '', 0, false, '', addFundUrl: redirectUrl, guestId: ''));
+      if (GetPlatform.isWeb) {
+        html.window.open(redirectUrl, "_self");
+      } else {
+        Get.toNamed(RouteHelper.getPaymentRoute('0', 0, '', 0, false, '',
+            addFundUrl: redirectUrl, guestId: ''));
       }
     } else {
       ApiChecker.checkApi(response);
@@ -152,14 +155,14 @@ class WalletController extends GetxController implements GetxService{
 
   Future<void> getWalletBonusList({bool isUpdate = true}) async {
     _isLoading = true;
-    if(isUpdate) {
+    if (isUpdate) {
       update();
     }
 
     Response response = await walletRepo.getWalletBonusList();
     if (response.statusCode == 200) {
       _fundBonusList = [];
-      response.body.forEach((value){
+      response.body.forEach((value) {
         _fundBonusList!.add(FundBonusBody.fromJson(value));
       });
 
@@ -172,17 +175,16 @@ class WalletController extends GetxController implements GetxService{
 
   void setCurrentIndex(int index, bool notify) {
     _currentIndex = index;
-    if(notify) {
+    if (notify) {
       update();
     }
   }
 
-  void setWalletAccessToken(String accessToken){
+  void setWalletAccessToken(String accessToken) {
     walletRepo.setWalletAccessToken(accessToken);
   }
 
-  String getWalletAccessToken (){
+  String getWalletAccessToken() {
     return walletRepo.getWalletAccessToken();
   }
-
 }

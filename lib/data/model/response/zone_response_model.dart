@@ -4,7 +4,8 @@ class ZoneResponseModel {
   final String? _message;
   final List<ZoneData> _zoneData;
   final List<int> _areaIds;
-  ZoneResponseModel(this._isSuccess, this._message, this._zoneIds, this._zoneData, this._areaIds);
+  ZoneResponseModel(this._isSuccess, this._message, this._zoneIds,
+      this._zoneData, this._areaIds);
 
   String? get message => _message;
   List<int> get zoneIds => _zoneIds;
@@ -26,14 +27,14 @@ class ZoneData {
 
   ZoneData(
       {this.id,
-        this.status,
-        this.cashOnDelivery,
-        this.digitalPayment,
-        this.offlinePayment,
-        this.increaseDeliveryFee,
-        this.increaseDeliveryFeeStatus,
-        this.increaseDeliveryFeeMessage,
-        this.modules});
+      this.status,
+      this.cashOnDelivery,
+      this.digitalPayment,
+      this.offlinePayment,
+      this.increaseDeliveryFee,
+      this.increaseDeliveryFeeStatus,
+      this.increaseDeliveryFeeMessage,
+      this.modules});
 
   ZoneData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -84,20 +85,21 @@ class Modules {
   int? allZoneService;
   Pivot? pivot;
 
-  Modules({this.id,
-        this.moduleName,
-        this.moduleType,
-        this.thumbnail,
-        this.status,
-        this.storesCount,
-        this.createdAt,
-        this.updatedAt,
-        this.icon,
-        this.themeId,
-        this.description,
-        this.allZoneService,
-        this.pivot,
-      });
+  Modules({
+    this.id,
+    this.moduleName,
+    this.moduleType,
+    this.thumbnail,
+    this.status,
+    this.storesCount,
+    this.createdAt,
+    this.updatedAt,
+    this.icon,
+    this.themeId,
+    this.description,
+    this.allZoneService,
+    this.pivot,
+  });
 
   Modules.fromJson(Map<String, dynamic> json) {
     id = json['id'];

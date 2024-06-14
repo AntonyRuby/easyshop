@@ -22,7 +22,15 @@ class PaymentWebViewScreen extends StatefulWidget {
   final String paymentMethod;
   final String guestId;
   final String contactNumber;
-  const PaymentWebViewScreen({Key? key, required this.orderModel, required this.isCashOnDelivery, this.addFundUrl, required this.paymentMethod, required this.guestId, required this.contactNumber}) : super(key: key);
+  const PaymentWebViewScreen(
+      {Key? key,
+      required this.orderModel,
+      required this.isCashOnDelivery,
+      this.addFundUrl,
+      required this.paymentMethod,
+      required this.guestId,
+      required this.contactNumber})
+      : super(key: key);
 
   @override
   PaymentScreenState createState() => PaymentScreenState();
@@ -40,21 +48,24 @@ class PaymentScreenState extends State<PaymentWebViewScreen> {
   void initState() {
     super.initState();
 
-    if(widget.addFundUrl == null  || (widget.addFundUrl != null && widget.addFundUrl!.isEmpty)){
-      selectedUrl = '${AppConstants.baseUrl}/payment-mobile?customer_id=${widget.orderModel.userId == 0 ? widget.guestId : widget.orderModel.userId}&order_id=${widget.orderModel.id}&payment_method=${widget.paymentMethod}';
-    }else{
+    if (widget.addFundUrl == null ||
+        (widget.addFundUrl != null && widget.addFundUrl!.isEmpty)) {
+      selectedUrl =
+          '${AppConstants.baseUrl}/payment-mobile?customer_id=${widget.orderModel.userId == 0 ? widget.guestId : widget.orderModel.userId}&order_id=${widget.orderModel.id}&payment_method=${widget.paymentMethod}';
+    } else {
       selectedUrl = widget.addFundUrl!;
     }
-
 
     _initData();
   }
 
   void _initData() async {
-    if(widget.addFundUrl == null  || (widget.addFundUrl != null && widget.addFundUrl!.isEmpty)){
-      for(ZoneData zData in Get.find<LocationController>().getUserAddress()!.zoneData!) {
-        for(Modules m in zData.modules!) {
-          if(m.id == Get.find<SplashController>().module!.id) {
+    if (widget.addFundUrl == null ||
+        (widget.addFundUrl != null && widget.addFundUrl!.isEmpty)) {
+      for (ZoneData zData
+          in Get.find<LocationController>().getUserAddress()!.zoneData!) {
+        for (Modules m in zData.modules!) {
+          if (m.id == Get.find<SplashController>().module!.id) {
             _maximumCodOrderAmount = m.pivot!.maximumCodOrderAmount;
             break;
           }
@@ -62,15 +73,22 @@ class PaymentScreenState extends State<PaymentWebViewScreen> {
       }
     }
 
-    pullToRefreshController = GetPlatform.isWeb || ![TargetPlatform.iOS, TargetPlatform.android].contains(defaultTargetPlatform) ? null : PullToRefreshController(
-      onRefresh: () async {
-        if (defaultTargetPlatform == TargetPlatform.android) {
-          webViewController?.reload();
-        } else if (defaultTargetPlatform == TargetPlatform.iOS || defaultTargetPlatform == TargetPlatform.macOS) {
-          webViewController?.loadUrl(urlRequest: URLRequest(url: await webViewController?.getUrl()));
-        }
-      },
-    );
+    pullToRefreshController = GetPlatform.isWeb ||
+            ![TargetPlatform.iOS, TargetPlatform.android]
+                .contains(defaultTargetPlatform)
+        ? null
+        : PullToRefreshController(
+            onRefresh: () async {
+              if (defaultTargetPlatform == TargetPlatform.android) {
+                webViewController?.reload();
+              } else if (defaultTargetPlatform == TargetPlatform.iOS ||
+                  defaultTargetPlatform == TargetPlatform.macOS) {
+                webViewController?.loadUrl(
+                    urlRequest:
+                        URLRequest(url: await webViewController?.getUrl()));
+              }
+            },
+          );
   }
 
   @override
@@ -82,29 +100,48 @@ class PaymentScreenState extends State<PaymentWebViewScreen> {
       },
       child: Scaffold(
         backgroundColor: Theme.of(context).cardColor,
-        appBar: CustomAppBar(title: '', onBackPressed: () => _exitApp(), backButton: true),
+        appBar: CustomAppBar(
+            title: '', onBackPressed: () => _exitApp(), backButton: true),
         body: Stack(
           children: [
             InAppWebView(
               initialUrlRequest: URLRequest(url: Uri.parse(selectedUrl)),
               initialUserScripts: UnmodifiableListView<UserScript>([]),
               pullToRefreshController: pullToRefreshController,
-              initialOptions: InAppWebViewGroupOptions(crossPlatform: InAppWebViewOptions(
-                userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36',
-              ), android: AndroidInAppWebViewOptions(useHybridComposition: true)),
+              initialOptions: InAppWebViewGroupOptions(
+                  crossPlatform: InAppWebViewOptions(
+                    userAgent:
+                        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36',
+                  ),
+                  android:
+                      AndroidInAppWebViewOptions(useHybridComposition: true)),
               onWebViewCreated: (controller) async {
                 webViewController = controller;
               },
               onLoadStart: (controller, url) async {
                 // _redirect(url.toString());
-                Get.find<OrderController>().paymentRedirect(url: url.toString(), canRedirect: _canRedirect, onClose: (){} , addFundUrl: widget.addFundUrl, orderID: widget.orderModel.id.toString(), contactNumber: widget.contactNumber);
+                Get.find<OrderController>().paymentRedirect(
+                    url: url.toString(),
+                    canRedirect: _canRedirect,
+                    onClose: () {},
+                    addFundUrl: widget.addFundUrl,
+                    orderID: widget.orderModel.id.toString(),
+                    contactNumber: widget.contactNumber);
                 setState(() {
                   _isLoading = true;
                 });
               },
               shouldOverrideUrlLoading: (controller, navigationAction) async {
                 Uri uri = navigationAction.request.url!;
-                if (!["http", "https", "file", "chrome", "data", "javascript", "about"].contains(uri.scheme)) {
+                if (![
+                  "http",
+                  "https",
+                  "file",
+                  "chrome",
+                  "data",
+                  "javascript",
+                  "about"
+                ].contains(uri.scheme)) {
                   if (await canLaunchUrl(uri)) {
                     await launchUrl(uri, mode: LaunchMode.externalApplication);
                     return NavigationActionPolicy.CANCEL;
@@ -117,7 +154,13 @@ class PaymentScreenState extends State<PaymentWebViewScreen> {
                 setState(() {
                   _isLoading = false;
                 });
-                Get.find<OrderController>().paymentRedirect(url: url.toString(), canRedirect: _canRedirect, onClose: (){} , addFundUrl: widget.addFundUrl, orderID: widget.orderModel.id.toString(), contactNumber: widget.contactNumber);
+                Get.find<OrderController>().paymentRedirect(
+                    url: url.toString(),
+                    canRedirect: _canRedirect,
+                    onClose: () {},
+                    addFundUrl: widget.addFundUrl,
+                    orderID: widget.orderModel.id.toString(),
+                    contactNumber: widget.contactNumber);
                 // _redirect(url.toString());
               },
               onProgressChanged: (controller, progress) {
@@ -132,9 +175,13 @@ class PaymentScreenState extends State<PaymentWebViewScreen> {
                 debugPrint(consoleMessage.message);
               },
             ),
-            _isLoading ? Center(
-              child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)),
-            ) : const SizedBox.shrink(),
+            _isLoading
+                ? Center(
+                    child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            Theme.of(context).primaryColor)),
+                  )
+                : const SizedBox.shrink(),
           ],
         ),
       ),
@@ -142,7 +189,12 @@ class PaymentScreenState extends State<PaymentWebViewScreen> {
   }
 
   Future<bool?> _exitApp() async {
-    if((widget.addFundUrl == null  || (widget.addFundUrl != null && widget.addFundUrl!.isEmpty)) || !Get.find<SplashController>().configModel!.digitalPaymentInfo!.pluginPaymentGateways!){
+    if ((widget.addFundUrl == null ||
+            (widget.addFundUrl != null && widget.addFundUrl!.isEmpty)) ||
+        !Get.find<SplashController>()
+            .configModel!
+            .digitalPaymentInfo!
+            .pluginPaymentGateways!) {
       return Get.dialog(PaymentFailedDialog(
         orderID: widget.orderModel.id.toString(),
         orderAmount: widget.orderModel.orderAmount,
@@ -150,10 +202,8 @@ class PaymentScreenState extends State<PaymentWebViewScreen> {
         orderType: widget.orderModel.orderType,
         isCashOnDelivery: widget.isCashOnDelivery,
       ));
-    }else{
+    } else {
       return Get.dialog(const FundPaymentDialog());
     }
-
   }
-
 }

@@ -11,10 +11,13 @@ class WishListRepo {
   }
 
   Future<Response> addWishList(int? id, bool isStore) async {
-    return await apiClient.postData('${AppConstants.addWishListUri}${isStore ? 'store_id=' : 'item_id='}$id', null);
+    return await apiClient.postData(
+        '${AppConstants.addWishListUri}${isStore ? 'store_id=' : 'item_id='}$id',
+        null);
   }
 
   Future<Response> removeWishList(int? id, bool isStore) async {
-    return await apiClient.deleteData('${AppConstants.removeWishListUri}${isStore ? 'store_id=' : 'item_id='}$id');
+    return await apiClient.deleteData(
+        '${AppConstants.removeWishListUri}${isStore ? 'store_id=' : 'item_id='}$id');
   }
 }

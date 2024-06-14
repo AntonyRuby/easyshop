@@ -36,86 +36,116 @@ class TimeSlotSection extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isGuestLoggedIn = Get.find<AuthController>().isGuestLoggedIn();
     return Column(children: [
-      !isGuestLoggedIn && storeId == null && storeController.store!.scheduleOrder! && cartList![0]!.item!.availableDateStarts == null
+      !isGuestLoggedIn &&
+              storeId == null &&
+              storeController.store!.scheduleOrder! &&
+              cartList![0]!.item!.availableDateStarts == null
           ? Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
-                boxShadow: [BoxShadow(color: Theme.of(context).primaryColor.withOpacity(0.05), blurRadius: 10)],
+                boxShadow: [
+                  BoxShadow(
+                      color: Theme.of(context).primaryColor.withOpacity(0.05),
+                      blurRadius: 10)
+                ],
               ),
-              padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge, vertical: Dimensions.paddingSizeSmall),
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Row(children: [
-                  Text('preference_time'.tr, style: robotoMedium),
-                  const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-                  JustTheTooltip(
-                    backgroundColor: Colors.black87,
-                    controller: tooltipController2,
-                    preferredDirection: AxisDirection.right,
-                    tailLength: 14,
-                    tailBaseWidth: 20,
-                    content: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('schedule_time_tool_tip'.tr, style: robotoRegular.copyWith(color: Colors.white)),
-                    ),
-                    child: InkWell(
-                      onTap: () => tooltipController2.showTooltip(),
-                      child: const Icon(Icons.info_outline),
-                    ),
-                  ),
-                ]),
-                const SizedBox(height: Dimensions.paddingSizeSmall),
-                InkWell(
-                  onTap: () {
-                    if (ResponsiveHelper.isDesktop(context)) {
-                      showDialog(
-                          context: context,
-                          builder: (con) => Dialog(
-                                child: TimeSlotBottomSheet(
-                                  tomorrowClosed: tomorrowClosed,
-                                  todayClosed: todayClosed,
-                                  module: module,
-                                ),
-                              ));
-                    } else {
-                      showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                        builder: (con) => TimeSlotBottomSheet(
-                          tomorrowClosed: tomorrowClosed,
-                          todayClosed: todayClosed,
-                          module: module,
-                        ),
-                      );
-                    }
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Theme.of(context).primaryColor, width: 0.3),
-                        borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
-                    height: 50,
-                    child: Row(children: [
-                      const SizedBox(width: Dimensions.paddingSizeLarge),
-                      Expanded(
-                          child: ((orderController.selectedDateSlot == 0 && todayClosed) || (orderController.selectedDateSlot == 1 && tomorrowClosed))
-                              ? Center(child: Text(module!.showRestaurantText! ? 'restaurant_is_closed'.tr : 'store_is_closed'.tr))
-                              : Text(orderController.preferableTime.isNotEmpty ? orderController.preferableTime : 'instance'.tr)),
-                      const Icon(
-                        Icons.arrow_drop_down,
-                        size: 28,
-                        color: Colors.red,
-                      ),
-                      Icon(Icons.access_time_filled_outlined, color: Theme.of(context).primaryColor),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: Dimensions.paddingSizeLarge,
+                  vertical: Dimensions.paddingSizeSmall),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(children: [
+                      Text('preference_time'.tr, style: robotoMedium),
                       const SizedBox(width: Dimensions.paddingSizeExtraSmall),
+                      JustTheTooltip(
+                        backgroundColor: Colors.black87,
+                        controller: tooltipController2,
+                        preferredDirection: AxisDirection.right,
+                        tailLength: 14,
+                        tailBaseWidth: 20,
+                        content: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('schedule_time_tool_tip'.tr,
+                              style:
+                                  robotoRegular.copyWith(color: Colors.white)),
+                        ),
+                        child: InkWell(
+                          onTap: () => tooltipController2.showTooltip(),
+                          child: const Icon(Icons.info_outline),
+                        ),
+                      ),
                     ]),
-                  ),
-                ),
-                const SizedBox(height: Dimensions.paddingSizeLarge),
-              ]),
+                    const SizedBox(height: Dimensions.paddingSizeSmall),
+                    InkWell(
+                      onTap: () {
+                        if (ResponsiveHelper.isDesktop(context)) {
+                          showDialog(
+                              context: context,
+                              builder: (con) => Dialog(
+                                    child: TimeSlotBottomSheet(
+                                      tomorrowClosed: tomorrowClosed,
+                                      todayClosed: todayClosed,
+                                      module: module,
+                                    ),
+                                  ));
+                        } else {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (con) => TimeSlotBottomSheet(
+                              tomorrowClosed: tomorrowClosed,
+                              todayClosed: todayClosed,
+                              module: module,
+                            ),
+                          );
+                        }
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Theme.of(context).primaryColor,
+                                width: 0.3),
+                            borderRadius: BorderRadius.circular(
+                                Dimensions.radiusDefault)),
+                        height: 50,
+                        child: Row(children: [
+                          const SizedBox(width: Dimensions.paddingSizeLarge),
+                          Expanded(
+                              child: ((orderController.selectedDateSlot == 0 &&
+                                          todayClosed) ||
+                                      (orderController.selectedDateSlot == 1 &&
+                                          tomorrowClosed))
+                                  ? Center(
+                                      child: Text(module!.showRestaurantText!
+                                          ? 'restaurant_is_closed'.tr
+                                          : 'store_is_closed'.tr))
+                                  : Text(
+                                      orderController.preferableTime.isNotEmpty
+                                          ? orderController.preferableTime
+                                          : 'instance'.tr)),
+                          const Icon(
+                            Icons.arrow_drop_down,
+                            size: 28,
+                            color: Colors.red,
+                          ),
+                          Icon(Icons.access_time_filled_outlined,
+                              color: Theme.of(context).primaryColor),
+                          const SizedBox(
+                              width: Dimensions.paddingSizeExtraSmall),
+                        ]),
+                      ),
+                    ),
+                    const SizedBox(height: Dimensions.paddingSizeLarge),
+                  ]),
             )
           : const SizedBox(),
       SizedBox(
-          height: !isGuestLoggedIn && storeId == null && storeController.store!.scheduleOrder! && cartList![0]!.item!.availableDateStarts == null
+          height: !isGuestLoggedIn &&
+                  storeId == null &&
+                  storeController.store!.scheduleOrder! &&
+                  cartList![0]!.item!.availableDateStarts == null
               ? Dimensions.paddingSizeSmall
               : 0),
     ]);

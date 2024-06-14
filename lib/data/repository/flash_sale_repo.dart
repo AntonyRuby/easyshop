@@ -12,6 +12,7 @@ class FlashSaleRepo extends GetxService {
   }
 
   Future<Response> getFlashSaleWithId(int id, int offset) async {
-    return await apiClient.getData('${AppConstants.flashSaleProductsUri}?flash_sale_id=$id&offset=$offset&limit=10');
+    return await apiClient.getData(
+        '${AppConstants.flashSaleProductsUri}?flash_sale_id=$id&offset=$offset&limit=10');
   }
 }

@@ -15,6 +15,7 @@ import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/util/styles.dart';
 import 'package:sixam_mart/view/base/custom_text_field.dart';
 import 'package:sixam_mart/view/screens/address/add_address_screen.dart';
+
 class GuestDeliveryAddress extends StatelessWidget {
   final OrderController orderController;
   final StoreController storeController;
@@ -24,9 +25,14 @@ class GuestDeliveryAddress extends StatelessWidget {
   final FocusNode guestNumberNode;
   final FocusNode guestEmailNode;
   const GuestDeliveryAddress({
-    Key? key, required this.orderController, required this.storeController, required this.guestNameTextEditingController,
-    required this.guestNumberTextEditingController, required this.guestNumberNode,
-    required this.guestEmailController, required this.guestEmailNode,
+    Key? key,
+    required this.orderController,
+    required this.storeController,
+    required this.guestNameTextEditingController,
+    required this.guestNumberTextEditingController,
+    required this.guestNumberNode,
+    required this.guestEmailController,
+    required this.guestEmailNode,
   }) : super(key: key);
 
   @override
@@ -36,142 +42,187 @@ class GuestDeliveryAddress extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        boxShadow: [BoxShadow(color: Theme.of(context).primaryColor.withOpacity(0.05), blurRadius: 10)],
+        boxShadow: [
+          BoxShadow(
+              color: Theme.of(context).primaryColor.withOpacity(0.05),
+              blurRadius: 10)
+        ],
       ),
-      padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge, vertical: Dimensions.paddingSizeSmall),
+      padding: const EdgeInsets.symmetric(
+          horizontal: Dimensions.paddingSizeLarge,
+          vertical: Dimensions.paddingSizeSmall),
       child: Column(children: [
         Row(children: [
-          Image.asset(Images.truck, height: 14, width: 14, color: Theme.of(context).primaryColor),
+          Image.asset(Images.truck,
+              height: 14, width: 14, color: Theme.of(context).primaryColor),
           const SizedBox(width: Dimensions.paddingSizeSmall),
-
-          Text(takeAway ? 'contact_information'.tr : 'delivery_information'.tr, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeDefault, color: Theme.of(context).primaryColor)),
+          Text(takeAway ? 'contact_information'.tr : 'delivery_information'.tr,
+              style: robotoMedium.copyWith(
+                  fontSize: Dimensions.fontSizeDefault,
+                  color: Theme.of(context).primaryColor)),
           const Spacer(),
+          takeAway
+              ? const SizedBox()
+              : InkWell(
+                  onTap: () async {
+                    var address = await Get.toNamed(
+                        RouteHelper.getEditAddressRoute(
+                            orderController.guestAddress,
+                            fromGuest: true));
 
-          takeAway ? const SizedBox() : InkWell(
-            onTap: () async {
-              var address = await Get.toNamed(RouteHelper.getEditAddressRoute(orderController.guestAddress, fromGuest: true));
-
-              // var address ;
-              // // if(ResponsiveHelper.isDesktop(context)) {
-              // if(ResponsiveHelper.isDesktop(context)) {
-              //   showGeneralDialog(context: context, pageBuilder: (_,__,___) {
-              //     return SizedBox(
-              //       height: 300, width: 300,
-              //       child: AddAddressScreen(
-              //         fromCheckout: true, fromRide: false, zoneId: storeController.store!.zoneId, forGuest: true,
-              //         address: orderController.guestAddress,
-              //       ),
-              //     );
-              //   }).then((value) {
-              //     address = value;
-              //   });
-              // } else {
-              //   address = await Get.toNamed(RouteHelper.getEditAddressRoute(orderController.guestAddress, fromGuest: true));
-              // }
-              /*} else {
+                    // var address ;
+                    // // if(ResponsiveHelper.isDesktop(context)) {
+                    // if(ResponsiveHelper.isDesktop(context)) {
+                    //   showGeneralDialog(context: context, pageBuilder: (_,__,___) {
+                    //     return SizedBox(
+                    //       height: 300, width: 300,
+                    //       child: AddAddressScreen(
+                    //         fromCheckout: true, fromRide: false, zoneId: storeController.store!.zoneId, forGuest: true,
+                    //         address: orderController.guestAddress,
+                    //       ),
+                    //     );
+                    //   }).then((value) {
+                    //     address = value;
+                    //   });
+                    // } else {
+                    //   address = await Get.toNamed(RouteHelper.getEditAddressRoute(orderController.guestAddress, fromGuest: true));
+                    // }
+                    /*} else {
                 address = await Get.to(() => AddAddressScreen(
                   fromCheckout: true, fromRide: false, zoneId: storeController.store!.zoneId, forGuest: true,
                   address: orderController.guestAddress,
                 ));
               }*/
 
-              if(address != null) {
-                orderController.setGuestAddress(address);
-                orderController.getDistanceInKM(
-                  LatLng(double.parse(address.latitude), double.parse(address.longitude)),
-                  LatLng(double.parse(storeController.store!.latitude!), double.parse(storeController.store!.longitude!)),
-                );
-              }
-            },
-            child: Image.asset(Images.editDelivery, height: 20, width: 20, color: Theme.of(context).primaryColor),
-          ),
+                    if (address != null) {
+                      orderController.setGuestAddress(address);
+                      orderController.getDistanceInKM(
+                        LatLng(double.parse(address.latitude),
+                            double.parse(address.longitude)),
+                        LatLng(double.parse(storeController.store!.latitude!),
+                            double.parse(storeController.store!.longitude!)),
+                      );
+                    }
+                  },
+                  child: Image.asset(Images.editDelivery,
+                      height: 20,
+                      width: 20,
+                      color: Theme.of(context).primaryColor),
+                ),
         ]),
-
         Padding(
           padding: const EdgeInsets.only(top: Dimensions.paddingSizeExtraSmall),
           child: Divider(color: Theme.of(context).disabledColor),
         ),
-
-        takeAway ? Column(children: [
-          const SizedBox(height: Dimensions.paddingSizeLarge),
-          CustomTextField(
-            showTitle: ResponsiveHelper.isDesktop(context),
-            titleText: 'contact_person_name'.tr,
-            hintText: ' ',
-            inputType: TextInputType.name,
-            controller: guestNameTextEditingController,
-            nextFocus: guestNumberNode,
-            capitalization: TextCapitalization.words,
-          ),
-          const SizedBox(height: Dimensions.paddingSizeLarge),
-
-          CustomTextField(
-            showTitle: ResponsiveHelper.isDesktop(context),
-            titleText: 'contact_person_number'.tr,
-            hintText: ' ',
-            controller: guestNumberTextEditingController,
-            focusNode: guestNumberNode,
-            nextFocus: guestEmailNode,
-            inputType: TextInputType.phone,
-            isPhone: true,
-            onCountryChanged: (CountryCode countryCode) {
-              orderController.countryDialCode = countryCode.dialCode;
-            },
-            countryDialCode: orderController.countryDialCode ?? Get.find<LocalizationController>().locale.countryCode,
-          ),
-          const SizedBox(height: Dimensions.paddingSizeLarge),
-
-          CustomTextField(
-            titleText: 'email'.tr,
-            hintText: 'enter_email'.tr,
-            controller: guestEmailController,
-            focusNode: guestEmailNode,
-            inputAction: TextInputAction.done,
-            inputType: TextInputType.emailAddress,
-            prefixIcon: Icons.mail,
-          ),
-          const SizedBox(height: Dimensions.paddingSizeLarge),
-
-        ]) : orderController.guestAddress == null ? InkWell(
-          onTap: (){},
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeLarge),
-            child: Column(children: [
-              Image.asset(Images.truck, height: 20, width: 20, color: Theme.of(context).disabledColor),
-              const SizedBox(height: Dimensions.paddingSizeSmall),
-
-              Text('please_update_your_delivery_info'.tr, style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeDefault, color: Theme.of(context).disabledColor)),
-            ]),
-          ),
-        ) : Column(children: [
-          const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-
-          Row(children: [
-            Icon(Icons.location_on, size: 16, color: Theme.of(context).primaryColor.withOpacity(0.5)),
-            const SizedBox(width: Dimensions.paddingSizeSmall),
-
-            Flexible(child: Text(
-              orderController.guestAddress!.address!,
-              style: robotoRegular, maxLines: 1, overflow: TextOverflow.ellipsis,
-            )),
-          ]),
-          const SizedBox(height: Dimensions.paddingSizeSmall),
-
-          Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Expanded(child: Column(children: [
-              addressInfo('address_type'.tr, orderController.guestAddress!.addressType!),
-              addressInfo('name'.tr, orderController.guestAddress!.contactPersonName!),
-              addressInfo('phone'.tr, orderController.guestAddress!.contactPersonNumber!),
-              addressInfo('email'.tr, orderController.guestAddress!.email!),
-            ])),
-            Expanded(child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-              addressInfo('street'.tr, orderController.guestAddress!.streetNumber!),
-              addressInfo('house'.tr, orderController.guestAddress!.house!),
-              addressInfo('floor'.tr, orderController.guestAddress!.floor!),
-            ])),
-          ])
-        ]),
-
+        takeAway
+            ? Column(children: [
+                const SizedBox(height: Dimensions.paddingSizeLarge),
+                CustomTextField(
+                  showTitle: ResponsiveHelper.isDesktop(context),
+                  titleText: 'contact_person_name'.tr,
+                  hintText: ' ',
+                  inputType: TextInputType.name,
+                  controller: guestNameTextEditingController,
+                  nextFocus: guestNumberNode,
+                  capitalization: TextCapitalization.words,
+                ),
+                const SizedBox(height: Dimensions.paddingSizeLarge),
+                CustomTextField(
+                  showTitle: ResponsiveHelper.isDesktop(context),
+                  titleText: 'contact_person_number'.tr,
+                  hintText: ' ',
+                  controller: guestNumberTextEditingController,
+                  focusNode: guestNumberNode,
+                  nextFocus: guestEmailNode,
+                  inputType: TextInputType.phone,
+                  isPhone: true,
+                  onCountryChanged: (CountryCode countryCode) {
+                    orderController.countryDialCode = countryCode.dialCode;
+                  },
+                  countryDialCode: orderController.countryDialCode ??
+                      Get.find<LocalizationController>().locale.countryCode,
+                ),
+                const SizedBox(height: Dimensions.paddingSizeLarge),
+                CustomTextField(
+                  titleText: 'email'.tr,
+                  hintText: 'enter_email'.tr,
+                  controller: guestEmailController,
+                  focusNode: guestEmailNode,
+                  inputAction: TextInputAction.done,
+                  inputType: TextInputType.emailAddress,
+                  prefixIcon: Icons.mail,
+                ),
+                const SizedBox(height: Dimensions.paddingSizeLarge),
+              ])
+            : orderController.guestAddress == null
+                ? InkWell(
+                    onTap: () {},
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: Dimensions.paddingSizeLarge),
+                      child: Column(children: [
+                        Image.asset(Images.truck,
+                            height: 20,
+                            width: 20,
+                            color: Theme.of(context).disabledColor),
+                        const SizedBox(height: Dimensions.paddingSizeSmall),
+                        Text('please_update_your_delivery_info'.tr,
+                            style: robotoRegular.copyWith(
+                                fontSize: Dimensions.fontSizeDefault,
+                                color: Theme.of(context).disabledColor)),
+                      ]),
+                    ),
+                  )
+                : Column(children: [
+                    const SizedBox(height: Dimensions.paddingSizeExtraSmall),
+                    Row(children: [
+                      Icon(Icons.location_on,
+                          size: 16,
+                          color:
+                              Theme.of(context).primaryColor.withOpacity(0.5)),
+                      const SizedBox(width: Dimensions.paddingSizeSmall),
+                      Flexible(
+                          child: Text(
+                        orderController.guestAddress!.address!,
+                        style: robotoRegular,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      )),
+                    ]),
+                    const SizedBox(height: Dimensions.paddingSizeSmall),
+                    Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                              child: Column(children: [
+                            addressInfo('address_type'.tr,
+                                orderController.guestAddress!.addressType!),
+                            addressInfo(
+                                'name'.tr,
+                                orderController
+                                    .guestAddress!.contactPersonName!),
+                            addressInfo(
+                                'phone'.tr,
+                                orderController
+                                    .guestAddress!.contactPersonNumber!),
+                            addressInfo('email'.tr,
+                                orderController.guestAddress!.email!),
+                          ])),
+                          Expanded(
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                addressInfo(
+                                    'street'.tr,
+                                    orderController
+                                        .guestAddress!.streetNumber!),
+                                addressInfo('house'.tr,
+                                    orderController.guestAddress!.house!),
+                                addressInfo('floor'.tr,
+                                    orderController.guestAddress!.floor!),
+                              ])),
+                        ])
+                  ]),
       ]),
     );
   }
@@ -180,8 +231,14 @@ class GuestDeliveryAddress extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: Row(children: [
-        Text('$key: ', style: robotoRegular.copyWith(color: Theme.of(Get.context!).disabledColor)),
-        Flexible(child: Text(value, style: robotoRegular, maxLines: 1, overflow: TextOverflow.ellipsis)),
+        Text('$key: ',
+            style: robotoRegular.copyWith(
+                color: Theme.of(Get.context!).disabledColor)),
+        Flexible(
+            child: Text(value,
+                style: robotoRegular,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis)),
       ]),
     );
   }

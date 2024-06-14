@@ -7,7 +7,12 @@ class OnHover extends StatefulWidget {
   final Widget child;
   final bool isItem;
   final bool fromMenu;
-  const OnHover({Key? key, required this.child, this.isItem = false, this.fromMenu = false}) : super(key: key);
+  const OnHover(
+      {Key? key,
+      required this.child,
+      this.isItem = false,
+      this.fromMenu = false})
+      : super(key: key);
 
   @override
   State<OnHover> createState() => _OnHoverState();
@@ -21,14 +26,19 @@ class _OnHoverState extends State<OnHover> {
     final transform = isHovered ? hoverTransformed : Matrix4.identity();
     final shadow1 = BoxDecoration(
       borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-      color: widget.fromMenu ? Theme.of(context).primaryColor.withOpacity(0.10) : Theme.of(context).cardColor,
+      color: widget.fromMenu
+          ? Theme.of(context).primaryColor.withOpacity(0.10)
+          : Theme.of(context).cardColor,
       boxShadow: [
-        widget.fromMenu ? const BoxShadow(color: Colors.transparent) :
-        BoxShadow(
-          color: Get.find<ThemeController>().darkTheme ? const Color(0xFFBDBDBD).withOpacity(0.1) : Theme.of(context).primaryColor.withOpacity(0.05),
-          blurRadius: 10,
-          offset: const Offset(0, 10),
-        ),
+        widget.fromMenu
+            ? const BoxShadow(color: Colors.transparent)
+            : BoxShadow(
+                color: Get.find<ThemeController>().darkTheme
+                    ? const Color(0xFFBDBDBD).withOpacity(0.1)
+                    : Theme.of(context).primaryColor.withOpacity(0.05),
+                blurRadius: 10,
+                offset: const Offset(0, 10),
+              ),
       ],
     );
     final shadow2 = BoxDecoration(
@@ -46,8 +56,12 @@ class _OnHoverState extends State<OnHover> {
       onExit: (event) => onEntered(false),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        decoration: widget.isItem ? isHovered ? shadow1 : shadow2 : shadow2,
-        transform: widget.isItem ? Matrix4.identity() : transform  ,
+        decoration: widget.isItem
+            ? isHovered
+                ? shadow1
+                : shadow2
+            : shadow2,
+        transform: widget.isItem ? Matrix4.identity() : transform,
         child: widget.child,
       ),
     );

@@ -17,7 +17,8 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 class WebBannerView extends StatelessWidget {
   final BannerController bannerController;
-  const WebBannerView({Key? key, required this.bannerController}) : super(key: key);
+  const WebBannerView({Key? key, required this.bannerController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,22 +38,41 @@ class WebBannerView extends StatelessWidget {
                       fit: StackFit.expand,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: Dimensions.paddingSizeLarge),
                           child: PageView.builder(
                             controller: pageController,
-                            itemCount: (bannerController.bannerImageList!.length / 2).ceil(),
+                            itemCount:
+                                (bannerController.bannerImageList!.length / 2)
+                                    .ceil(),
                             itemBuilder: (context, index) {
                               int index1 = index * 2;
                               int index2 = (index * 2) + 1;
-                              bool hasSecond = index2 < bannerController.bannerImageList!.length;
+                              bool hasSecond = index2 <
+                                  bannerController.bannerImageList!.length;
 
-                              String? baseUrl1 = bannerController.bannerDataList![index1] is BasicCampaignModel
-                                  ? Get.find<SplashController>().configModel!.baseUrls!.campaignImageUrl
-                                  : Get.find<SplashController>().configModel!.baseUrls!.bannerImageUrl;
+                              String? baseUrl1 =
+                                  bannerController.bannerDataList![index1]
+                                          is BasicCampaignModel
+                                      ? Get.find<SplashController>()
+                                          .configModel!
+                                          .baseUrls!
+                                          .campaignImageUrl
+                                      : Get.find<SplashController>()
+                                          .configModel!
+                                          .baseUrls!
+                                          .bannerImageUrl;
                               String? baseUrl2 = hasSecond
-                                  ? bannerController.bannerDataList![index2] is BasicCampaignModel
-                                      ? Get.find<SplashController>().configModel!.baseUrls!.campaignImageUrl
-                                      : Get.find<SplashController>().configModel!.baseUrls!.bannerImageUrl
+                                  ? bannerController.bannerDataList![index2]
+                                          is BasicCampaignModel
+                                      ? Get.find<SplashController>()
+                                          .configModel!
+                                          .baseUrls!
+                                          .campaignImageUrl
+                                      : Get.find<SplashController>()
+                                          .configModel!
+                                          .baseUrls!
+                                          .bannerImageUrl
                                   : '';
 
                               return Row(children: [
@@ -60,23 +80,30 @@ class WebBannerView extends StatelessWidget {
                                     child: InkWell(
                                   onTap: () => _onTap(index1, context),
                                   child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                                    borderRadius: BorderRadius.circular(
+                                        Dimensions.radiusSmall),
                                     child: CustomImage(
-                                      image: '$baseUrl1/${bannerController.bannerImageList![index1]}',
+                                      image:
+                                          '$baseUrl1/${bannerController.bannerImageList![index1]}',
                                       fit: BoxFit.cover,
                                       height: 220,
                                     ),
                                   ),
                                 )),
-                                const SizedBox(width: Dimensions.paddingSizeLarge),
+                                const SizedBox(
+                                    width: Dimensions.paddingSizeLarge),
                                 Expanded(
                                     child: hasSecond
                                         ? InkWell(
-                                            onTap: () => _onTap(index2, context),
+                                            onTap: () =>
+                                                _onTap(index2, context),
                                             child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      Dimensions.radiusSmall),
                                               child: CustomImage(
-                                                image: '$baseUrl2/${bannerController.bannerImageList![index2]}',
+                                                image:
+                                                    '$baseUrl2/${bannerController.bannerImageList![index2]}',
                                                 fit: BoxFit.cover,
                                                 height: 220,
                                               ),
@@ -85,7 +112,8 @@ class WebBannerView extends StatelessWidget {
                                         : const SizedBox()),
                               ]);
                             },
-                            onPageChanged: (int index) => bannerController.setCurrentIndex(index, true),
+                            onPageChanged: (int index) =>
+                                bannerController.setCurrentIndex(index, true),
                           ),
                         ),
                         bannerController.currentIndex != 0
@@ -94,7 +122,9 @@ class WebBannerView extends StatelessWidget {
                                 bottom: 0,
                                 left: 0,
                                 child: InkWell(
-                                  onTap: () => pageController.previousPage(duration: const Duration(seconds: 1), curve: Curves.easeInOut),
+                                  onTap: () => pageController.previousPage(
+                                      duration: const Duration(seconds: 1),
+                                      curve: Curves.easeInOut),
                                   child: Container(
                                     height: 40,
                                     width: 40,
@@ -104,18 +134,24 @@ class WebBannerView extends StatelessWidget {
                                       color: Theme.of(context).cardColor,
                                     ),
                                     padding: const EdgeInsets.only(left: 10),
-                                    child: const Icon(Icons.arrow_back_ios, color: Colors.red),
+                                    child: const Icon(Icons.arrow_back_ios,
+                                        color: Colors.red),
                                   ),
                                 ),
                               )
                             : const SizedBox(),
-                        bannerController.currentIndex != ((bannerController.bannerImageList!.length / 2).ceil() - 1)
+                        bannerController.currentIndex !=
+                                ((bannerController.bannerImageList!.length / 2)
+                                        .ceil() -
+                                    1)
                             ? Positioned(
                                 top: 0,
                                 bottom: 0,
                                 right: 0,
                                 child: InkWell(
-                                  onTap: () => pageController.nextPage(duration: const Duration(seconds: 1), curve: Curves.easeInOut),
+                                  onTap: () => pageController.nextPage(
+                                      duration: const Duration(seconds: 1),
+                                      curve: Curves.easeInOut),
                                   child: Container(
                                     height: 40,
                                     width: 40,
@@ -124,7 +160,8 @@ class WebBannerView extends StatelessWidget {
                                       shape: BoxShape.circle,
                                       color: Theme.of(context).cardColor,
                                     ),
-                                    child: const Icon(Icons.arrow_forward_ios, color: Colors.red),
+                                    child: const Icon(Icons.arrow_forward_ios,
+                                        color: Colors.red),
                                   ),
                                 ),
                               )
@@ -136,7 +173,9 @@ class WebBannerView extends StatelessWidget {
           bannerController.bannerImageList != null
               ? Builder(builder: (context) {
                   List<String> finalBanner = [];
-                  for (int i = 0; i < bannerController.bannerImageList!.length; i++) {
+                  for (int i = 0;
+                      i < bannerController.bannerImageList!.length;
+                      i++) {
                     if (i % 2 == 0) {
                       finalBanner.add(bannerController.bannerImageList![i]!);
                     }
@@ -151,16 +190,24 @@ class WebBannerView extends StatelessWidget {
                         child: index == bannerController.currentIndex
                             ? Container(
                                 decoration: BoxDecoration(
-                                    color: Theme.of(context).primaryColor, borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
-                                padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 1),
-                                child: Text('${(index * 2) + 2}/$totalBanner', style: robotoRegular.copyWith(color: Colors.white, fontSize: 8)),
+                                    color: Theme.of(context).primaryColor,
+                                    borderRadius: BorderRadius.circular(
+                                        Dimensions.radiusDefault)),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 3, vertical: 1),
+                                child: Text('${(index * 2) + 2}/$totalBanner',
+                                    style: robotoRegular.copyWith(
+                                        color: Colors.white, fontSize: 8)),
                               )
                             : Container(
                                 height: 4.18,
                                 width: 5.57,
                                 decoration: BoxDecoration(
-                                    color: Theme.of(context).primaryColor.withOpacity(0.5),
-                                    borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
+                                    color: Theme.of(context)
+                                        .primaryColor
+                                        .withOpacity(0.5),
+                                    borderRadius: BorderRadius.circular(
+                                        Dimensions.radiusDefault)),
                               ),
                       );
                     }).toList(),
@@ -198,7 +245,8 @@ class WebBannerView extends StatelessWidget {
 
 class WebBannerShimmer extends StatelessWidget {
   final BannerController bannerController;
-  const WebBannerShimmer({Key? key, required this.bannerController}) : super(key: key);
+  const WebBannerShimmer({Key? key, required this.bannerController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -206,18 +254,23 @@ class WebBannerShimmer extends StatelessWidget {
       duration: const Duration(seconds: 2),
       enabled: bannerController.bannerImageList == null,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge),
+        padding:
+            const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge),
         child: Row(children: [
           Expanded(
               child: Container(
             height: 220,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(Dimensions.radiusSmall), color: Colors.grey[300]),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                color: Colors.grey[300]),
           )),
           const SizedBox(width: Dimensions.paddingSizeLarge),
           Expanded(
               child: Container(
             height: 220,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(Dimensions.radiusSmall), color: Colors.grey[300]),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                color: Colors.grey[300]),
           )),
         ]),
       ),

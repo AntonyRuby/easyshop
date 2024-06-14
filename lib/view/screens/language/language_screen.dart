@@ -18,7 +18,8 @@ import 'package:sixam_mart/view/screens/language/widget/web_language_widget.dart
 
 class ChooseLanguageScreen extends StatefulWidget {
   final bool fromMenu;
-  const ChooseLanguageScreen({Key? key, this.fromMenu = false}) : super(key: key);
+  const ChooseLanguageScreen({Key? key, this.fromMenu = false})
+      : super(key: key);
 
   @override
   State<ChooseLanguageScreen> createState() => _ChooseLanguageScreenState();
@@ -29,11 +30,14 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      appBar: (widget.fromMenu || ResponsiveHelper.isDesktop(context)) ? CustomAppBar(title: 'language'.tr, backButton: true) : null,
+      appBar: (widget.fromMenu || ResponsiveHelper.isDesktop(context))
+          ? CustomAppBar(title: 'language'.tr, backButton: true)
+          : null,
       endDrawer: const MenuDrawer(),
       endDrawerEnableOpenDragGesture: false,
       body: SafeArea(
-        child: GetBuilder<LocalizationController>(builder: (localizationController) {
+        child: GetBuilder<LocalizationController>(
+            builder: (localizationController) {
           return Column(children: [
             WebScreenTitleWidget(title: 'language'.tr),
             Expanded(
@@ -41,69 +45,102 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
               child: Scrollbar(
                 child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
-                  padding: ResponsiveHelper.isDesktop(context) ? EdgeInsets.zero : const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                  padding: ResponsiveHelper.isDesktop(context)
+                      ? EdgeInsets.zero
+                      : const EdgeInsets.all(Dimensions.paddingSizeSmall),
                   child: Center(
                       child: FooterView(
                     minHeight: 0.615,
                     child: SizedBox(
                       width: Dimensions.webMaxWidth,
-                      child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        !ResponsiveHelper.isDesktop(context) ? Center(child: Image.asset(Images.logo, width: 200)) : const SizedBox.shrink(),
-                        // Center(child: Text(AppConstants.APP_NAME, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge))),
-                        SizedBox(height: Get.find<LocalizationController>().isLtr ? 30 : 25),
+                      child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            !ResponsiveHelper.isDesktop(context)
+                                ? Center(
+                                    child: Image.asset(Images.logo, width: 200))
+                                : const SizedBox.shrink(),
+                            // Center(child: Text(AppConstants.APP_NAME, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge))),
+                            SizedBox(
+                                height: Get.find<LocalizationController>().isLtr
+                                    ? 30
+                                    : 25),
 
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
-                          child: Text('select_language'.tr, style: robotoMedium),
-                        ),
-                        const SizedBox(height: Dimensions.paddingSizeLarge),
-
-                        Directionality(
-                          textDirection: TextDirection.ltr,
-                          child: GridView.builder(
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: ResponsiveHelper.isDesktop(context)
-                                  ? 2
-                                  : ResponsiveHelper.isTab(context)
-                                      ? 3
-                                      : 2,
-                              childAspectRatio: ResponsiveHelper.isDesktop(context) ? 6 : (1 / 1),
-                              mainAxisSpacing: Dimensions.paddingSizeDefault,
-                              crossAxisSpacing: Dimensions.paddingSizeDefault,
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: Dimensions.paddingSizeSmall),
+                              child: Text('select_language'.tr,
+                                  style: robotoMedium),
                             ),
-                            itemCount: localizationController.languages.length,
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
-                            itemBuilder: (context, index) => ResponsiveHelper.isDesktop(context)
-                                ? WebLanguageWidget(
-                                    languageModel: localizationController.languages[index],
-                                    localizationController: localizationController,
-                                    index: index,
-                                  )
-                                : LanguageWidget(
-                                    languageModel: localizationController.languages[index],
-                                    localizationController: localizationController,
-                                    index: index,
-                                  ),
-                          ),
-                        ),
-                        const SizedBox(height: Dimensions.paddingSizeExtremeLarge),
+                            const SizedBox(height: Dimensions.paddingSizeLarge),
 
-                        !ResponsiveHelper.isDesktop(context)
-                            ? Center(
-                                child: Text(
-                                  'you_can_change_language'.tr,
-                                  style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor),
+                            Directionality(
+                              textDirection: TextDirection.ltr,
+                              child: GridView.builder(
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount:
+                                      ResponsiveHelper.isDesktop(context)
+                                          ? 2
+                                          : ResponsiveHelper.isTab(context)
+                                              ? 3
+                                              : 2,
+                                  childAspectRatio:
+                                      ResponsiveHelper.isDesktop(context)
+                                          ? 6
+                                          : (1 / 1),
+                                  mainAxisSpacing:
+                                      Dimensions.paddingSizeDefault,
+                                  crossAxisSpacing:
+                                      Dimensions.paddingSizeDefault,
                                 ),
-                              )
-                            : const SizedBox.shrink(),
-                        //
-                        // ResponsiveHelper.isDesktop(context) ? Padding(
-                        //   padding: const EdgeInsets.only(top: Dimensions.paddingSizeLarge),
-                        //   child: LanguageSaveButton(localizationController: localizationController, fromMenu: widget.fromMenu),
-                        // ) : const SizedBox.shrink(),
-                      ]),
+                                itemCount:
+                                    localizationController.languages.length,
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: Dimensions.paddingSizeSmall),
+                                itemBuilder: (context, index) =>
+                                    ResponsiveHelper.isDesktop(context)
+                                        ? WebLanguageWidget(
+                                            languageModel:
+                                                localizationController
+                                                    .languages[index],
+                                            localizationController:
+                                                localizationController,
+                                            index: index,
+                                          )
+                                        : LanguageWidget(
+                                            languageModel:
+                                                localizationController
+                                                    .languages[index],
+                                            localizationController:
+                                                localizationController,
+                                            index: index,
+                                          ),
+                              ),
+                            ),
+                            const SizedBox(
+                                height: Dimensions.paddingSizeExtremeLarge),
+
+                            !ResponsiveHelper.isDesktop(context)
+                                ? Center(
+                                    child: Text(
+                                      'you_can_change_language'.tr,
+                                      style: robotoRegular.copyWith(
+                                          fontSize: Dimensions.fontSizeSmall,
+                                          color:
+                                              Theme.of(context).disabledColor),
+                                    ),
+                                  )
+                                : const SizedBox.shrink(),
+                            //
+                            // ResponsiveHelper.isDesktop(context) ? Padding(
+                            //   padding: const EdgeInsets.only(top: Dimensions.paddingSizeLarge),
+                            //   child: LanguageSaveButton(localizationController: localizationController, fromMenu: widget.fromMenu),
+                            // ) : const SizedBox.shrink(),
+                          ]),
                     ),
                   )),
                 ),
@@ -111,7 +148,9 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
             )),
             ResponsiveHelper.isDesktop(context)
                 ? const SizedBox.shrink()
-                : LanguageSaveButton(localizationController: localizationController, fromMenu: widget.fromMenu),
+                : LanguageSaveButton(
+                    localizationController: localizationController,
+                    fromMenu: widget.fromMenu),
           ]);
         }),
       ),
@@ -122,7 +161,9 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
 class LanguageSaveButton extends StatelessWidget {
   final LocalizationController localizationController;
   final bool? fromMenu;
-  const LanguageSaveButton({Key? key, required this.localizationController, this.fromMenu}) : super(key: key);
+  const LanguageSaveButton(
+      {Key? key, required this.localizationController, this.fromMenu})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -139,10 +180,13 @@ class LanguageSaveButton extends StatelessWidget {
         buttonText: 'save'.tr,
         margin: const EdgeInsets.all(Dimensions.paddingSizeSmall),
         onPressed: () {
-          if (localizationController.languages.isNotEmpty && localizationController.selectedIndex != -1) {
+          if (localizationController.languages.isNotEmpty &&
+              localizationController.selectedIndex != -1) {
             localizationController.setLanguage(Locale(
-              AppConstants.languages[localizationController.selectedIndex].languageCode!,
-              AppConstants.languages[localizationController.selectedIndex].countryCode,
+              AppConstants.languages[localizationController.selectedIndex]
+                  .languageCode!,
+              AppConstants
+                  .languages[localizationController.selectedIndex].countryCode,
             ));
             if (fromMenu!) {
               Navigator.pop(context);

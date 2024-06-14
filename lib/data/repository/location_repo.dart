@@ -20,29 +20,39 @@ class LocationRepo {
   }
 
   Future<Response> removeAddressByID(int? id) async {
-    return await apiClient.postData('${AppConstants.removeAddressUri}$id', {"_method": "delete"});
+    return await apiClient
+        .postData('${AppConstants.removeAddressUri}$id', {"_method": "delete"});
   }
 
   Future<Response> addAddress(AddressModel addressModel) async {
-    return await apiClient.postData(AppConstants.addAddressUri, addressModel.toJson());
+    return await apiClient.postData(
+        AppConstants.addAddressUri, addressModel.toJson());
   }
 
-  Future<Response> updateAddress(AddressModel addressModel, int? addressId) async {
-    return await apiClient.putData('${AppConstants.updateAddressUri}$addressId', addressModel.toJson());
+  Future<Response> updateAddress(
+      AddressModel addressModel, int? addressId) async {
+    return await apiClient.putData(
+        '${AppConstants.updateAddressUri}$addressId', addressModel.toJson());
   }
 
-  Future<bool> saveUserAddress(String address, List<int>? zoneIDs, List<int>? areaIDs, String? latitude, String? longitude) async {
+  Future<bool> saveUserAddress(String address, List<int>? zoneIDs,
+      List<int>? areaIDs, String? latitude, String? longitude) async {
     apiClient.updateHeader(
-      sharedPreferences.getString(AppConstants.token), zoneIDs, areaIDs,
-      sharedPreferences.getString(AppConstants.languageCode),
-      Get.find<SplashController>().module != null ? Get.find<SplashController>().module!.id : null,
-      latitude, longitude
-    );
+        sharedPreferences.getString(AppConstants.token),
+        zoneIDs,
+        areaIDs,
+        sharedPreferences.getString(AppConstants.languageCode),
+        Get.find<SplashController>().module != null
+            ? Get.find<SplashController>().module!.id
+            : null,
+        latitude,
+        longitude);
     return await sharedPreferences.setString(AppConstants.userAddress, address);
   }
 
   Future<Response> getAddressFromGeocode(LatLng latLng) async {
-    return await apiClient.getData('${AppConstants.geocodeUri}?lat=${latLng.latitude}&lng=${latLng.longitude}');
+    return await apiClient.getData(
+        '${AppConstants.geocodeUri}?lat=${latLng.latitude}&lng=${latLng.longitude}');
   }
 
   String? getUserAddress() {
@@ -50,13 +60,14 @@ class LocationRepo {
   }
 
   Future<Response> searchLocation(String text) async {
-    return await apiClient.getData('${AppConstants.searchLocationUri}?search_text=$text');
+    return await apiClient
+        .getData('${AppConstants.searchLocationUri}?search_text=$text');
   }
 
   Future<Response> getPlaceDetails(String? placeID) async {
-    return await apiClient.getData('${AppConstants.placeDetailsUri}?placeid=$placeID');
+    return await apiClient
+        .getData('${AppConstants.placeDetailsUri}?placeid=$placeID');
   }
-
 
   bool getSuggestedLocationStatus() {
     return sharedPreferences.getBool(AppConstants.suggestedLocation)!;
@@ -65,10 +76,8 @@ class LocationRepo {
   Future<void> saveSuggestedLocationStatus(bool data) async {
     try {
       await sharedPreferences.setBool(AppConstants.suggestedLocation, data);
-
     } catch (e) {
       rethrow;
     }
   }
-
 }

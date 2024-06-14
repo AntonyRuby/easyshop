@@ -46,36 +46,52 @@ class _WebMenuBarState extends State<WebMenuBar> {
                 Get.find<LocationController>().getUserAddress() != null
                     ? Expanded(
                         child: InkWell(
-                        onTap: () => Get.find<LocationController>().navigateToLocationScreen('home'),
+                        onTap: () => Get.find<LocationController>()
+                            .navigateToLocationScreen('home'),
                         child: Padding(
-                          padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-                          child: GetBuilder<LocationController>(builder: (locationController) {
+                          padding:
+                              const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                          child: GetBuilder<LocationController>(
+                              builder: (locationController) {
                             return Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Icon(
-                                  locationController.getUserAddress()!.addressType == 'home'
+                                  locationController
+                                              .getUserAddress()!
+                                              .addressType ==
+                                          'home'
                                       ? Icons.home_filled
-                                      : locationController.getUserAddress()!.addressType == 'office'
+                                      : locationController
+                                                  .getUserAddress()!
+                                                  .addressType ==
+                                              'office'
                                           ? Icons.work
                                           : Icons.location_on,
                                   size: 20,
                                   color: Theme.of(context).primaryColor,
                                 ),
-                                const SizedBox(width: Dimensions.paddingSizeExtraSmall),
+                                const SizedBox(
+                                    width: Dimensions.paddingSizeExtraSmall),
                                 Flexible(
                                   child: Text(
-                                    locationController.getUserAddress()!.address!,
+                                    locationController
+                                        .getUserAddress()!
+                                        .address!,
                                     style: robotoRegular.copyWith(
-                                      color: Theme.of(context).textTheme.bodyLarge!.color,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .color,
                                       fontSize: Dimensions.fontSizeSmall,
                                     ),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
-                                Icon(Icons.keyboard_arrow_down, color: Theme.of(context).primaryColor),
+                                Icon(Icons.keyboard_arrow_down,
+                                    color: Theme.of(context).primaryColor),
                               ],
                             );
                           }),
@@ -85,11 +101,18 @@ class _WebMenuBarState extends State<WebMenuBar> {
                 const SizedBox(width: 20),
 
                 Row(children: [
-                  MenuButton(title: 'home'.tr, onTap: () => Get.toNamed(RouteHelper.getInitialRoute())),
+                  MenuButton(
+                      title: 'home'.tr,
+                      onTap: () => Get.toNamed(RouteHelper.getInitialRoute())),
                   const SizedBox(width: 20),
-                  MenuButton(title: 'categories'.tr, onTap: () => Get.toNamed(RouteHelper.getCategoryRoute())),
+                  MenuButton(
+                      title: 'categories'.tr,
+                      onTap: () => Get.toNamed(RouteHelper.getCategoryRoute())),
                   const SizedBox(width: 20),
-                  MenuButton(title: 'stores'.tr, onTap: () => Get.toNamed(RouteHelper.getAllStoreRoute('popular'))),
+                  MenuButton(
+                      title: 'stores'.tr,
+                      onTap: () =>
+                          Get.toNamed(RouteHelper.getAllStoreRoute('popular'))),
                 ]),
                 const SizedBox(width: 20),
 
@@ -99,47 +122,78 @@ class _WebMenuBarState extends State<WebMenuBar> {
                       if (authController.isLoggedIn()) {
                         Get.toNamed(RouteHelper.getProfileRoute());
                       } else {
-                        Get.dialog(const SignInScreen(exitFromApp: true, backFromThis: true));
+                        Get.dialog(const SignInScreen(
+                            exitFromApp: true, backFromThis: true));
                       }
                     },
                     child: Container(
                       height: 40,
-                      padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: Dimensions.paddingSizeLarge),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                        borderRadius:
+                            BorderRadius.circular(Dimensions.radiusSmall),
                       ),
                       child: Row(children: [
-                        Icon(authController.isLoggedIn() ? Icons.person_pin_rounded : Icons.lock_outline,
-                            size: 18, color: Get.find<ThemeController>().darkTheme ? Colors.white : Colors.black),
+                        Icon(
+                            authController.isLoggedIn()
+                                ? Icons.person_pin_rounded
+                                : Icons.lock_outline,
+                            size: 18,
+                            color: Get.find<ThemeController>().darkTheme
+                                ? Colors.white
+                                : Colors.black),
                         const SizedBox(width: Dimensions.paddingSizeSmall),
-                        Text(authController.isLoggedIn() ? 'profile'.tr : 'sign_in'.tr,
-                            style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, fontWeight: FontWeight.w100)),
+                        Text(
+                            authController.isLoggedIn()
+                                ? 'profile'.tr
+                                : 'sign_in'.tr,
+                            style: robotoRegular.copyWith(
+                                fontSize: Dimensions.fontSizeSmall,
+                                fontWeight: FontWeight.w100)),
                       ]),
                     ),
                   );
                 }),
 
-                GetBuilder<LocalizationController>(builder: (localizationController) {
+                GetBuilder<LocalizationController>(
+                    builder: (localizationController) {
                   int index0 = 0;
                   List<DropdownMenuItem<int>> languageList = [];
-                  for (int index = 0; index < AppConstants.joinDropdown.length; index++) {
+                  for (int index = 0;
+                      index < AppConstants.joinDropdown.length;
+                      index++) {
                     languageList.add(DropdownMenuItem(
                       value: index,
                       child: TextHover(builder: (hovered) {
                         return Row(
                           children: [
                             index == 0
-                                ? Icon(Icons.perm_identity, color: Get.find<ThemeController>().darkTheme ? Colors.white : Colors.black)
+                                ? Icon(Icons.perm_identity,
+                                    color: Get.find<ThemeController>().darkTheme
+                                        ? Colors.white
+                                        : Colors.black)
                                 : const SizedBox(),
-                            index == 0 ? const SizedBox(width: Dimensions.paddingSizeSmall) : const SizedBox(),
+                            index == 0
+                                ? const SizedBox(
+                                    width: Dimensions.paddingSizeSmall)
+                                : const SizedBox(),
                             Text(AppConstants.joinDropdown[index].tr,
                                 style: robotoRegular.copyWith(
                                     fontSize: Dimensions.fontSizeSmall,
                                     fontWeight: FontWeight.w100,
-                                    color: Get.find<ThemeController>().darkTheme ? Colors.white : Colors.black)),
-                            index == 0 ? const SizedBox(width: Dimensions.paddingSizeSmall) : const SizedBox(),
+                                    color: Get.find<ThemeController>().darkTheme
+                                        ? Colors.white
+                                        : Colors.black)),
                             index == 0
-                                ? Icon(Icons.keyboard_arrow_down, color: Get.find<ThemeController>().darkTheme ? Colors.white : Colors.black)
+                                ? const SizedBox(
+                                    width: Dimensions.paddingSizeSmall)
+                                : const SizedBox(),
+                            index == 0
+                                ? Icon(Icons.keyboard_arrow_down,
+                                    color: Get.find<ThemeController>().darkTheme
+                                        ? Colors.white
+                                        : Colors.black)
                                 : const SizedBox(),
                           ],
                         );
@@ -152,15 +206,18 @@ class _WebMenuBarState extends State<WebMenuBar> {
                       value: index0,
                       items: languageList,
                       dropdownColor: Theme.of(context).cardColor,
-                      icon: const Icon(Icons.keyboard_arrow_down, color: Colors.red, size: 0.0),
+                      icon: const Icon(Icons.keyboard_arrow_down,
+                          color: Colors.red, size: 0.0),
                       elevation: 0,
                       iconSize: 30,
                       underline: const SizedBox(),
                       onChanged: (int? index) {
                         if (index == 1) {
-                          Get.toNamed(RouteHelper.getRestaurantRegistrationRoute());
+                          Get.toNamed(
+                              RouteHelper.getRestaurantRegistrationRoute());
                         } else if (index == 2) {
-                          Get.toNamed(RouteHelper.getDeliverymanRegistrationRoute());
+                          Get.toNamed(
+                              RouteHelper.getDeliverymanRegistrationRoute());
                         }
                         //localizationController.setLanguage(Locale(AppConstants.languages[index].languageCode, AppConstants.languages[index].countryCode));
                       },
@@ -188,11 +245,19 @@ class _WebMenuBarState extends State<WebMenuBar> {
                 //   );
                 // })),
 
-                MenuIconButton(icon: Icons.notifications, onTap: () => Get.toNamed(RouteHelper.getNotificationRoute())),
+                MenuIconButton(
+                    icon: Icons.notifications,
+                    onTap: () =>
+                        Get.toNamed(RouteHelper.getNotificationRoute())),
                 const SizedBox(width: 20),
-                MenuIconButton(icon: Icons.search, onTap: () => Get.toNamed(RouteHelper.getSearchRoute())),
+                MenuIconButton(
+                    icon: Icons.search,
+                    onTap: () => Get.toNamed(RouteHelper.getSearchRoute())),
                 const SizedBox(width: 20),
-                MenuIconButton(icon: Icons.shopping_cart, isCart: true, onTap: () => Get.toNamed(RouteHelper.getCartRoute())),
+                MenuIconButton(
+                    icon: Icons.shopping_cart,
+                    isCart: true,
+                    onTap: () => Get.toNamed(RouteHelper.getCartRoute())),
                 const SizedBox(width: 20),
 
                 MenuIconButton(
@@ -207,11 +272,16 @@ class _WebMenuBarState extends State<WebMenuBar> {
 
   void searchData() {
     if (_searchController.text.trim().isEmpty) {
-      showCustomSnackBar(Get.find<SplashController>().configModel!.moduleConfig!.module!.showRestaurantText!
+      showCustomSnackBar(Get.find<SplashController>()
+              .configModel!
+              .moduleConfig!
+              .module!
+              .showRestaurantText!
           ? 'search_food_or_restaurant'.tr
           : 'search_item_or_store'.tr);
     } else {
-      Get.toNamed(RouteHelper.getSearchRoute(queryText: _searchController.text.trim()));
+      Get.toNamed(
+          RouteHelper.getSearchRoute(queryText: _searchController.text.trim()));
     }
   }
 }
@@ -219,14 +289,17 @@ class _WebMenuBarState extends State<WebMenuBar> {
 class MenuButton extends StatelessWidget {
   final String title;
   final Function onTap;
-  const MenuButton({Key? key, required this.title, required this.onTap}) : super(key: key);
+  const MenuButton({Key? key, required this.title, required this.onTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextHover(builder: (hovered) {
       return InkWell(
         onTap: onTap as void Function()?,
-        child: Text(title, style: robotoRegular.copyWith(color: hovered ? Theme.of(context).primaryColor : null)),
+        child: Text(title,
+            style: robotoRegular.copyWith(
+                color: hovered ? Theme.of(context).primaryColor : null)),
       );
     });
   }
@@ -236,7 +309,9 @@ class MenuIconButton extends StatelessWidget {
   final IconData icon;
   final bool isCart;
   final Function onTap;
-  const MenuIconButton({Key? key, required this.icon, this.isCart = false, required this.onTap}) : super(key: key);
+  const MenuIconButton(
+      {Key? key, required this.icon, this.isCart = false, required this.onTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -247,7 +322,9 @@ class MenuIconButton extends StatelessWidget {
           return Stack(clipBehavior: Clip.none, children: [
             Icon(
               icon,
-              color: hovered ? Theme.of(context).primaryColor : Theme.of(context).textTheme.bodyLarge!.color,
+              color: hovered
+                  ? Theme.of(context).primaryColor
+                  : Theme.of(context).textTheme.bodyLarge!.color,
             ),
             (isCart && cartController.cartList.isNotEmpty)
                 ? Positioned(
@@ -257,10 +334,13 @@ class MenuIconButton extends StatelessWidget {
                       height: 15,
                       width: 15,
                       alignment: Alignment.center,
-                      decoration: BoxDecoration(shape: BoxShape.circle, color: Theme.of(context).primaryColor),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Theme.of(context).primaryColor),
                       child: Text(
                         cartController.cartList.length.toString(),
-                        style: robotoRegular.copyWith(fontSize: 12, color: Theme.of(context).cardColor),
+                        style: robotoRegular.copyWith(
+                            fontSize: 12, color: Theme.of(context).cardColor),
                       ),
                     ),
                   )
@@ -271,9 +351,6 @@ class MenuIconButton extends StatelessWidget {
     });
   }
 }
-
-
-
 
 /*Row(children: [
 InkWell(
@@ -404,5 +481,3 @@ Text(authController.isLoggedIn() ? 'profile'.tr : 'sign_in'.tr, style: robotoReg
 }),
 
 ])*/
-
-

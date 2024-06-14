@@ -19,5 +19,4 @@ class NotificationRepo {
   int? getSeenNotificationCount() {
     return sharedPreferences.getInt(AppConstants.notificationCount);
   }
-
 }

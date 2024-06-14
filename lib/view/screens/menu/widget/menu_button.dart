@@ -20,7 +20,12 @@ class MenuButton extends StatelessWidget {
   final MenuModel menu;
   final bool isProfile;
   final bool isLogout;
-  const MenuButton({Key? key, required this.menu, required this.isProfile, required this.isLogout}) : super(key: key);
+  const MenuButton(
+      {Key? key,
+      required this.menu,
+      required this.isProfile,
+      required this.isLogout})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +34,11 @@ class MenuButton extends StatelessWidget {
         : ResponsiveHelper.isTab(context)
             ? 6
             : 4;
-    double size = ((context.width > Dimensions.webMaxWidth ? Dimensions.webMaxWidth : context.width) / count) - Dimensions.paddingSizeDefault;
+    double size = ((context.width > Dimensions.webMaxWidth
+                ? Dimensions.webMaxWidth
+                : context.width) /
+            count) -
+        Dimensions.paddingSizeDefault;
 
     return InkWell(
       onTap: () async {
@@ -48,9 +57,11 @@ class MenuButton extends StatelessWidget {
                       Get.find<CartController>().clearCartList();
                       Get.find<WishListController>().removeWishes();
                       if (!ResponsiveHelper.isDesktop(context)) {
-                        Get.offAllNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
+                        Get.offAllNamed(
+                            RouteHelper.getSignInRoute(RouteHelper.splash));
                       } else {
-                        Get.dialog(const SignInScreen(exitFromApp: true, backFromThis: true));
+                        Get.dialog(const SignInScreen(
+                            exitFromApp: true, backFromThis: true));
                       }
                     }),
                 useSafeArea: false);
@@ -59,7 +70,8 @@ class MenuButton extends StatelessWidget {
               Get.find<WishListController>().removeWishes();
               Get.toNamed(RouteHelper.getSignInRoute(RouteHelper.main));
             } else {
-              Get.dialog(const SignInScreen(exitFromApp: true, backFromThis: true));
+              Get.dialog(
+                  const SignInScreen(exitFromApp: true, backFromThis: true));
             }
           }
         } else if (menu.route.startsWith('http')) {
@@ -74,7 +86,8 @@ class MenuButton extends StatelessWidget {
         Container(
           height: size - (size * 0.2),
           padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
-          margin: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
+          margin: const EdgeInsets.symmetric(
+              horizontal: Dimensions.paddingSizeSmall),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
             color: isLogout
@@ -82,13 +95,23 @@ class MenuButton extends StatelessWidget {
                     ? Colors.red
                     : const Color(0xFFFE0100)
                 : Theme.of(context).primaryColor,
-            boxShadow: [BoxShadow(color: Colors.grey[Get.isDarkMode ? 800 : 200]!, spreadRadius: 1, blurRadius: 5)],
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey[Get.isDarkMode ? 800 : 200]!,
+                  spreadRadius: 1,
+                  blurRadius: 5)
+            ],
           ),
           alignment: Alignment.center,
-          child: isProfile ? ProfileImageWidget(size: size) : Image.asset(menu.icon, width: size, height: size, color: Colors.white),
+          child: isProfile
+              ? ProfileImageWidget(size: size)
+              : Image.asset(menu.icon,
+                  width: size, height: size, color: Colors.white),
         ),
         const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-        Text(menu.title, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall), textAlign: TextAlign.center),
+        Text(menu.title,
+            style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall),
+            textAlign: TextAlign.center),
       ]),
     );
   }
@@ -102,10 +125,13 @@ class ProfileImageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<UserController>(builder: (userController) {
       return Container(
-        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(width: 2, color: Colors.white)),
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(width: 2, color: Colors.white)),
         child: ClipOval(
           child: CustomImage(
-            image: '${Get.find<SplashController>().configModel!.baseUrls!.customerImageUrl}'
+            image:
+                '${Get.find<SplashController>().configModel!.baseUrls!.customerImageUrl}'
                 '/${(userController.userInfoModel != null && Get.find<AuthController>().isLoggedIn()) ? userController.userInfoModel!.image ?? '' : ''}',
             width: size,
             height: size,

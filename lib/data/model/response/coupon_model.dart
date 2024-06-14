@@ -19,25 +19,25 @@ class CouponModel {
   Store? store;
   JustTheController? toolTip;
 
-  CouponModel(
-      {this.id,
-        this.title,
-        this.code,
-        this.startDate,
-        this.expireDate,
-        this.minPurchase,
-        this.maxDiscount,
-        this.discount,
-        this.discountType,
-        this.couponType,
-        this.limit,
-        this.data,
-        this.storeId,
-        this.createdAt,
-        this.updatedAt,
-        this.store,
-        this.toolTip,
-      });
+  CouponModel({
+    this.id,
+    this.title,
+    this.code,
+    this.startDate,
+    this.expireDate,
+    this.minPurchase,
+    this.maxDiscount,
+    this.discount,
+    this.discountType,
+    this.couponType,
+    this.limit,
+    this.data,
+    this.storeId,
+    this.createdAt,
+    this.updatedAt,
+    this.store,
+    this.toolTip,
+  });
 
   CouponModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -55,7 +55,7 @@ class CouponModel {
     storeId = json['store_id'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    if(json['store'] != null){
+    if (json['store'] != null) {
       store = Store.fromJson(json['store']);
     }
   }

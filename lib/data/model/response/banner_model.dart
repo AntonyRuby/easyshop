@@ -44,7 +44,14 @@ class Banner {
   Store? store;
   Item? item;
 
-  Banner({this.id, this.title, this.type, this.image,this.link, this.store, this.item});
+  Banner(
+      {this.id,
+      this.title,
+      this.type,
+      this.image,
+      this.link,
+      this.store,
+      this.item});
 
   Banner.fromJson(Map<String, dynamic> json) {
     id = json['id'];

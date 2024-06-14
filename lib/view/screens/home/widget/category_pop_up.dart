@@ -11,7 +11,8 @@ import 'package:get/get.dart';
 
 class CategoryPopUp extends StatelessWidget {
   final CategoryController categoryController;
-  const CategoryPopUp({Key? key, required this.categoryController}) : super(key: key);
+  const CategoryPopUp({Key? key, required this.categoryController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,8 @@ class CategoryPopUp extends StatelessWidget {
                 child: categoryController.categoryList != null
                     ? GridView.builder(
                         itemCount: categoryController.categoryList!.length,
-                        padding: const EdgeInsets.only(left: Dimensions.paddingSizeSmall),
+                        padding: const EdgeInsets.only(
+                            left: Dimensions.paddingSizeSmall),
                         physics: const BouncingScrollPhysics(),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           childAspectRatio: 1.2,
@@ -39,40 +41,59 @@ class CategoryPopUp extends StatelessWidget {
                         ),
                         itemBuilder: (context, index) {
                           return Padding(
-                            padding: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
+                            padding: const EdgeInsets.only(
+                                right: Dimensions.paddingSizeSmall),
                             child: InkWell(
-                              onTap: () => Get.toNamed(RouteHelper.getCategoryItemRoute(
+                              onTap: () =>
+                                  Get.toNamed(RouteHelper.getCategoryItemRoute(
                                 categoryController.categoryList![index].id,
                                 categoryController.categoryList![index].name!,
                               )),
                               child: SizedBox(
                                 width: 50,
-                                child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [
-                                  Container(
-                                    height: 50,
-                                    width: 50,
-                                    margin: const EdgeInsets.only(bottom: Dimensions.paddingSizeExtraSmall),
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context).cardColor,
-                                      borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                                      boxShadow: [BoxShadow(color: Colors.grey[Get.isDarkMode ? 800 : 200]!, blurRadius: 5, spreadRadius: 1)],
-                                    ),
-                                    child: CustomImage(
-                                      image:
-                                          '${Get.find<SplashController>().configModel!.baseUrls!.categoryImageUrl}/${categoryController.categoryList![index].image}',
-                                      height: 50,
-                                      width: 50,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  Text(
-                                    categoryController.categoryList![index].name!,
-                                    style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ]),
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        height: 50,
+                                        width: 50,
+                                        margin: const EdgeInsets.only(
+                                            bottom: Dimensions
+                                                .paddingSizeExtraSmall),
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context).cardColor,
+                                          borderRadius: BorderRadius.circular(
+                                              Dimensions.radiusSmall),
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: Colors.grey[
+                                                    Get.isDarkMode
+                                                        ? 800
+                                                        : 200]!,
+                                                blurRadius: 5,
+                                                spreadRadius: 1)
+                                          ],
+                                        ),
+                                        child: CustomImage(
+                                          image:
+                                              '${Get.find<SplashController>().configModel!.baseUrls!.categoryImageUrl}/${categoryController.categoryList![index].image}',
+                                          height: 50,
+                                          width: 50,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      Text(
+                                        categoryController
+                                            .categoryList![index].name!,
+                                        style: robotoMedium.copyWith(
+                                            fontSize: Dimensions.fontSizeSmall),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ]),
                               ),
                             ),
                           );
@@ -90,7 +111,8 @@ class CategoryPopUp extends StatelessWidget {
 
 class CategoryShimmer extends StatelessWidget {
   final CategoryController categoryController;
-  const CategoryShimmer({Key? key, required this.categoryController}) : super(key: key);
+  const CategoryShimmer({Key? key, required this.categoryController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

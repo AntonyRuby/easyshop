@@ -1,6 +1,4 @@
-
 class WalletModel {
-
   int? totalSize;
   String? limit;
   String? offset;
@@ -33,7 +31,6 @@ class WalletModel {
 }
 
 class Transaction {
-
   int? userId;
   String? transactionId;
   double? credit;
@@ -58,13 +55,12 @@ class Transaction {
     this.updatedAt,
   });
 
-
   Transaction.fromJson(Map<String, dynamic> json) {
     userId = json["user_id"];
     transactionId = json["transaction_id"];
     credit = json["credit"].toDouble();
     debit = json["debit"].toDouble();
-    if(json["admin_bonus"] != null){
+    if (json["admin_bonus"] != null) {
       adminBonus = json["admin_bonus"].toDouble();
     }
     balance = json["balance"].toDouble();

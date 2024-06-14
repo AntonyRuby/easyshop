@@ -16,17 +16,17 @@ class FlashSaleModel {
 
   FlashSaleModel(
       {this.id,
-        this.moduleId,
-        this.title,
-        this.isPublish,
-        this.adminDiscountPercentage,
-        this.vendorDiscountPercentage,
-        this.startDate,
-        this.endDate,
-        this.createdAt,
-        this.updatedAt,
-        this.activeProducts,
-        this.translations});
+      this.moduleId,
+      this.title,
+      this.isPublish,
+      this.adminDiscountPercentage,
+      this.vendorDiscountPercentage,
+      this.startDate,
+      this.endDate,
+      this.createdAt,
+      this.updatedAt,
+      this.activeProducts,
+      this.translations});
 
   FlashSaleModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -93,19 +93,19 @@ class ActiveProducts {
 
   ActiveProducts(
       {this.id,
-        this.flashSaleId,
-        this.itemId,
-        this.stock,
-        this.sold,
-        this.availableStock,
-        this.discountType,
-        this.discount,
-        this.discountAmount,
-        this.price,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.item});
+      this.flashSaleId,
+      this.itemId,
+      this.stock,
+      this.sold,
+      this.availableStock,
+      this.discountType,
+      this.discount,
+      this.discountAmount,
+      this.price,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.item});
 
   ActiveProducts.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -449,13 +449,13 @@ class Translations {
 
   Translations(
       {this.id,
-        this.translationableType,
-        this.translationableId,
-        this.locale,
-        this.key,
-        this.value,
-        this.createdAt,
-        this.updatedAt});
+      this.translationableType,
+      this.translationableId,
+      this.locale,
+      this.key,
+      this.value,
+      this.createdAt,
+      this.updatedAt});
 
   Translations.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -499,18 +499,18 @@ class Module {
 
   Module(
       {this.id,
-        this.moduleName,
-        this.moduleType,
-        this.thumbnail,
-        this.status,
-        this.storesCount,
-        this.createdAt,
-        this.updatedAt,
-        this.icon,
-        this.themeId,
-        this.description,
-        this.allZoneService,
-        this.translations});
+      this.moduleName,
+      this.moduleType,
+      this.thumbnail,
+      this.status,
+      this.storesCount,
+      this.createdAt,
+      this.updatedAt,
+      this.icon,
+      this.themeId,
+      this.description,
+      this.allZoneService,
+      this.translations});
 
   Module.fromJson(Map<String, dynamic> json) {
     id = json['id'];

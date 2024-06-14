@@ -8,11 +8,11 @@ class VideoContentModel {
 
   VideoContentModel(
       {this.promotionalBannerUrl,
-        this.bannerContents,
-        this.sectionTitle,
-        this.bannerType,
-        this.bannerVideo,
-        this.bannerImage});
+      this.bannerContents,
+      this.sectionTitle,
+      this.bannerType,
+      this.bannerVideo,
+      this.bannerImage});
 
   VideoContentModel.fromJson(Map<String, dynamic> json) {
     promotionalBannerUrl = json['promotional_banner_url'];
@@ -32,8 +32,7 @@ class VideoContentModel {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['promotional_banner_url'] = promotionalBannerUrl;
     if (bannerContents != null) {
-      data['banner_contents'] =
-          bannerContents!.map((v) => v.toJson()).toList();
+      data['banner_contents'] = bannerContents!.map((v) => v.toJson()).toList();
     }
     data['section_title'] = sectionTitle;
     data['banner_type'] = bannerType;
@@ -56,14 +55,14 @@ class BannerContents {
 
   BannerContents(
       {this.id,
-        this.moduleId,
-        this.key,
-        this.value,
-        this.type,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.translations});
+      this.moduleId,
+      this.key,
+      this.value,
+      this.type,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.translations});
 
   BannerContents.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -111,13 +110,13 @@ class Translations {
 
   Translations(
       {this.id,
-        this.translationableType,
-        this.translationableId,
-        this.locale,
-        this.key,
-        this.value,
-        this.createdAt,
-        this.updatedAt});
+      this.translationableType,
+      this.translationableId,
+      this.locale,
+      this.key,
+      this.value,
+      this.createdAt,
+      this.updatedAt});
 
   Translations.fromJson(Map<String, dynamic> json) {
     id = json['id'];

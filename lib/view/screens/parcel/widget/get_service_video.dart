@@ -16,11 +16,17 @@ class _GetServiceVideoState extends State<GetServiceVideo> {
   @override
   Widget build(BuildContext context) {
     String url = widget.videoUrl;
-    _controller = YoutubePlayerController(params: const YoutubePlayerParams(
-      enableCaption: false, showControls: true, showVideoAnnotations: false, showFullscreenButton: false, loop: true,
-    ))..onInit = () {
-      _controller.loadVideo(url);
-    };
+    _controller = YoutubePlayerController(
+        params: const YoutubePlayerParams(
+      enableCaption: false,
+      showControls: true,
+      showVideoAnnotations: false,
+      showFullscreenButton: false,
+      loop: true,
+    ))
+      ..onInit = () {
+        _controller.loadVideo(url);
+      };
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(Dimensions.radiusSmall),

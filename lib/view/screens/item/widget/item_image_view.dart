@@ -22,8 +22,12 @@ class ItemImageView extends StatelessWidget {
 
     return GetBuilder<ItemController>(
       builder: (itemController) {
-        String? baseUrl = item!.availableDateStarts == null ? Get.find<SplashController>().
-            configModel!.baseUrls!.itemImageUrl : Get.find<SplashController>().configModel!.baseUrls!.campaignImageUrl;
+        String? baseUrl = item!.availableDateStarts == null
+            ? Get.find<SplashController>().configModel!.baseUrls!.itemImageUrl
+            : Get.find<SplashController>()
+                .configModel!
+                .baseUrls!
+                .campaignImageUrl;
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -34,7 +38,9 @@ class ItemImageView extends StatelessWidget {
               ),
               child: Stack(children: [
                 SizedBox(
-                  height: ResponsiveHelper.isDesktop(context)? 350: MediaQuery.of(context).size.width * 0.7,
+                  height: ResponsiveHelper.isDesktop(context)
+                      ? 350
+                      : MediaQuery.of(context).size.width * 0.7,
                   child: PageView.builder(
                     controller: _controller,
                     itemCount: imageList.length,
@@ -54,16 +60,18 @@ class ItemImageView extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  left: 0, right: 0, bottom: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
                   child: Padding(
-                    padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
+                    padding: const EdgeInsets.only(
+                        bottom: Dimensions.paddingSizeSmall),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: _indicators(context, itemController, imageList),
                     ),
                   ),
                 ),
-
               ]),
             ),
           ],
@@ -72,16 +80,18 @@ class ItemImageView extends StatelessWidget {
     );
   }
 
-  List<Widget> _indicators(BuildContext context, ItemController itemController, List<String?> imageList) {
+  List<Widget> _indicators(BuildContext context, ItemController itemController,
+      List<String?> imageList) {
     List<Widget> indicators = [];
     for (int index = 0; index < imageList.length; index++) {
       indicators.add(TabPageSelectorIndicator(
-        backgroundColor: index == itemController.imageSliderIndex ? Theme.of(context).primaryColor : Colors.white,
+        backgroundColor: index == itemController.imageSliderIndex
+            ? Theme.of(context).primaryColor
+            : Colors.white,
         borderColor: Colors.white,
         size: 10,
       ));
     }
     return indicators;
   }
-
 }

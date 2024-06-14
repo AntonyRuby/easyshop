@@ -33,19 +33,21 @@ class FlashSaleController extends GetxController implements GetxService {
   }
 
   Future<void> getFlashSale(bool reload, bool notify) async {
-    if(_flashSaleModel == null || reload) {
+    if (_flashSaleModel == null || reload) {
       _flashSaleModel = null;
     }
-    if(notify) {
+    if (notify) {
       update();
     }
-    if(_flashSaleModel == null || reload) {
+    if (_flashSaleModel == null || reload) {
       Response response = await flashSaleRepo.getFlashSale();
       if (response.statusCode == 200) {
         _flashSaleModel = FlashSaleModel.fromJson(response.body);
 
-        if(_flashSaleModel?.endDate != null) {
-          DateTime endTime = DateFormat('yyyy-MM-ddTHH:mm:ss.SSS').parse(_flashSaleModel!.endDate!, true).toLocal();
+        if (_flashSaleModel?.endDate != null) {
+          DateTime endTime = DateFormat('yyyy-MM-ddTHH:mm:ss.SSS')
+              .parse(_flashSaleModel!.endDate!, true)
+              .toLocal();
           print('-----------end time  : $endTime');
           _duration = endTime.difference(DateTime.now());
           _timer?.cancel();
@@ -55,7 +57,6 @@ class FlashSaleController extends GetxController implements GetxService {
             update();
           });
         }
-
       } else {
         ApiChecker.checkApi(response);
       }
@@ -64,24 +65,30 @@ class FlashSaleController extends GetxController implements GetxService {
   }
 
   Future<void> getFlashSaleWithId(int offset, bool reload, int id) async {
-    if(reload) {
+    if (reload) {
       _productFlashSale = null;
       update();
     }
 
     Response response = await flashSaleRepo.getFlashSaleWithId(id, offset);
     if (response.statusCode == 200) {
-      if(offset == 1){
+      if (offset == 1) {
         _productFlashSale = ProductFlashSale.fromJson(response.body);
       } else {
-        _productFlashSale!.totalSize = ProductFlashSale.fromJson(response.body).totalSize;
-        _productFlashSale!.offset = ProductFlashSale.fromJson(response.body).offset;
-        _productFlashSale!.flashSale = ProductFlashSale.fromJson(response.body).flashSale;
-        _productFlashSale!.products!.addAll(ProductFlashSale.fromJson(response.body).products!);
+        _productFlashSale!.totalSize =
+            ProductFlashSale.fromJson(response.body).totalSize;
+        _productFlashSale!.offset =
+            ProductFlashSale.fromJson(response.body).offset;
+        _productFlashSale!.flashSale =
+            ProductFlashSale.fromJson(response.body).flashSale;
+        _productFlashSale!.products!
+            .addAll(ProductFlashSale.fromJson(response.body).products!);
       }
 
-      if(_productFlashSale!.flashSale!.endDate != null) {
-        DateTime endTime = DateFormat('yyyy-MM-ddTHH:mm:ss.SSS').parse(_productFlashSale!.flashSale!.endDate!, true).toLocal();
+      if (_productFlashSale!.flashSale!.endDate != null) {
+        DateTime endTime = DateFormat('yyyy-MM-ddTHH:mm:ss.SSS')
+            .parse(_productFlashSale!.flashSale!.endDate!, true)
+            .toLocal();
         _duration = endTime.difference(DateTime.now());
         _timer?.cancel();
         _timer = null;
@@ -91,12 +98,8 @@ class FlashSaleController extends GetxController implements GetxService {
         });
       }
       update();
-
     } else {
       ApiChecker.checkApi(response);
     }
-
   }
-
-
 }

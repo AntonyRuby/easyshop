@@ -11,7 +11,8 @@ import 'package:sixam_mart/view/base/item_widget.dart';
 
 class WebSuggestedItemView extends StatelessWidget {
   final List<CartModel> cartList;
-  const WebSuggestedItemView({Key? key, required this.cartList}) : super(key: key);
+  const WebSuggestedItemView({Key? key, required this.cartList})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,18 +34,24 @@ class WebSuggestedItemView extends StatelessWidget {
               }
             }
           }
-          return storeController.cartSuggestItemModel != null && suggestedItems!.isNotEmpty
+          return storeController.cartSuggestItemModel != null &&
+                  suggestedItems!.isNotEmpty
               ? GetBuilder<CartController>(builder: (cartController) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: Dimensions.paddingSizeSmall),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault, vertical: Dimensions.paddingSizeExtraSmall),
-                        child: Text('you_may_also_like'.tr, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeDefault)),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: Dimensions.paddingSizeDefault,
+                            vertical: Dimensions.paddingSizeExtraSmall),
+                        child: Text('you_may_also_like'.tr,
+                            style: robotoMedium.copyWith(
+                                fontSize: Dimensions.fontSizeDefault)),
                       ),
                       SizedBox(
-                          height: ResponsiveHelper.isDesktop(context) ? 110 : 125,
+                          height:
+                              ResponsiveHelper.isDesktop(context) ? 110 : 125,
                           child: PageView.builder(
                             controller: pageController,
                             itemCount: (suggestedItems!.length / 4).ceil(),
@@ -62,8 +69,11 @@ class WebSuggestedItemView extends StatelessWidget {
                                     children: [
                                       Container(
                                         width: 282.5,
-                                        margin: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
-                                        padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeExtraSmall),
+                                        margin: const EdgeInsets.only(
+                                            right: Dimensions.paddingSizeSmall),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: Dimensions
+                                                .paddingSizeExtraSmall),
                                         child: ItemWidget(
                                           imageHeight: 90,
                                           imageWidth: 90,
@@ -81,8 +91,13 @@ class WebSuggestedItemView extends StatelessWidget {
                                       hasSecond
                                           ? Container(
                                               width: 282.5,
-                                              margin: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
-                                              padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeExtraSmall),
+                                              margin: const EdgeInsets.only(
+                                                  right: Dimensions
+                                                      .paddingSizeSmall),
+                                              padding: const EdgeInsets
+                                                  .symmetric(
+                                                  vertical: Dimensions
+                                                      .paddingSizeExtraSmall),
                                               child: ItemWidget(
                                                 imageHeight: 90,
                                                 imageWidth: 90,
@@ -101,8 +116,13 @@ class WebSuggestedItemView extends StatelessWidget {
                                       hasThird
                                           ? Container(
                                               width: 282.5,
-                                              margin: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
-                                              padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeExtraSmall),
+                                              margin: const EdgeInsets.only(
+                                                  right: Dimensions
+                                                      .paddingSizeSmall),
+                                              padding: const EdgeInsets
+                                                  .symmetric(
+                                                  vertical: Dimensions
+                                                      .paddingSizeExtraSmall),
                                               child: ItemWidget(
                                                 imageHeight: 90,
                                                 imageWidth: 90,
@@ -121,8 +141,13 @@ class WebSuggestedItemView extends StatelessWidget {
                                       hasFourth
                                           ? Container(
                                               width: 282.5,
-                                              margin: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
-                                              padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeExtraSmall),
+                                              margin: const EdgeInsets.only(
+                                                  right: Dimensions
+                                                      .paddingSizeSmall),
+                                              padding: const EdgeInsets
+                                                  .symmetric(
+                                                  vertical: Dimensions
+                                                      .paddingSizeExtraSmall),
                                               child: ItemWidget(
                                                 imageHeight: 90,
                                                 imageWidth: 90,
@@ -146,14 +171,19 @@ class WebSuggestedItemView extends StatelessWidget {
                                           bottom: 0,
                                           left: 0,
                                           child: InkWell(
-                                            onTap: () => pageController.previousPage(duration: const Duration(seconds: 1), curve: Curves.easeInOut),
+                                            onTap: () =>
+                                                pageController.previousPage(
+                                                    duration: const Duration(
+                                                        seconds: 1),
+                                                    curve: Curves.easeInOut),
                                             child: Container(
                                               height: 30,
                                               width: 30,
                                               alignment: Alignment.center,
                                               decoration: BoxDecoration(
                                                 shape: BoxShape.circle,
-                                                color: Theme.of(context).cardColor,
+                                                color:
+                                                    Theme.of(context).cardColor,
                                               ),
                                               child: const Icon(
                                                 Icons.keyboard_arrow_left,
@@ -163,20 +193,27 @@ class WebSuggestedItemView extends StatelessWidget {
                                           ),
                                         )
                                       : const SizedBox(),
-                                  cartController.currentIndex != ((suggestedItems.length / 4).ceil() - 1)
+                                  cartController.currentIndex !=
+                                          ((suggestedItems.length / 4).ceil() -
+                                              1)
                                       ? Positioned(
                                           top: 0,
                                           bottom: 0,
                                           right: 0,
                                           child: InkWell(
-                                            onTap: () => pageController.nextPage(duration: const Duration(seconds: 1), curve: Curves.easeInOut),
+                                            onTap: () =>
+                                                pageController.nextPage(
+                                                    duration: const Duration(
+                                                        seconds: 1),
+                                                    curve: Curves.easeInOut),
                                             child: Container(
                                               height: 30,
                                               width: 30,
                                               alignment: Alignment.center,
                                               decoration: BoxDecoration(
                                                 shape: BoxShape.circle,
-                                                color: Theme.of(context).cardColor,
+                                                color:
+                                                    Theme.of(context).cardColor,
                                               ),
                                               child: const Icon(
                                                 Icons.keyboard_arrow_right,
@@ -189,7 +226,8 @@ class WebSuggestedItemView extends StatelessWidget {
                                 ],
                               );
                             },
-                            onPageChanged: (int index) => cartController.setCurrentIndex(index, true),
+                            onPageChanged: (int index) =>
+                                cartController.setCurrentIndex(index, true),
                           )),
                     ],
                   );
@@ -200,10 +238,6 @@ class WebSuggestedItemView extends StatelessWidget {
     );
   }
 }
-
-
-
-
 
 // ListView.builder(
 //   scrollDirection: Axis.horizontal,

@@ -8,7 +8,9 @@ import 'rider_car_card.dart';
 class RiderCarList extends StatelessWidget {
   final VehicleModel? vehicleModel;
   final UserInformationBody filterBody;
-  const RiderCarList({Key? key, required this.vehicleModel, required this.filterBody}) : super(key: key);
+  const RiderCarList(
+      {Key? key, required this.vehicleModel, required this.filterBody})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,17 +19,19 @@ class RiderCarList extends StatelessWidget {
       padding: EdgeInsets.zero,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisSpacing: Dimensions.paddingSizeLarge,
-        mainAxisSpacing: ResponsiveHelper.isDesktop(context) ?
-        Dimensions.paddingSizeLarge : 3,
-        childAspectRatio: ResponsiveHelper.isMobile(context) ?  1.6 : 6,
-        crossAxisCount: ResponsiveHelper.isMobile(context) ? 1 :2,
-        mainAxisExtent:ResponsiveHelper.isMobile(context) ? 245 : 125,
+        mainAxisSpacing: ResponsiveHelper.isDesktop(context)
+            ? Dimensions.paddingSizeLarge
+            : 3,
+        childAspectRatio: ResponsiveHelper.isMobile(context) ? 1.6 : 6,
+        crossAxisCount: ResponsiveHelper.isMobile(context) ? 1 : 2,
+        mainAxisExtent: ResponsiveHelper.isMobile(context) ? 245 : 125,
       ),
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: vehicleModel!.vehicles!.length,
-      itemBuilder: (context,index){
-        return RiderCarCard(vehicle: vehicleModel!.vehicles![index], filterBody: filterBody);
+      itemBuilder: (context, index) {
+        return RiderCarCard(
+            vehicle: vehicleModel!.vehicles![index], filterBody: filterBody);
       },
     );
   }

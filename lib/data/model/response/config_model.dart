@@ -73,79 +73,79 @@ class ConfigModel {
   bool? offlinePaymentStatus;
   bool? guestCheckoutStatus;
 
-  ConfigModel(
-      {this.businessName,
-        this.logo,
-        this.address,
-        this.phone,
-        this.email,
-        this.baseUrls,
-        this.country,
-        this.defaultLocation,
-        this.currencySymbol,
-        this.currencySymbolDirection,
-        this.appMinimumVersionAndroid,
-        this.appUrlAndroid,
-        this.appMinimumVersionIos,
-        this.appUrlIos,
-        this.customerVerification,
-        this.scheduleOrder,
-        this.orderDeliveryVerification,
-        this.cashOnDelivery,
-        this.digitalPayment,
-        this.perKmShippingCharge,
-        this.minimumShippingCharge,
-        this.freeDeliveryOver,
-        this.demo,
-        this.maintenanceMode,
-        this.orderConfirmationModel,
-        this.showDmEarning,
-        this.canceledByDeliveryman,
-        this.timeformat,
-        this.language,
-        this.toggleVegNonVeg,
-        this.toggleDmRegistration,
-        this.toggleStoreRegistration,
-        this.scheduleOrderSlotDuration,
-        this.digitAfterDecimalPoint,
-        this.module,
-        this.moduleConfig,
-        this.parcelPerKmShippingCharge,
-        this.parcelMinimumShippingCharge,
-        this.landingPageSettings,
-        this.socialMedia,
-        this.footerText,
-        this.landingPageLinks,
-        this.loyaltyPointExchangeRate,
-        this.loyaltyPointItemPurchasePoint,
-        this.loyaltyPointStatus,
-        this.minimumPointToTransfer,
-        this.customerWalletStatus,
-        this.dmTipsStatus,
-        this.refEarningStatus,
-        this.refEarningExchangeRate,
-        this.socialLogin,
-        this.appleLogin,
-        this.refundActiveStatus,
-        this.refundPolicyStatus,
-        this.cancellationPolicyStatus,
-        this.shippingPolicyStatus,
-        this.prescriptionStatus,
-        this.taxIncluded,
-        this.cookiesText,
-        this.homeDeliveryStatus,
-        this.takeawayStatus,
-        this.partialPaymentStatus,
-        this.partialPaymentMethod,
-        this.additionalChargeStatus,
-        this.additionalChargeName,
-        this.additionCharge,
-        this.activePaymentMethodList,
-        this.digitalPaymentInfo,
-        this.addFundStatus,
-        this.offlinePaymentStatus,
-        this.guestCheckoutStatus,
-      });
+  ConfigModel({
+    this.businessName,
+    this.logo,
+    this.address,
+    this.phone,
+    this.email,
+    this.baseUrls,
+    this.country,
+    this.defaultLocation,
+    this.currencySymbol,
+    this.currencySymbolDirection,
+    this.appMinimumVersionAndroid,
+    this.appUrlAndroid,
+    this.appMinimumVersionIos,
+    this.appUrlIos,
+    this.customerVerification,
+    this.scheduleOrder,
+    this.orderDeliveryVerification,
+    this.cashOnDelivery,
+    this.digitalPayment,
+    this.perKmShippingCharge,
+    this.minimumShippingCharge,
+    this.freeDeliveryOver,
+    this.demo,
+    this.maintenanceMode,
+    this.orderConfirmationModel,
+    this.showDmEarning,
+    this.canceledByDeliveryman,
+    this.timeformat,
+    this.language,
+    this.toggleVegNonVeg,
+    this.toggleDmRegistration,
+    this.toggleStoreRegistration,
+    this.scheduleOrderSlotDuration,
+    this.digitAfterDecimalPoint,
+    this.module,
+    this.moduleConfig,
+    this.parcelPerKmShippingCharge,
+    this.parcelMinimumShippingCharge,
+    this.landingPageSettings,
+    this.socialMedia,
+    this.footerText,
+    this.landingPageLinks,
+    this.loyaltyPointExchangeRate,
+    this.loyaltyPointItemPurchasePoint,
+    this.loyaltyPointStatus,
+    this.minimumPointToTransfer,
+    this.customerWalletStatus,
+    this.dmTipsStatus,
+    this.refEarningStatus,
+    this.refEarningExchangeRate,
+    this.socialLogin,
+    this.appleLogin,
+    this.refundActiveStatus,
+    this.refundPolicyStatus,
+    this.cancellationPolicyStatus,
+    this.shippingPolicyStatus,
+    this.prescriptionStatus,
+    this.taxIncluded,
+    this.cookiesText,
+    this.homeDeliveryStatus,
+    this.takeawayStatus,
+    this.partialPaymentStatus,
+    this.partialPaymentMethod,
+    this.additionalChargeStatus,
+    this.additionalChargeName,
+    this.additionCharge,
+    this.activePaymentMethodList,
+    this.digitalPaymentInfo,
+    this.addFundStatus,
+    this.offlinePaymentStatus,
+    this.guestCheckoutStatus,
+  });
 
   ConfigModel.fromJson(Map<String, dynamic> json) {
     businessName = json['business_name'];
@@ -153,18 +153,21 @@ class ConfigModel {
     address = json['address'];
     phone = json['phone'];
     email = json['email'];
-    baseUrls = json['base_urls'] != null
-        ? BaseUrls.fromJson(json['base_urls'])
-        : null;
+    baseUrls =
+        json['base_urls'] != null ? BaseUrls.fromJson(json['base_urls']) : null;
     country = json['country'];
     defaultLocation = json['default_location'] != null
         ? DefaultLocation.fromJson(json['default_location'])
         : null;
     currencySymbol = json['currency_symbol'];
     currencySymbolDirection = json['currency_symbol_direction'];
-    appMinimumVersionAndroid = json['app_minimum_version_android'] != null ? json['app_minimum_version_android'].toDouble() : 0.0;
+    appMinimumVersionAndroid = json['app_minimum_version_android'] != null
+        ? json['app_minimum_version_android'].toDouble()
+        : 0.0;
     appUrlAndroid = json['app_url_android'];
-    appMinimumVersionIos = json['app_minimum_version_ios'] != null ? json['app_minimum_version_ios'].toDouble() : 0.0;
+    appMinimumVersionIos = json['app_minimum_version_ios'] != null
+        ? json['app_minimum_version_ios'].toDouble()
+        : 0.0;
     appUrlIos = json['app_url_ios'];
     customerVerification = json['customer_verification'];
     scheduleOrder = json['schedule_order'];
@@ -189,16 +192,19 @@ class ConfigModel {
     toggleVegNonVeg = json['toggle_veg_non_veg'];
     toggleDmRegistration = json['toggle_dm_registration'];
     toggleStoreRegistration = json['toggle_store_registration'];
-    scheduleOrderSlotDuration = json['schedule_order_slot_duration'] == 0 ? 30 : json['schedule_order_slot_duration'];
+    scheduleOrderSlotDuration = json['schedule_order_slot_duration'] == 0
+        ? 30
+        : json['schedule_order_slot_duration'];
     digitAfterDecimalPoint = json['digit_after_decimal_point'];
-    module = json['module'] != null
-        ? ModuleModel.fromJson(json['module'])
-        : null;
+    module =
+        json['module'] != null ? ModuleModel.fromJson(json['module']) : null;
     moduleConfig = json['module_config'] != null
         ? ModuleConfig.fromJson(json['module_config'])
         : null;
-    parcelPerKmShippingCharge = json['parcel_per_km_shipping_charge'].toDouble();
-    parcelMinimumShippingCharge = json['parcel_minimum_shipping_charge'].toDouble();
+    parcelPerKmShippingCharge =
+        json['parcel_per_km_shipping_charge'].toDouble();
+    parcelMinimumShippingCharge =
+        json['parcel_minimum_shipping_charge'].toDouble();
     landingPageSettings = json['landing_page_settings'] != null
         ? LandingPageSettings.fromJson(json['landing_page_settings'])
         : null;
@@ -209,10 +215,13 @@ class ConfigModel {
       });
     }
     footerText = json['footer_text'];
-    landingPageLinks = json['landing_page_links'] != null ? LandingPageLinks.fromJson(json['landing_page_links']) : null;
+    landingPageLinks = json['landing_page_links'] != null
+        ? LandingPageLinks.fromJson(json['landing_page_links'])
+        : null;
     loyaltyPointExchangeRate = json['loyalty_point_exchange_rate'];
-    loyaltyPointItemPurchasePoint = json['loyalty_point_item_purchase_point'].toDouble();
-    loyaltyPointStatus = json['loyalty_point_status'] ;
+    loyaltyPointItemPurchasePoint =
+        json['loyalty_point_item_purchase_point'].toDouble();
+    loyaltyPointStatus = json['loyalty_point_status'];
     minimumPointToTransfer = json['loyalty_point_minimum_point'];
     customerWalletStatus = json['customer_wallet_status'];
     dmTipsStatus = json['dm_tips_status'];
@@ -250,7 +259,9 @@ class ConfigModel {
         activePaymentMethodList!.add(PaymentBody.fromJson(v));
       });
     }
-    digitalPaymentInfo = json['digital_payment_info'] != null ? DigitalPaymentInfo.fromJson(json['digital_payment_info']) : null;
+    digitalPaymentInfo = json['digital_payment_info'] != null
+        ? DigitalPaymentInfo.fromJson(json['digital_payment_info'])
+        : null;
     addFundStatus = json['add_fund_status'] == 1;
     offlinePaymentStatus = json['offline_payment_status'] == 1;
     guestCheckoutStatus = json['guest_checkout_status'] == 1;
@@ -341,7 +352,8 @@ class ConfigModel {
     data['additional_charge_name'] = additionalChargeName;
     data['additional_charge'] = additionCharge;
     if (activePaymentMethodList != null) {
-      data['active_payment_method_list'] = activePaymentMethodList!.map((v) => v.toJson()).toList();
+      data['active_payment_method_list'] =
+          activePaymentMethodList!.map((v) => v.toJson()).toList();
     }
     if (digitalPaymentInfo != null) {
       data['digital_payment_info'] = digitalPaymentInfo!.toJson();
@@ -376,29 +388,29 @@ class BaseUrls {
   String? vehicleBrandImageUrl;
   String? gatewayImageUrl;
 
-  BaseUrls(
-      {this.itemImageUrl,
-        this.customerImageUrl,
-        this.bannerImageUrl,
-        this.categoryImageUrl,
-        this.reviewImageUrl,
-        this.notificationImageUrl,
-        this.vendorImageUrl,
-        this.storeImageUrl,
-        this.storeCoverPhotoUrl,
-        this.deliveryManImageUrl,
-        this.chatImageUrl,
-        this.campaignImageUrl,
-        this.moduleImageUrl,
-        this.orderAttachmentUrl,
-        this.parcelCategoryImageUrl,
-        this.landingPageImageUrl,
-        this.businessLogoUrl,
-        this.refundImageUrl,
-        this.vehicleImageUrl,
-        this.vehicleBrandImageUrl,
-        this.gatewayImageUrl,
-      });
+  BaseUrls({
+    this.itemImageUrl,
+    this.customerImageUrl,
+    this.bannerImageUrl,
+    this.categoryImageUrl,
+    this.reviewImageUrl,
+    this.notificationImageUrl,
+    this.vendorImageUrl,
+    this.storeImageUrl,
+    this.storeCoverPhotoUrl,
+    this.deliveryManImageUrl,
+    this.chatImageUrl,
+    this.campaignImageUrl,
+    this.moduleImageUrl,
+    this.orderAttachmentUrl,
+    this.parcelCategoryImageUrl,
+    this.landingPageImageUrl,
+    this.businessLogoUrl,
+    this.refundImageUrl,
+    this.vehicleImageUrl,
+    this.vehicleBrandImageUrl,
+    this.gatewayImageUrl,
+  });
 
   BaseUrls.fromJson(Map<String, dynamic> json) {
     itemImageUrl = json['item_image_url'];
@@ -497,7 +509,9 @@ class ModuleConfig {
 
   ModuleConfig.fromJson(Map<String, dynamic> json) {
     moduleType = json['module_type'].cast<String>();
-    module = json[moduleType![0]] != null ? Module.fromJson(json[moduleType![0]]) : null;
+    module = json[moduleType![0]] != null
+        ? Module.fromJson(json[moduleType![0]])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -523,20 +537,19 @@ class Module {
   bool? newVariation;
   String? description;
 
-  Module(
-      {
-        this.orderPlaceToScheduleInterval,
-        this.addOn,
-        this.stock,
-        this.vegNonVeg,
-        this.unit,
-        this.orderAttachment,
-        this.showRestaurantText,
-        this.isParcel,
-        this.isTaxi,
-        this.newVariation,
-        this.description,
-      });
+  Module({
+    this.orderPlaceToScheduleInterval,
+    this.addOn,
+    this.stock,
+    this.vegNonVeg,
+    this.unit,
+    this.orderAttachment,
+    this.showRestaurantText,
+    this.isParcel,
+    this.isTaxi,
+    this.newVariation,
+    this.description,
+  });
 
   Module.fromJson(Map<String, dynamic> json) {
     orderPlaceToScheduleInterval = json['order_place_to_schedule_interval'];
@@ -554,8 +567,7 @@ class Module {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['order_place_to_schedule_interval'] =
-        orderPlaceToScheduleInterval;
+    data['order_place_to_schedule_interval'] = orderPlaceToScheduleInterval;
     data['add_on'] = addOn;
     data['stock'] = stock;
     data['veg_non_veg'] = vegNonVeg;
@@ -611,12 +623,12 @@ class SocialMedia {
   String? link;
   int? status;
 
-  SocialMedia(
-      {this.id,
-        this.name,
-        this.link,
-        this.status,
-      });
+  SocialMedia({
+    this.id,
+    this.name,
+    this.link,
+    this.status,
+  });
 
   SocialMedia.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -641,12 +653,12 @@ class LandingPageLinks {
   String? appUrlIosStatus;
   String? appUrlIos;
 
-  LandingPageLinks(
-      {this.appUrlAndroidStatus,
-        this.appUrlAndroid,
-        this.appUrlIosStatus,
-        this.appUrlIos,
-      });
+  LandingPageLinks({
+    this.appUrlAndroidStatus,
+    this.appUrlAndroid,
+    this.appUrlIosStatus,
+    this.appUrlIos,
+  });
 
   LandingPageLinks.fromJson(Map<String, dynamic> json) {
     appUrlAndroidStatus = json['app_url_android_status'].toString();
@@ -714,10 +726,13 @@ class DigitalPaymentInfo {
   bool? pluginPaymentGateways;
   bool? defaultPaymentGateways;
 
-  DigitalPaymentInfo({this.digitalPayment, this.pluginPaymentGateways, this.defaultPaymentGateways});
+  DigitalPaymentInfo(
+      {this.digitalPayment,
+      this.pluginPaymentGateways,
+      this.defaultPaymentGateways});
 
   DigitalPaymentInfo.fromJson(Map<String, dynamic> json) {
-    digitalPayment =  json['digital_payment'];
+    digitalPayment = json['digital_payment'];
     pluginPaymentGateways = json['plugin_payment_gateways'];
     defaultPaymentGateways = json['default_payment_gateways'];
   }

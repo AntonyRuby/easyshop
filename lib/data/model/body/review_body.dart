@@ -8,11 +8,11 @@ class ReviewBody {
 
   ReviewBody(
       {String? productId,
-        String? deliveryManId,
-        String? comment,
-        String? rating,
-        String? orderId,
-        List<String>? fileUpload}) {
+      String? deliveryManId,
+      String? comment,
+      String? rating,
+      String? orderId,
+      List<String>? fileUpload}) {
     _productId = productId;
     _deliveryManId = deliveryManId;
     _comment = comment;

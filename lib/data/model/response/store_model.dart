@@ -11,7 +11,10 @@ class StoreModel {
   StoreModel.fromJson(Map<String, dynamic> json) {
     totalSize = json['total_size'];
     limit = json['limit'].toString();
-    offset = (json['offset'] != null && json['offset'].toString().trim().isNotEmpty) ? int.parse(json['offset'].toString()) : null;
+    offset =
+        (json['offset'] != null && json['offset'].toString().trim().isNotEmpty)
+            ? int.parse(json['offset'].toString())
+            : null;
     if (json['stores'] != null) {
       stores = [];
       json['stores'].forEach((v) {
@@ -77,51 +80,51 @@ class Store {
   int? itemCount;
   List<Items>? items;
 
-  Store(
-      {this.id,
-        this.name,
-        this.phone,
-        this.email,
-        this.logo,
-        this.latitude,
-        this.longitude,
-        this.address,
-        this.minimumOrder,
-        this.currency,
-        this.freeDelivery,
-        this.coverPhoto,
-        this.delivery,
-        this.takeAway,
-        this.scheduleOrder,
-        this.avgRating,
-        this.tax,
-        this.featured,
-        this.zoneId,
-        this.ratingCount,
-        this.selfDeliverySystem,
-        this.posSystem,
-        this.minimumShippingCharge,
-        this.maximumShippingCharge,
-        this.perKmShippingCharge,
-        this.open,
-        this.active,
-        this.deliveryTime,
-        this.categoryIds,
-        this.veg,
-        this.nonVeg,
-        this.moduleId,
-        this.orderPlaceToScheduleInterval,
-        this.discount,
-        this.schedules,
-        this.vendorId,
-        this.prescriptionOrder,
-        this.cutlery,
-        this.slug,
-        this.announcementActive,
-        this.announcementMessage,
-        this.itemCount,
-        this.items,
-      });
+  Store({
+    this.id,
+    this.name,
+    this.phone,
+    this.email,
+    this.logo,
+    this.latitude,
+    this.longitude,
+    this.address,
+    this.minimumOrder,
+    this.currency,
+    this.freeDelivery,
+    this.coverPhoto,
+    this.delivery,
+    this.takeAway,
+    this.scheduleOrder,
+    this.avgRating,
+    this.tax,
+    this.featured,
+    this.zoneId,
+    this.ratingCount,
+    this.selfDeliverySystem,
+    this.posSystem,
+    this.minimumShippingCharge,
+    this.maximumShippingCharge,
+    this.perKmShippingCharge,
+    this.open,
+    this.active,
+    this.deliveryTime,
+    this.categoryIds,
+    this.veg,
+    this.nonVeg,
+    this.moduleId,
+    this.orderPlaceToScheduleInterval,
+    this.discount,
+    this.schedules,
+    this.vendorId,
+    this.prescriptionOrder,
+    this.cutlery,
+    this.slug,
+    this.announcementActive,
+    this.announcementMessage,
+    this.itemCount,
+    this.items,
+  });
 
   Store.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -132,7 +135,8 @@ class Store {
     latitude = json['latitude'];
     longitude = json['longitude'];
     address = json['address'];
-    minimumOrder = json['minimum_order'] == null ? 0 : json['minimum_order'].toDouble();
+    minimumOrder =
+        json['minimum_order'] == null ? 0 : json['minimum_order'].toDouble();
     currency = json['currency'];
     freeDelivery = json['free_delivery'];
     coverPhoto = json['cover_photo'] ?? '';
@@ -146,7 +150,9 @@ class Store {
     posSystem = json['pos_system'];
     minimumShippingCharge = json['minimum_shipping_charge'].toDouble();
     maximumShippingCharge = json['maximum_shipping_charge']?.toDouble();
-    perKmShippingCharge = json['per_km_shipping_charge'] != null ? json['per_km_shipping_charge'].toDouble() : 0;
+    perKmShippingCharge = json['per_km_shipping_charge'] != null
+        ? json['per_km_shipping_charge'].toDouble()
+        : 0;
     open = json['open'];
     active = json['active'];
     featured = int.parse(json['featured'].toString());
@@ -156,8 +162,10 @@ class Store {
     nonVeg = json['non_veg'];
     moduleId = json['module_id'];
     orderPlaceToScheduleInterval = json['order_place_to_schedule_interval'];
-    categoryIds = json['category_ids'] != null ? json['category_ids'].cast<int>() : [];
-    discount = json['discount'] != null ? Discount.fromJson(json['discount']) : null;
+    categoryIds =
+        json['category_ids'] != null ? json['category_ids'].cast<int>() : [];
+    discount =
+        json['discount'] != null ? Discount.fromJson(json['discount']) : null;
     if (json['schedules'] != null) {
       schedules = <Schedules>[];
       json['schedules'].forEach((v) {
@@ -250,17 +258,17 @@ class Discount {
 
   Discount(
       {this.id,
-        this.startDate,
-        this.endDate,
-        this.startTime,
-        this.endTime,
-        this.minPurchase,
-        this.maxDiscount,
-        this.discount,
-        this.discountType,
-        this.storeId,
-        this.createdAt,
-        this.updatedAt});
+      this.startDate,
+      this.endDate,
+      this.startTime,
+      this.endTime,
+      this.minPurchase,
+      this.maxDiscount,
+      this.discount,
+      this.discountType,
+      this.storeId,
+      this.createdAt,
+      this.updatedAt});
 
   Discount.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -303,11 +311,7 @@ class Schedules {
   String? closingTime;
 
   Schedules(
-      {this.id,
-        this.storeId,
-        this.day,
-        this.openingTime,
-        this.closingTime});
+      {this.id, this.storeId, this.day, this.openingTime, this.closingTime});
 
   Schedules.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -336,19 +340,19 @@ class Refund {
   String? customerNote;
   String? adminNote;
 
-  Refund(
-      {this.id,
-        this.orderId,
-        this.image,
-        this.customerReason,
-        this.customerNote,
-        this.adminNote,
-      });
+  Refund({
+    this.id,
+    this.orderId,
+    this.image,
+    this.customerReason,
+    this.customerNote,
+    this.adminNote,
+  });
 
   Refund.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     orderId = json['order_id'];
-    if(json['image'] != null){
+    if (json['image'] != null) {
       image = [];
       jsonDecode(json['image']).forEach((v) => image!.add(v));
     }
@@ -408,45 +412,45 @@ class Items {
   int? isApproved;
   String? unitType;
 
-  Items(
-      {this.id,
-        this.name,
-        this.description,
-        this.image,
-        this.categoryId,
-        this.categoryIds,
-        this.variations,
-        this.addOns,
-        this.attributes,
-        this.choiceOptions,
-        this.price,
-        this.tax,
-        this.taxType,
-        this.discount,
-        this.discountType,
-        this.availableTimeStarts,
-        this.availableTimeEnds,
-        this.veg,
-        this.status,
-        this.storeId,
-        this.createdAt,
-        this.updatedAt,
-        this.orderCount,
-        this.avgRating,
-        this.ratingCount,
-        this.rating,
-        this.moduleId,
-        this.stock,
-        this.unitId,
-        this.images,
-        this.foodVariations,
-        this.slug,
-        this.recommended,
-        this.organic,
-        this.maximumCartQuantity,
-        this.isApproved,
-        this.unitType,
-      });
+  Items({
+    this.id,
+    this.name,
+    this.description,
+    this.image,
+    this.categoryId,
+    this.categoryIds,
+    this.variations,
+    this.addOns,
+    this.attributes,
+    this.choiceOptions,
+    this.price,
+    this.tax,
+    this.taxType,
+    this.discount,
+    this.discountType,
+    this.availableTimeStarts,
+    this.availableTimeEnds,
+    this.veg,
+    this.status,
+    this.storeId,
+    this.createdAt,
+    this.updatedAt,
+    this.orderCount,
+    this.avgRating,
+    this.ratingCount,
+    this.rating,
+    this.moduleId,
+    this.stock,
+    this.unitId,
+    this.images,
+    this.foodVariations,
+    this.slug,
+    this.recommended,
+    this.organic,
+    this.maximumCartQuantity,
+    this.isApproved,
+    this.unitType,
+  });
 
   Items.fromJson(Map<String, dynamic> json) {
     id = json['id'];

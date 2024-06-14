@@ -30,12 +30,17 @@ class _SupportScreenState extends State<SupportScreen> {
       endDrawerEnableOpenDragGesture: false,
       body: Scrollbar(
           child: SingleChildScrollView(
-        padding: ResponsiveHelper.isDesktop(context) ? EdgeInsets.zero : const EdgeInsets.all(Dimensions.paddingSizeSmall),
+        padding: ResponsiveHelper.isDesktop(context)
+            ? EdgeInsets.zero
+            : const EdgeInsets.all(Dimensions.paddingSizeSmall),
         physics: const BouncingScrollPhysics(),
         child: Center(
             child: FooterView(
           child: ResponsiveHelper.isDesktop(context)
-              ? const SizedBox(width: double.infinity, height: 650, child: WebSupportScreen())
+              ? const SizedBox(
+                  width: double.infinity,
+                  height: 650,
+                  child: WebSupportScreen())
               : SizedBox(
                   width: Dimensions.webMaxWidth,
                   child: Column(children: [
@@ -62,10 +67,13 @@ class _SupportScreenState extends State<SupportScreen> {
                       color: Colors.red,
                       info: Get.find<SplashController>().configModel!.phone,
                       onTap: () async {
-                        if (await canLaunchUrlString('tel:${Get.find<SplashController>().configModel!.phone}')) {
-                          launchUrlString('tel:${Get.find<SplashController>().configModel!.phone}');
+                        if (await canLaunchUrlString(
+                            'tel:${Get.find<SplashController>().configModel!.phone}')) {
+                          launchUrlString(
+                              'tel:${Get.find<SplashController>().configModel!.phone}');
                         } else {
-                          showCustomSnackBar('${'can_not_launch'.tr} ${Get.find<SplashController>().configModel!.phone}');
+                          showCustomSnackBar(
+                              '${'can_not_launch'.tr} ${Get.find<SplashController>().configModel!.phone}');
                         }
                       },
                     ),

@@ -17,11 +17,12 @@ import 'widgets/provider_details.dart';
 class CarDetailsScreen extends StatelessWidget {
   final Vehicles vehicle;
   final UserInformationBody filterBody;
-  const CarDetailsScreen({Key? key, required this.vehicle, required this.filterBody}) : super(key: key);
+  const CarDetailsScreen(
+      {Key? key, required this.vehicle, required this.filterBody})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: CustomAppBar(title: 'car_details'.tr),
       body: SingleChildScrollView(
@@ -34,11 +35,13 @@ class CarDetailsScreen extends StatelessWidget {
                 Column(
                   children: [
                     ClipRRect(
-                        borderRadius: const BorderRadius.all(Radius.circular(Dimensions.paddingSizeSmall)),
+                        borderRadius: const BorderRadius.all(
+                            Radius.circular(Dimensions.paddingSizeSmall)),
                         child: CustomImage(
                             height: 200,
                             width: double.infinity,
-                            image: '${Get.find<SplashController>().configModel!.baseUrls!.vehicleImageUrl}/${vehicle.carImages!.isNotEmpty ? vehicle.carImages![0] : ''}')),
+                            image:
+                                '${Get.find<SplashController>().configModel!.baseUrls!.vehicleImageUrl}/${vehicle.carImages!.isNotEmpty ? vehicle.carImages![0] : ''}')),
                     const SizedBox(height: 170)
                   ],
                 ),
@@ -46,10 +49,8 @@ class CarDetailsScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: Dimensions.paddingSizeDefault),
-
             CarCost(vehicle: vehicle, fareCategory: filterBody.fareCategory),
             const SizedBox(height: Dimensions.paddingSizeDefault),
-
             ProviderDetails(vehicle: vehicle),
             const SizedBox(height: 100)
           ],
@@ -77,18 +78,32 @@ class CarDetailsScreen extends StatelessWidget {
                         Text(
                           '${'total'.tr}: ',
                           style: robotoRegular.copyWith(
-                              color: Theme.of(context).textTheme.bodyLarge!.color!.withOpacity(.4),
-                          ),),
+                            color: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .color!
+                                .withOpacity(.4),
+                          ),
+                        ),
                         Text(
                           '${filterBody.distance}km',
-                          style: robotoRegular.copyWith(color: Theme.of(context).textTheme.bodyLarge!.color!.withOpacity(.4)),
+                          style: robotoRegular.copyWith(
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .color!
+                                  .withOpacity(.4)),
                         ),
-
                       ],
                     ),
                     Text(
-                      PriceConverter.convertPrice(filterBody.distance! * (filterBody.fareCategory == 'hourly' ? vehicle.insidePerHourCharge! : vehicle.insidePerKmCharge!)),
-                      style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeDefault, color: Theme.of(context).primaryColor),
+                      PriceConverter.convertPrice(filterBody.distance! *
+                          (filterBody.fareCategory == 'hourly'
+                              ? vehicle.insidePerHourCharge!
+                              : vehicle.insidePerKmCharge!)),
+                      style: robotoMedium.copyWith(
+                          fontSize: Dimensions.fontSizeDefault,
+                          color: Theme.of(context).primaryColor),
                     ),
                   ],
                 ),
@@ -96,7 +111,8 @@ class CarDetailsScreen extends StatelessWidget {
               CustomButton(
                 width: 140,
                 fontSize: Dimensions.fontSizeDefault,
-                onPressed: () => Get.toNamed(RouteHelper.getBookingCheckoutScreen(vehicle, filterBody)),
+                onPressed: () => Get.toNamed(
+                    RouteHelper.getBookingCheckoutScreen(vehicle, filterBody)),
                 buttonText: 'rent_this_car'.tr,
               ),
             ],
@@ -105,6 +121,4 @@ class CarDetailsScreen extends StatelessWidget {
       ),
     );
   }
-
-
 }

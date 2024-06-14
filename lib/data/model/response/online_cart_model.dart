@@ -1,4 +1,5 @@
-import 'package:sixam_mart/data/model/response/item_model.dart' as product_variation;
+import 'package:sixam_mart/data/model/response/item_model.dart'
+    as product_variation;
 
 class OnlineCartModel {
   int? id;
@@ -19,19 +20,19 @@ class OnlineCartModel {
 
   OnlineCartModel(
       {this.id,
-        this.userId,
-        this.moduleId,
-        this.itemId,
-        this.isGuest,
-        this.addOnIds,
-        this.addOnQtys,
-        this.itemType,
-        this.price,
-        this.quantity,
-        this.foodVariation,
-        this.createdAt,
-        this.updatedAt,
-        this.item});
+      this.userId,
+      this.moduleId,
+      this.itemId,
+      this.isGuest,
+      this.addOnIds,
+      this.addOnQtys,
+      this.itemType,
+      this.price,
+      this.quantity,
+      this.foodVariation,
+      this.createdAt,
+      this.updatedAt,
+      this.item});
 
   OnlineCartModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -48,7 +49,7 @@ class OnlineCartModel {
       foodVariation = [];
       productVariation = [];
       json['variation'].forEach((v) {
-        if(v['name'] == null) {
+        if (v['name'] == null) {
           productVariation!.add(product_variation.Variation.fromJson(v));
         } else {
           foodVariation!.add(Variation.fromJson(v));
@@ -57,7 +58,9 @@ class OnlineCartModel {
     }
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    item = json['item'] != null ? product_variation.Item.fromJson(json['item']) : null;
+    item = json['item'] != null
+        ? product_variation.Item.fromJson(json['item'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {

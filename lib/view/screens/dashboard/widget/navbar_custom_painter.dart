@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class BNBCustomPainter extends CustomPainter {
-  late final double bottomHeight = MediaQuery.of(Get.context!).viewPadding.bottom;
+  late final double bottomHeight =
+      MediaQuery.of(Get.context!).viewPadding.bottom;
   @override
   void paint(Canvas canvas, Size size) {
     // double height = size.height + bottomHeight;
@@ -11,25 +12,40 @@ class BNBCustomPainter extends CustomPainter {
 
     paint.color = Theme.of(Get.context!).primaryColor;
     path = Path()
-    ..lineTo(size.width / 2, size.height * 0.65)
-    ..cubicTo(size.width * 0.56, size.height * 0.65, size.width * 0.6, size.height * 0.45, size.width * 0.6, size.height * 0.19)
-    ..cubicTo(size.width * 0.6, size.height * 0.16, size.width * 0.6, size.height * 0.13, size.width * 0.6, size.height * 0.1)
-    ..cubicTo(size.width * 0.6, size.height * 0.05, size.width * 0.6, 0, size.width * 0.62, size.height * 0.01)
-    ..cubicTo(size.width * 0.62, size.height * 0.01, size.width * 0.98, size.height / 5, size.width * 0.98, size.height / 5)
-    ..cubicTo(size.width, size.height / 5, size.width, size.height * 0.27, size.width, size.height / 3)
-    ..cubicTo(size.width, size.height / 3, size.width, size.height * 0.94, size.width, size.height * 0.94)
-    ..cubicTo(size.width, size.height * 0.98, size.width, size.height, size.width, size.height)
-    ..cubicTo(size.width, size.height, size.width * 0.01, size.height, size.width * 0.01, size.height)
-    ..cubicTo(size.width * 0.01, size.height, 0, size.height, 0, size.height)
-    ..cubicTo(0, size.height * 0.94, 0, size.height / 3, 0, size.height / 3)
-    ..cubicTo(0, size.height * 0.27, size.width * 0.01, size.height / 5, size.width * 0.02, size.height / 5)
-    ..cubicTo(size.width * 0.02, size.height / 5, size.width * 0.4, 0, size.width * 0.387, 0)
-    ..cubicTo(size.width * 0.4, 0, size.width * 0.4, size.height * 0.05, size.width * 0.4, size.height * 0.1)
-    ..cubicTo(size.width * 0.4, size.height * 0.13, size.width * 0.4, size.height * 0.16, size.width * 0.4, size.height * 0.19)
-    ..cubicTo(size.width * 0.4, size.height * 0.45, size.width * 0.45, size.height * 0.65, size.width / 2, size.height * 0.65)
-    ..cubicTo(size.width / 2, size.height * 0.65, size.width / 2, size.height * 0.65, size.width / 2, size.height * 0.65);
+      ..lineTo(size.width / 2, size.height * 0.65)
+      ..cubicTo(size.width * 0.56, size.height * 0.65, size.width * 0.6,
+          size.height * 0.45, size.width * 0.6, size.height * 0.19)
+      ..cubicTo(size.width * 0.6, size.height * 0.16, size.width * 0.6,
+          size.height * 0.13, size.width * 0.6, size.height * 0.1)
+      ..cubicTo(size.width * 0.6, size.height * 0.05, size.width * 0.6, 0,
+          size.width * 0.62, size.height * 0.01)
+      ..cubicTo(size.width * 0.62, size.height * 0.01, size.width * 0.98,
+          size.height / 5, size.width * 0.98, size.height / 5)
+      ..cubicTo(size.width, size.height / 5, size.width, size.height * 0.27,
+          size.width, size.height / 3)
+      ..cubicTo(size.width, size.height / 3, size.width, size.height * 0.94,
+          size.width, size.height * 0.94)
+      ..cubicTo(size.width, size.height * 0.98, size.width, size.height,
+          size.width, size.height)
+      ..cubicTo(size.width, size.height, size.width * 0.01, size.height,
+          size.width * 0.01, size.height)
+      ..cubicTo(size.width * 0.01, size.height, 0, size.height, 0, size.height)
+      ..cubicTo(0, size.height * 0.94, 0, size.height / 3, 0, size.height / 3)
+      ..cubicTo(0, size.height * 0.27, size.width * 0.01, size.height / 5,
+          size.width * 0.02, size.height / 5)
+      ..cubicTo(size.width * 0.02, size.height / 5, size.width * 0.4, 0,
+          size.width * 0.387, 0)
+      ..cubicTo(size.width * 0.4, 0, size.width * 0.4, size.height * 0.05,
+          size.width * 0.4, size.height * 0.1)
+      ..cubicTo(size.width * 0.4, size.height * 0.13, size.width * 0.4,
+          size.height * 0.16, size.width * 0.4, size.height * 0.19)
+      ..cubicTo(size.width * 0.4, size.height * 0.45, size.width * 0.45,
+          size.height * 0.65, size.width / 2, size.height * 0.65)
+      ..cubicTo(size.width / 2, size.height * 0.65, size.width / 2,
+          size.height * 0.65, size.width / 2, size.height * 0.65);
     canvas.drawPath(path, paint);
   }
+
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
     return true;

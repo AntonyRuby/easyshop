@@ -17,7 +17,9 @@ class TrackDetailsView extends StatelessWidget {
   final String? status;
   final OrderModel track;
   final Function? callback;
-  const TrackDetailsView({Key? key, required this.track, required this.status, this.callback}) : super(key: key);
+  const TrackDetailsView(
+      {Key? key, required this.track, required this.status, this.callback})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,55 +58,79 @@ class TrackDetailsView extends StatelessWidget {
                 Expanded(
                     flex: 3,
                     child: Text(
-                      takeAway ? track.deliveryAddress!.address! : track.deliveryMan!.location!,
-                      style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall),
+                      takeAway
+                          ? track.deliveryAddress!.address!
+                          : track.deliveryMan!.location!,
+                      style: robotoRegular.copyWith(
+                          fontSize: Dimensions.fontSizeSmall),
                       maxLines: 5,
                       overflow: TextOverflow.ellipsis,
                     )),
                 const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-                SizedBox(width: 80, child: CustomDivider(color: Theme.of(context).primaryColor, height: 2)),
-                Container(height: 10, width: 10, decoration: BoxDecoration(shape: BoxShape.circle, color: Theme.of(context).primaryColor)),
+                SizedBox(
+                    width: 80,
+                    child: CustomDivider(
+                        color: Theme.of(context).primaryColor, height: 2)),
+                Container(
+                    height: 10,
+                    width: 10,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Theme.of(context).primaryColor)),
                 const SizedBox(width: Dimensions.paddingSizeExtraSmall),
                 Expanded(
                   flex: 5,
                   child: (takeAway && track.orderType != 'parcel')
                       ? Text(
                           track.store != null ? track.store!.address! : '',
-                          style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall),
+                          style: robotoRegular.copyWith(
+                              fontSize: Dimensions.fontSizeSmall),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         )
                       : (track.orderType == 'parcel' && status == 'picked_up')
-                          ? AddressDetails(addressDetails: track.receiverDetails)
-                          : AddressDetails(addressDetails: track.deliveryAddress),
+                          ? AddressDetails(
+                              addressDetails: track.receiverDetails)
+                          : AddressDetails(
+                              addressDetails: track.deliveryAddress),
                 ),
               ]),
               const SizedBox(height: Dimensions.paddingSizeSmall),
               takeAway
                   ? InkWell(
                       onTap: () async {
-                        String url = 'https://www.google.com/maps/dir/?api=1&destination=${track.store != null ? track.store!.latitude : ''}'
+                        String url =
+                            'https://www.google.com/maps/dir/?api=1&destination=${track.store != null ? track.store!.latitude : ''}'
                             ',${track.store != null ? track.store!.longitude : ''}&mode=d';
                         if (await canLaunchUrlString(url)) {
-                          await launchUrlString(url, mode: LaunchMode.externalApplication);
+                          await launchUrlString(url,
+                              mode: LaunchMode.externalApplication);
                         } else {
                           showCustomSnackBar('unable_to_launch_google_map'.tr);
                         }
                       },
                       child: Column(children: [
-                        Icon(Icons.directions, size: 25, color: Theme.of(context).primaryColor),
+                        Icon(Icons.directions,
+                            size: 25, color: Theme.of(context).primaryColor),
                         Text(
                           'direction'.tr,
-                          style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeExtraSmall, color: Theme.of(context).disabledColor),
+                          style: robotoRegular.copyWith(
+                              fontSize: Dimensions.fontSizeExtraSmall,
+                              color: Theme.of(context).disabledColor),
                         ),
                         const SizedBox(height: Dimensions.paddingSizeSmall),
                       ]),
                     )
                   : Column(children: [
-                      Image.asset(Images.route, height: 20, width: 20, color: Theme.of(context).primaryColor),
+                      Image.asset(Images.route,
+                          height: 20,
+                          width: 20,
+                          color: Theme.of(context).primaryColor),
                       Text(
                         '${distance.toStringAsFixed(2)} ${'km'.tr}',
-                        style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeExtraSmall, color: Theme.of(context).disabledColor),
+                        style: robotoRegular.copyWith(
+                            fontSize: Dimensions.fontSizeExtraSmall,
+                            color: Theme.of(context).disabledColor),
                       ),
                       const SizedBox(height: Dimensions.paddingSizeSmall),
                     ]),
@@ -112,11 +138,16 @@ class TrackDetailsView extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     takeAway
-                        ? Get.find<SplashController>().configModel!.moduleConfig!.module!.showRestaurantText!
+                        ? Get.find<SplashController>()
+                                .configModel!
+                                .moduleConfig!
+                                .module!
+                                .showRestaurantText!
                             ? 'store'.tr
                             : 'store'.tr
                         : 'delivery_man'.tr,
-                    style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall),
+                    style: robotoMedium.copyWith(
+                        fontSize: Dimensions.fontSizeSmall),
                   )),
               const SizedBox(height: Dimensions.paddingSizeExtraSmall),
               Row(children: [
@@ -130,34 +161,38 @@ class TrackDetailsView extends StatelessWidget {
                 )),
                 const SizedBox(width: Dimensions.paddingSizeSmall),
                 Expanded(
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(
-                    takeAway
-                        ? track.store != null
-                            ? track.store!.name!
-                            : ''
-                        : '${track.deliveryMan!.fName} ${track.deliveryMan!.lName}',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeExtraSmall),
-                  ),
-                  RatingBar(
-                    rating: takeAway
-                        ? track.store != null
-                            ? track.store!.avgRating
-                            : '' as double?
-                        : track.deliveryMan!.avgRating,
-                    size: 10,
-                    ratingCount: takeAway
-                        ? track.store != null
-                            ? track.store!.ratingCount
-                            : '' as int?
-                        : track.deliveryMan!.ratingCount,
-                  ),
-                ])),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                      Text(
+                        takeAway
+                            ? track.store != null
+                                ? track.store!.name!
+                                : ''
+                            : '${track.deliveryMan!.fName} ${track.deliveryMan!.lName}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: robotoMedium.copyWith(
+                            fontSize: Dimensions.fontSizeExtraSmall),
+                      ),
+                      RatingBar(
+                        rating: takeAway
+                            ? track.store != null
+                                ? track.store!.avgRating
+                                : '' as double?
+                            : track.deliveryMan!.avgRating,
+                        size: 10,
+                        ratingCount: takeAway
+                            ? track.store != null
+                                ? track.store!.ratingCount
+                                : '' as int?
+                            : track.deliveryMan!.ratingCount,
+                      ),
+                    ])),
                 InkWell(
                   onTap: () async {
-                    if (await canLaunchUrlString('tel:${takeAway ? track.store != null ? track.store!.phone : '' : track.deliveryMan!.phone}')) {
+                    if (await canLaunchUrlString(
+                        'tel:${takeAway ? track.store != null ? track.store!.phone : '' : track.deliveryMan!.phone}')) {
                       launchUrlString(
                           'tel:${takeAway ? track.store != null ? track.store!.phone : '' : track.deliveryMan!.phone}',
                           mode: LaunchMode.externalApplication);
@@ -167,14 +202,19 @@ class TrackDetailsView extends StatelessWidget {
                     }
                   },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeExtraSmall, horizontal: Dimensions.paddingSizeSmall),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: Dimensions.paddingSizeExtraSmall,
+                        horizontal: Dimensions.paddingSizeSmall),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                      borderRadius:
+                          BorderRadius.circular(Dimensions.radiusSmall),
                       color: const Color(0xFFFE0100),
                     ),
                     child: Text(
                       'call'.tr,
-                      style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeExtraSmall, color: Theme.of(context).cardColor),
+                      style: robotoRegular.copyWith(
+                          fontSize: Dimensions.fontSizeExtraSmall,
+                          color: Theme.of(context).cardColor),
                     ),
                   ),
                 ),
@@ -183,12 +223,17 @@ class TrackDetailsView extends StatelessWidget {
                   onTap: callback as void Function()?,
                   child: Container(
                     padding: EdgeInsets.symmetric(
-                        vertical: Get.context!.width >= 1300 ? 7 : Dimensions.paddingSizeExtraSmall, horizontal: Dimensions.paddingSizeSmall),
+                        vertical: Get.context!.width >= 1300
+                            ? 7
+                            : Dimensions.paddingSizeExtraSmall,
+                        horizontal: Dimensions.paddingSizeSmall),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                      borderRadius:
+                          BorderRadius.circular(Dimensions.radiusSmall),
                       color: const Color(0xFFFE0100),
                     ),
-                    child: Icon(Icons.chat, size: 12, color: Theme.of(context).cardColor),
+                    child: Icon(Icons.chat,
+                        size: 12, color: Theme.of(context).cardColor),
                   ),
                 ),
               ]),

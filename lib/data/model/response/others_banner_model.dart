@@ -36,13 +36,13 @@ class Banners {
 
   Banners(
       {this.id,
-        this.moduleId,
-        this.key,
-        this.image,
-        this.type,
-        this.status,
-        this.createdAt,
-        this.updatedAt});
+      this.moduleId,
+      this.key,
+      this.image,
+      this.type,
+      this.status,
+      this.createdAt,
+      this.updatedAt});
 
   Banners.fromJson(Map<String, dynamic> json) {
     id = json['id'];

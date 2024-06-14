@@ -80,22 +80,26 @@ class _ItemsViewState extends State<ItemsView> {
                     // childAspectRatio: ResponsiveHelper.isDesktop(context) && widget.isStore ? (1/0.6)
                     //     : ResponsiveHelper.isMobile(context) ? widget.stores != null && widget.isStore ? 2 : 3.8
                     //     : 3.3,
-                    mainAxisExtent: ResponsiveHelper.isDesktop(context) && widget.isStore
-                        ? 200
-                        : ResponsiveHelper.isMobile(context)
-                            ? widget.stores != null && widget.isStore
-                                ? 200
-                                : 270
-                            : 110,
+                    mainAxisExtent:
+                        ResponsiveHelper.isDesktop(context) && widget.isStore
+                            ? 200
+                            : ResponsiveHelper.isMobile(context)
+                                ? widget.stores != null && widget.isStore
+                                    ? 200
+                                    : 270
+                                : 110,
                     crossAxisCount: ResponsiveHelper.isMobile(context)
                         ? isStore
                             ? 1
                             : 2
-                        : ResponsiveHelper.isDesktop(context) && widget.stores != null
+                        : ResponsiveHelper.isDesktop(context) &&
+                                widget.stores != null
                             ? 3
                             : 3,
                   ),
-                  physics: widget.isScrollable ? const BouncingScrollPhysics() : const NeverScrollableScrollPhysics(),
+                  physics: widget.isScrollable
+                      ? const BouncingScrollPhysics()
+                      : const NeverScrollableScrollPhysics(),
                   shrinkWrap: widget.isScrollable ? false : true,
                   itemCount: length,
                   padding: widget.padding,
@@ -103,12 +107,15 @@ class _ItemsViewState extends State<ItemsView> {
                     return widget.stores != null && widget.isStore
                         ? widget.isFoodOrGrocery! && widget.isStore
                             ? StoreCardWidget(store: widget.stores![index])
-                            : StoreCardWithDistance(store: widget.stores![index]!, fromAllStore: true)
+                            : StoreCardWithDistance(
+                                store: widget.stores![index]!,
+                                fromAllStore: true)
                         : ItemWidget(
                             isStore: widget.isStore,
                             item: widget.isStore ? null : widget.items![index],
                             isFeatured: widget.isFeatured,
-                            store: widget.isStore ? widget.stores![index] : null,
+                            store:
+                                widget.isStore ? widget.stores![index] : null,
                             index: index,
                             length: length,
                             isCampaign: widget.isCampaign,
@@ -119,7 +126,11 @@ class _ItemsViewState extends State<ItemsView> {
               : NoDataScreen(
                   text: widget.noDataText ??
                       (widget.isStore
-                          ? Get.find<SplashController>().configModel!.moduleConfig!.module!.showRestaurantText!
+                          ? Get.find<SplashController>()
+                                  .configModel!
+                                  .moduleConfig!
+                                  .module!
+                                  .showRestaurantText!
                               ? 'no_restaurant_available'.tr
                               : 'no_store_available'.tr
                           : 'no_item_available'.tr),
@@ -140,20 +151,23 @@ class _ItemsViewState extends State<ItemsView> {
                 // childAspectRatio: ResponsiveHelper.isDesktop(context) && widget.isStore ? (1/0.6)
                 //     : ResponsiveHelper.isMobile(context) ? widget.isStore ? 2 : 3.8
                 //     : 3,
-                mainAxisExtent: ResponsiveHelper.isDesktop(context) && widget.isStore
-                    ? 200
-                    : ResponsiveHelper.isMobile(context)
-                        ? widget.isStore
-                            ? 200
-                            : 110
-                        : 110,
+                mainAxisExtent:
+                    ResponsiveHelper.isDesktop(context) && widget.isStore
+                        ? 200
+                        : ResponsiveHelper.isMobile(context)
+                            ? widget.isStore
+                                ? 200
+                                : 110
+                            : 110,
                 crossAxisCount: ResponsiveHelper.isMobile(context)
                     ? 1
                     : ResponsiveHelper.isDesktop(context)
                         ? 3
                         : 3,
               ),
-              physics: widget.isScrollable ? const BouncingScrollPhysics() : const NeverScrollableScrollPhysics(),
+              physics: widget.isScrollable
+                  ? const BouncingScrollPhysics()
+                  : const NeverScrollableScrollPhysics(),
               shrinkWrap: widget.isScrollable ? false : true,
               itemCount: widget.shimmerLength,
               padding: widget.padding,
@@ -162,7 +176,10 @@ class _ItemsViewState extends State<ItemsView> {
                     ? widget.isFoodOrGrocery!
                         ? const StoreCardShimmer()
                         : const NewOnShimmerView()
-                    : ItemShimmer(isEnabled: isNull, isStore: widget.isStore, hasDivider: index != widget.shimmerLength - 1);
+                    : ItemShimmer(
+                        isEnabled: isNull,
+                        isStore: widget.isStore,
+                        hasDivider: index != widget.shimmerLength - 1);
               },
             ),
     ]);
@@ -189,8 +206,9 @@ class NewOnShimmerView extends StatelessWidget {
             Expanded(
               flex: 1,
               child: ClipRRect(
-                borderRadius:
-                    const BorderRadius.only(topLeft: Radius.circular(Dimensions.radiusDefault), topRight: Radius.circular(Dimensions.radiusDefault)),
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(Dimensions.radiusDefault),
+                    topRight: Radius.circular(Dimensions.radiusDefault)),
                 child: Stack(clipBehavior: Clip.none, children: [
                   Container(
                     height: double.infinity,
@@ -206,7 +224,8 @@ class NewOnShimmerView extends StatelessWidget {
                         shape: BoxShape.circle,
                         color: Theme.of(context).cardColor.withOpacity(0.8),
                       ),
-                      child: Icon(Icons.favorite_border, color: Theme.of(context).primaryColor, size: 20),
+                      child: Icon(Icons.favorite_border,
+                          color: Theme.of(context).primaryColor, size: 20),
                     ),
                   ),
                 ]),
@@ -219,52 +238,65 @@ class NewOnShimmerView extends StatelessWidget {
                   flex: 2,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 95),
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Expanded(
-                        child: Container(
-                          height: 5,
-                          width: 100,
-                          color: Theme.of(context).cardColor,
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Row(children: [
-                        const Icon(Icons.location_on_outlined, color: Colors.blue, size: 15),
-                        const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-                        Expanded(
-                          child: Container(
-                            height: 10,
-                            width: 100,
-                            color: Theme.of(context).cardColor,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              height: 5,
+                              width: 100,
+                              color: Theme.of(context).cardColor,
+                            ),
                           ),
-                        ),
-                      ]),
-                    ]),
+                          const SizedBox(height: 2),
+                          Row(children: [
+                            const Icon(Icons.location_on_outlined,
+                                color: Colors.blue, size: 15),
+                            const SizedBox(
+                                width: Dimensions.paddingSizeExtraSmall),
+                            Expanded(
+                              child: Container(
+                                height: 10,
+                                width: 100,
+                                color: Theme.of(context).cardColor,
+                              ),
+                            ),
+                          ]),
+                        ]),
                   ),
                 ),
                 Expanded(
                   flex: 3,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                      Container(
-                        height: 10,
-                        width: 70,
-                        padding: const EdgeInsets.symmetric(vertical: 3, horizontal: Dimensions.paddingSizeSmall),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(Dimensions.radiusLarge),
-                        ),
-                      ),
-                      Container(
-                        height: 20,
-                        width: 65,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).cardColor,
-                          borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                        ),
-                      ),
-                    ]),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: Dimensions.paddingSizeDefault),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            height: 10,
+                            width: 70,
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 3,
+                                horizontal: Dimensions.paddingSizeSmall),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context)
+                                  .primaryColor
+                                  .withOpacity(0.1),
+                              borderRadius:
+                                  BorderRadius.circular(Dimensions.radiusLarge),
+                            ),
+                          ),
+                          Container(
+                            height: 20,
+                            width: 65,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).cardColor,
+                              borderRadius:
+                                  BorderRadius.circular(Dimensions.radiusSmall),
+                            ),
+                          ),
+                        ]),
                   ),
                 ),
               ]),

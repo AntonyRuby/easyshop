@@ -6,9 +6,9 @@ class DistanceModel {
 
   DistanceModel(
       {this.destinationAddresses,
-        this.originAddresses,
-        this.rows,
-        this.status});
+      this.originAddresses,
+      this.rows,
+      this.status});
 
   DistanceModel.fromJson(Map<String, dynamic> json) {
     destinationAddresses = json['destination_addresses'].cast<String>();
@@ -65,12 +65,10 @@ class Elements {
   Elements({this.distance, this.duration, this.status});
 
   Elements.fromJson(Map<String, dynamic> json) {
-    distance = json['distance'] != null
-        ? Distance.fromJson(json['distance'])
-        : null;
-    duration = json['duration'] != null
-        ? Distance.fromJson(json['duration'])
-        : null;
+    distance =
+        json['distance'] != null ? Distance.fromJson(json['distance']) : null;
+    duration =
+        json['duration'] != null ? Distance.fromJson(json['duration']) : null;
     status = json['status'];
   }
 

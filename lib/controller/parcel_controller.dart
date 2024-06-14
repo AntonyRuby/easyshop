@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -76,7 +75,7 @@ class ParcelController extends GetxController implements GetxService {
   String? get receiverCountryCode => _receiverCountryCode;
 
   void setCountryCode(String code, bool isSender) {
-    if(isSender) {
+    if (isSender) {
       _senderCountryCode = code;
     } else {
       _receiverCountryCode = code;
@@ -85,24 +84,24 @@ class ParcelController extends GetxController implements GetxService {
 
   void setSenderAddressIndex(int? index, {bool canUpdate = true}) {
     _senderAddressIndex = index;
-    if(canUpdate) {
+    if (canUpdate) {
       update();
     }
   }
 
   void setReceiverAddressIndex(int? index, {bool canUpdate = true}) {
     _receiverAddressIndex = index;
-    if(canUpdate) {
+    if (canUpdate) {
       update();
     }
   }
 
-  void selectOfflineBank(int index){
+  void selectOfflineBank(int index) {
     _selectedOfflineBankIndex = index;
     update();
   }
 
-  void changeDigitalPaymentName(String name){
+  void changeDigitalPaymentName(String name) {
     _digitalPaymentName = name;
     update();
   }
@@ -114,10 +113,11 @@ class ParcelController extends GetxController implements GetxService {
 
   Future<void> getParcelCategoryList() async {
     Response response = await parcelRepo.getParcelCategory();
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       _parcelCategoryList = [];
-      response.body.forEach((parcel) => _parcelCategoryList!.add(ParcelCategoryModel.fromJson(parcel)));
-    }else {
+      response.body.forEach((parcel) =>
+          _parcelCategoryList!.add(ParcelCategoryModel.fromJson(parcel)));
+    } else {
       ApiChecker.checkApi(response);
     }
     update();
@@ -125,51 +125,62 @@ class ParcelController extends GetxController implements GetxService {
 
   void setPickupAddress(AddressModel? addressModel, bool notify) {
     _pickupAddress = addressModel;
-    if(notify) {
+    if (notify) {
       update();
     }
   }
 
   void setDestinationAddress(AddressModel? addressModel, {bool notify = true}) {
     _destinationAddress = addressModel;
-    if(notify) {
+    if (notify) {
       update();
     }
   }
 
-  void setLocationFromPlace(String? placeID, String? address, bool? isPickedUp) async {
+  void setLocationFromPlace(
+      String? placeID, String? address, bool? isPickedUp) async {
     Response response = await parcelRepo.getPlaceDetails(placeID);
-    if(response.statusCode == 200) {
-      PlaceDetailsModel placeDetails = PlaceDetailsModel.fromJson(response.body);
-      if(placeDetails.status == 'OK') {
+    if (response.statusCode == 200) {
+      PlaceDetailsModel placeDetails =
+          PlaceDetailsModel.fromJson(response.body);
+      if (placeDetails.status == 'OK') {
         AddressModel address0 = AddressModel(
-          address: address, addressType: 'others', latitude: placeDetails.result!.geometry!.location!.lat.toString(),
+          address: address,
+          addressType: 'others',
+          latitude: placeDetails.result!.geometry!.location!.lat.toString(),
           longitude: placeDetails.result!.geometry!.location!.lng.toString(),
-          contactPersonName: Get.find<LocationController>().getUserAddress()!.contactPersonName,
-          contactPersonNumber: Get.find<LocationController>().getUserAddress()!.contactPersonNumber,
+          contactPersonName: Get.find<LocationController>()
+              .getUserAddress()!
+              .contactPersonName,
+          contactPersonNumber: Get.find<LocationController>()
+              .getUserAddress()!
+              .contactPersonNumber,
         );
-        ZoneResponseModel response0 = await Get.find<LocationController>().getZone(address0.latitude, address0.longitude, false);
+        ZoneResponseModel response0 = await Get.find<LocationController>()
+            .getZone(address0.latitude, address0.longitude, false);
         if (response0.isSuccess) {
           bool inZone = false;
-          for(int zoneId in Get.find<LocationController>().getUserAddress()!.zoneIds!) {
-            if(response0.zoneIds.contains(zoneId)) {
+          for (int zoneId
+              in Get.find<LocationController>().getUserAddress()!.zoneIds!) {
+            if (response0.zoneIds.contains(zoneId)) {
               inZone = true;
               break;
             }
           }
-          if(inZone) {
-            address0.zoneId =  response0.zoneIds[0];
+          if (inZone) {
+            address0.zoneId = response0.zoneIds[0];
             address0.zoneIds = [];
             address0.zoneIds!.addAll(response0.zoneIds);
             address0.zoneData = [];
             address0.zoneData!.addAll(response0.zoneData);
-            if(isPickedUp!) {
+            if (isPickedUp!) {
               setPickupAddress(address0, true);
-            }else {
+            } else {
               setDestinationAddress(address0);
             }
-          }else {
-            showCustomSnackBar('your_selected_location_is_from_different_zone_store'.tr);
+          } else {
+            showCustomSnackBar(
+                'your_selected_location_is_from_different_zone_store'.tr);
           }
         } else {
           showCustomSnackBar(response0.message);
@@ -180,9 +191,9 @@ class ParcelController extends GetxController implements GetxService {
 
   Future<void> getWhyChooseDetails() async {
     Response response = await parcelRepo.getWhyChooseDetails();
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       _whyChooseDetails = WhyChooseModel.fromJson(response.body);
-    }else {
+    } else {
       ApiChecker.checkApi(response);
     }
     update();
@@ -190,9 +201,9 @@ class ParcelController extends GetxController implements GetxService {
 
   Future<void> getVideoContentDetails() async {
     Response response = await parcelRepo.getVideoContentDetails();
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       _videoContentDetails = VideoContentModel.fromJson(response.body);
-    }else {
+    } else {
       ApiChecker.checkApi(response);
     }
     update();
@@ -200,23 +211,26 @@ class ParcelController extends GetxController implements GetxService {
 
   void setIsPickedUp(bool? isPickedUp, bool notify) {
     _isPickedUp = isPickedUp;
-    if(notify) {
+    if (notify) {
       update();
     }
   }
 
   void setIsSender(bool sender, bool notify) {
     _isSender = sender;
-    if(notify) {
+    if (notify) {
       update();
     }
   }
 
-  void getDistance(AddressModel pickedUpAddress, AddressModel destinationAddress) async {
+  void getDistance(
+      AddressModel pickedUpAddress, AddressModel destinationAddress) async {
     _distance = -1;
     _distance = await Get.find<OrderController>().getDistanceInKM(
-      LatLng(double.parse(pickedUpAddress.latitude!), double.parse(pickedUpAddress.longitude!)),
-      LatLng(double.parse(destinationAddress.latitude!), double.parse(destinationAddress.longitude!)),
+      LatLng(double.parse(pickedUpAddress.latitude!),
+          double.parse(pickedUpAddress.longitude!)),
+      LatLng(double.parse(destinationAddress.latitude!),
+          double.parse(destinationAddress.longitude!)),
     );
 
     _extraCharge = Get.find<OrderController>().extraCharge;
@@ -226,24 +240,24 @@ class ParcelController extends GetxController implements GetxService {
 
   void setPayerIndex(int index, bool notify) {
     _payerIndex = index;
-    if(_payerIndex == 1) {
+    if (_payerIndex == 1) {
       _paymentIndex = 0;
     }
-    if(notify) {
+    if (notify) {
       update();
     }
   }
 
   void setPaymentIndex(int index, bool notify) {
     _paymentIndex = index;
-    if(notify) {
+    if (notify) {
       update();
     }
   }
 
   void startLoader(bool isEnable, {bool canUpdate = true}) {
     _isLoading = isEnable;
-    if(canUpdate) {
+    if (canUpdate) {
       update();
     }
   }
@@ -251,10 +265,11 @@ class ParcelController extends GetxController implements GetxService {
   Future<void> getParcelInstruction() async {
     _parcelInstructionList = null;
     Response response = await parcelRepo.getParcelInstruction(1);
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       _parcelInstructionList = [];
-      _parcelInstructionList!.addAll(ParcelInstructionModel.fromJson(response.body).data!);
-    }else {
+      _parcelInstructionList!
+          .addAll(ParcelInstructionModel.fromJson(response.body).data!);
+    } else {
       ApiChecker.checkApi(response);
     }
     update();
@@ -262,14 +277,14 @@ class ParcelController extends GetxController implements GetxService {
 
   void setInstructionSelectedIndex(int index, {bool notify = true}) {
     _instructionSelectedIndex = index;
-    if(notify) {
+    if (notify) {
       update();
     }
   }
 
   void setCustomNoteController(String customNote, {bool notify = true}) {
     _customNoteController.text = customNote;
-    if(notify) {
+    if (notify) {
       update();
     }
   }
@@ -278,76 +293,95 @@ class ParcelController extends GetxController implements GetxService {
     if (customNoteText != null && customNoteText.isNotEmpty) {
       _customNote = customNoteText;
       update();
-    }else {
+    } else {
       _customNote = _customNoteController.text;
     }
-    if(customNoteText == null) {
+    if (customNoteText == null) {
       update();
     }
   }
 
   void setSelectedIndex(int? index) {
-    if(index != null) {
+    if (index != null) {
       _selectedIndexNote = index;
-    }else{
+    } else {
       _selectedIndexNote = _instructionSelectedIndex;
     }
-    if(index == null) {
+    if (index == null) {
       update();
     }
   }
 
-  List<DropdownItem<int>> getDropdownAddressList({required BuildContext context, required List<AddressModel>? addressList, required bool isSender}) {
+  List<DropdownItem<int>> getDropdownAddressList(
+      {required BuildContext context,
+      required List<AddressModel>? addressList,
+      required bool isSender}) {
     List<DropdownItem<int>> dropDownAddressList = [];
 
-    if(_isSender) {
-      dropDownAddressList.add(DropdownItem<int>(value: 0, child: SizedBox(
-        width: context.width > Dimensions.webMaxWidth ? Dimensions.webMaxWidth - 50 : context.width - 50,
-        child: AddressWidget(
-          address: _pickupAddress,
-          fromAddress: false, fromCheckout: true,
-        ),
-      )));
-    } else if(!_isSender) {
-      dropDownAddressList.add(DropdownItem<int>(value: 0, child: SizedBox(
-        width: context.width > Dimensions.webMaxWidth ? Dimensions.webMaxWidth - 50 : context.width - 50,
-        child: AddressWidget(
-          address: _destinationAddress ?? Get.find<LocationController>().getUserAddress(),
-          fromAddress: false, fromCheckout: true,
-        ),
-      )));
+    if (_isSender) {
+      dropDownAddressList.add(DropdownItem<int>(
+          value: 0,
+          child: SizedBox(
+            width: context.width > Dimensions.webMaxWidth
+                ? Dimensions.webMaxWidth - 50
+                : context.width - 50,
+            child: AddressWidget(
+              address: _pickupAddress,
+              fromAddress: false,
+              fromCheckout: true,
+            ),
+          )));
+    } else if (!_isSender) {
+      dropDownAddressList.add(DropdownItem<int>(
+          value: 0,
+          child: SizedBox(
+            width: context.width > Dimensions.webMaxWidth
+                ? Dimensions.webMaxWidth - 50
+                : context.width - 50,
+            child: AddressWidget(
+              address: _destinationAddress ??
+                  Get.find<LocationController>().getUserAddress(),
+              fromAddress: false,
+              fromCheckout: true,
+            ),
+          )));
     }
 
-    if(addressList != null && Get.find<AuthController>().isLoggedIn()) {
-      for(int index=0; index<addressList.length; index++) {
-
-        dropDownAddressList.add(DropdownItem<int>(value: index + 1, child: SizedBox(
-          width: context.width > Dimensions.webMaxWidth ? Dimensions.webMaxWidth-50 : context.width-50,
-          child: AddressWidget(
-            address: addressList[index],
-            fromAddress: false, fromCheckout: true,
-          ),
-        )));
+    if (addressList != null && Get.find<AuthController>().isLoggedIn()) {
+      for (int index = 0; index < addressList.length; index++) {
+        dropDownAddressList.add(DropdownItem<int>(
+            value: index + 1,
+            child: SizedBox(
+              width: context.width > Dimensions.webMaxWidth
+                  ? Dimensions.webMaxWidth - 50
+                  : context.width - 50,
+              child: AddressWidget(
+                address: addressList[index],
+                fromAddress: false,
+                fromCheckout: true,
+              ),
+            )));
       }
     }
     return dropDownAddressList;
   }
 
-  List<AddressModel> getAddressList({required List<AddressModel>? addressList, required bool isSender}) {
+  List<AddressModel> getAddressList(
+      {required List<AddressModel>? addressList, required bool isSender}) {
     List<AddressModel> address = [];
 
-    if(isSender) {
+    if (isSender) {
       address.add(_pickupAddress!);
-    } else if(!isSender) {
-      address.add(_destinationAddress ?? Get.find<LocationController>().getUserAddress()!);
+    } else if (!isSender) {
+      address.add(_destinationAddress ??
+          Get.find<LocationController>().getUserAddress()!);
     }
 
-    if(addressList != null && Get.find<AuthController>().isLoggedIn()) {
-      for(int index=0; index<addressList.length; index++) {
+    if (addressList != null && Get.find<AuthController>().isLoggedIn()) {
+      for (int index = 0; index < addressList.length; index++) {
         address.add(addressList[index]);
       }
     }
     return address;
   }
-
 }

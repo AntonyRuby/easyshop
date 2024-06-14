@@ -10,13 +10,13 @@ class CommonConditionModel {
 
   CommonConditionModel(
       {this.id,
-        this.name,
-        this.slug,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.itemsCount,
-        this.translations});
+      this.name,
+      this.slug,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.itemsCount,
+      this.translations});
 
   CommonConditionModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -62,13 +62,13 @@ class Translations {
 
   Translations(
       {this.id,
-        this.translationableType,
-        this.translationableId,
-        this.locale,
-        this.key,
-        this.value,
-        this.createdAt,
-        this.updatedAt});
+      this.translationableType,
+      this.translationableId,
+      this.locale,
+      this.key,
+      this.value,
+      this.createdAt,
+      this.updatedAt});
 
   Translations.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -82,7 +82,7 @@ class Translations {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['translationable_type'] = translationableType;
     data['translationable_id'] = translationableId;

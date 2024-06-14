@@ -27,8 +27,12 @@ class PassView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(right: Dimensions.paddingSizeExtraSmall),
       child: Row(mainAxisSize: MainAxisSize.min, children: [
-        Icon(done ? Icons.check : Icons.clear, color: done ? const Color(0xFFFE0100) : Colors.red, size: 12),
-        Text(title, style: robotoRegular.copyWith(color: done ? const Color(0xFFFE0100) : Colors.red, fontSize: 12))
+        Icon(done ? Icons.check : Icons.clear,
+            color: done ? const Color(0xFFFE0100) : Colors.red, size: 12),
+        Text(title,
+            style: robotoRegular.copyWith(
+                color: done ? const Color(0xFFFE0100) : Colors.red,
+                fontSize: 12))
       ]),
     );
   }

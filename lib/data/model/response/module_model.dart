@@ -11,19 +11,19 @@ class ModuleModel {
   String? updatedAt;
   List<ModuleZoneData>? zones;
 
-  ModuleModel(
-      {this.id,
-        this.moduleName,
-        this.moduleType,
-        this.thumbnail,
-        this.storesCount,
-        this.icon,
-        this.themeId,
-        this.description,
-        this.createdAt,
-        this.updatedAt,
-        this.zones,
-      });
+  ModuleModel({
+    this.id,
+    this.moduleName,
+    this.moduleType,
+    this.thumbnail,
+    this.storesCount,
+    this.icon,
+    this.themeId,
+    this.description,
+    this.createdAt,
+    this.updatedAt,
+    this.zones,
+  });
 
   ModuleModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -60,6 +60,7 @@ class ModuleModel {
     return data;
   }
 }
+
 class ModuleZoneData {
   int? id;
   String? name;
@@ -69,7 +70,14 @@ class ModuleZoneData {
   bool? cashOnDelivery;
   bool? digitalPayment;
 
-  ModuleZoneData({this.id, this.name, this.status, this.createdAt, this.updatedAt, this.cashOnDelivery, this.digitalPayment});
+  ModuleZoneData(
+      {this.id,
+      this.name,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.cashOnDelivery,
+      this.digitalPayment});
 
   ModuleZoneData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
