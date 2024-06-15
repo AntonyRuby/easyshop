@@ -4,7 +4,7 @@ import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class GetServiceVideo extends StatefulWidget {
   final String videoUrl;
-  const GetServiceVideo({Key? key, required this.videoUrl}) : super(key: key);
+  const GetServiceVideo({super.key, required this.videoUrl});
 
   @override
   State<GetServiceVideo> createState() => _GetServiceVideoState();

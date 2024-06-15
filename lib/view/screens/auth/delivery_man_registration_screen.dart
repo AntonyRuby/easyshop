@@ -5,7 +5,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:phone_number/phone_number.dart';
+import 'package:phone_numbers_parser/phone_numbers_parser.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/localization_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
@@ -26,7 +26,7 @@ import 'package:sixam_mart/view/screens/auth/widget/condition_check_box.dart';
 import 'package:sixam_mart/view/screens/auth/widget/pass_view.dart';
 
 class DeliveryManRegistrationScreen extends StatefulWidget {
-  const DeliveryManRegistrationScreen({Key? key}) : super(key: key);
+  const DeliveryManRegistrationScreen({super.key});
 
   @override
   State<DeliveryManRegistrationScreen> createState() =>
@@ -1658,9 +1658,9 @@ class _DeliveryManRegistrationScreenState
                   if (GetPlatform.isAndroid) {
                     try {
                       PhoneNumber phoneNumber =
-                          await PhoneNumberUtil().parse(numberWithCountryCode);
+                          PhoneNumber.parse(numberWithCountryCode);
                       numberWithCountryCode =
-                          '+${phoneNumber.countryCode}${phoneNumber.nationalNumber}';
+                          '+${phoneNumber.countryCode}${phoneNumber.nsn}';
                       isValid = true;
                     } catch (_) {}
                   }

@@ -1,7 +1,7 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:phone_number/phone_number.dart';
+import 'package:phone_numbers_parser/phone_numbers_parser.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/location_controller.dart';
 import 'package:sixam_mart/controller/parcel_controller.dart';
@@ -22,8 +22,7 @@ import 'package:sixam_mart/view/screens/parcel/widget/parcel_view.dart';
 
 class ParcelLocationScreen extends StatefulWidget {
   final ParcelCategoryModel category;
-  const ParcelLocationScreen({Key? key, required this.category})
-      : super(key: key);
+  const ParcelLocationScreen({super.key, required this.category});
 
   @override
   State<ParcelLocationScreen> createState() => _ParcelLocationScreenState();
@@ -128,9 +127,9 @@ class _ParcelLocationScreenState extends State<ParcelLocationScreen>
     String pNumber = '';
     if (GetPlatform.isAndroid || GetPlatform.isIOS) {
       try {
-        PhoneNumber phoneNumber = await PhoneNumberUtil().parse(number);
+        PhoneNumber phoneNumber = PhoneNumber.parse(number);
         code = '+${phoneNumber.countryCode}';
-        pNumber = phoneNumber.nationalNumber;
+        pNumber = phoneNumber.nsn;
         Get.find<ParcelController>()
             .setCountryCode(phoneNumber.countryCode, true);
         Get.find<ParcelController>()

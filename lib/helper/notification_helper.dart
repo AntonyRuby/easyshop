@@ -29,7 +29,7 @@ class NotificationHelper {
     flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()!
-        .requestPermission();
+        .requestNotificationsPermission();
     flutterLocalNotificationsPlugin.initialize(initializationsSettings,
         onDidReceiveNotificationResponse: (NotificationResponse load) async {
       try {
