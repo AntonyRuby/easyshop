@@ -110,9 +110,8 @@ class SearchScreenState extends State<SearchScreen>
                                           : Icons.search,
                                       iconColor:
                                           Theme.of(context).disabledColor,
-                                      filledColor: Theme.of(context)
-                                          .colorScheme
-                                          .background,
+                                      filledColor:
+                                          Theme.of(context).colorScheme.surface,
                                       iconPressed: () {
                                         if (searchController
                                             .searchHomeText!.isNotEmpty) {
@@ -347,6 +346,7 @@ class SearchScreenState extends State<SearchScreen>
                                                       child: InkWell(
                                                         onTap: () => searchController
                                                             .searchData(
+                                                                context,
                                                                 searchController
                                                                         .historyList[
                                                                     index],
@@ -397,6 +397,7 @@ class SearchScreenState extends State<SearchScreen>
                                                           child: InkWell(
                                                             onTap: () => searchController
                                                                 .searchData(
+                                                                    context,
                                                                     searchController
                                                                             .historyList[
                                                                         index],
@@ -618,7 +619,8 @@ class SearchScreenState extends State<SearchScreen>
   void _actionSearch(bool isSubmit, String? queryText, bool fromHome) {
     if (Get.find<SearchingController>().isSearchMode || isSubmit) {
       if (queryText!.isNotEmpty) {
-        Get.find<SearchingController>().searchData(queryText, fromHome);
+        Get.find<SearchingController>()
+            .searchData(context, queryText, fromHome);
       } else {
         showCustomSnackBar(Get.find<SplashController>()
                 .configModel!

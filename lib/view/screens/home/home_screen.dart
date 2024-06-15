@@ -156,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: ResponsiveHelper.isDesktop(context) ? const WebMenuBar() : null,
         endDrawer: const MenuDrawer(),
         endDrawerEnableOpenDragGesture: false,
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         body: /*isTaxiBooking ? const RiderHomeScreen() :*/ isParcel
             ? const ParcelCategoryScreen()
             : SafeArea(
@@ -230,27 +230,25 @@ class _HomeScreenState extends State<HomeScreen> {
                               backgroundColor:
                                   ResponsiveHelper.isDesktop(context)
                                       ? Colors.transparent
-                                      : Theme.of(context)
-                                          .colorScheme
-                                          .background,
+                                      : Theme.of(context).colorScheme.surface,
                               toolbarHeight: 100,
                               title: Container(
                                 width: Dimensions.webMaxWidth,
                                 height: Get.find<LocalizationController>().isLtr
                                     ? 100
                                     : 80,
-                                color: Theme.of(context).colorScheme.background,
+                                color: Theme.of(context).colorScheme.surface,
                                 child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.stretch,
                                     children: [
-                                      SizedBox(
+                                      const SizedBox(
                                           height:
                                               Dimensions.paddingSizeDefault),
                                       GetBuilder<LocationController>(
                                           builder: (locationController) {
                                         return Padding(
-                                          padding: EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                             horizontal: Dimensions
                                                 .paddingSizeExtremeLarge,
                                           ),

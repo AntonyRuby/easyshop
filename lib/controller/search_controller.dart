@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:sixam_mart/data/api/api_checker.dart';
 import 'package:sixam_mart/data/model/response/item_model.dart';
 import 'package:sixam_mart/data/model/response/store_model.dart';
@@ -8,6 +9,10 @@ import 'package:get/get.dart';
 class SearchingController extends GetxController implements GetxService {
   final SearchRepo searchRepo;
   SearchingController({required this.searchRepo});
+
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
 
   List<Item>? _searchItemList;
   List<Item>? _allItemList;
@@ -193,60 +198,79 @@ class SearchingController extends GetxController implements GetxService {
     update();
   }
 
-  void searchData(String? query, bool fromHome) async {
-    if ((_isStore && query!.isNotEmpty && query != _storeResultText) ||
-        (!_isStore &&
-            query!.isNotEmpty &&
-            (query != _itemResultText || fromHome))) {
-      _searchHomeText = query;
-      _searchText = query;
-      _rating = -1;
-      _upperValue = 0;
-      _lowerValue = 0;
-      if (_isStore) {
-        _searchStoreList = null;
-        _allStoreList = null;
-      } else {
-        _searchItemList = null;
-        _allItemList = null;
-      }
-      if (!_historyList.contains(query)) {
-        _historyList.insert(0, query);
-      }
-      searchRepo.saveSearchHistory(_historyList);
-      _isSearchMode = false;
-      if (!fromHome) {
-        update();
-      }
+  void searchData(BuildContext context, String? query, bool fromHome) async {
+    if (query != null && query.isNotEmpty) {
+      _isLoading = true;
+      update(); // Update the UI to show the loading indicator
 
-      Response response = await searchRepo.getSearchData(query, _isStore);
-      if (response.statusCode == 200) {
-        if (query.isEmpty) {
-          if (_isStore) {
-            _searchStoreList = [];
-          } else {
-            _searchItemList = [];
-          }
+      try {
+        List<String> searchTerms = query.split(' ');
+        _searchHomeText = query;
+        _searchText = query;
+        _rating = -1;
+        _upperValue = 0;
+        _lowerValue = 0;
+        if (_isStore) {
+          _searchStoreList = []; // Initialize the list
+          _allStoreList = []; // Initialize the list
         } else {
-          if (_isStore) {
-            _storeResultText = query;
-            _searchStoreList = [];
-            _allStoreList = [];
-            _searchStoreList!
-                .addAll(StoreModel.fromJson(response.body).stores!);
-            _allStoreList!.addAll(StoreModel.fromJson(response.body).stores!);
+          _searchItemList = []; // Initialize the list
+          _allItemList = []; // Initialize the list
+        }
+        if (!_historyList.contains(query)) {
+          _historyList.insert(0, query);
+        }
+        searchRepo.saveSearchHistory(_historyList);
+        _isSearchMode = false;
+        if (!fromHome) {
+          update();
+        }
+
+        Response response;
+        for (String term in searchTerms) {
+          response = await searchRepo.getSearchData(term, _isStore);
+          if (response.statusCode == 200) {
+            if (term.isEmpty) {
+              if (_isStore) {
+                _searchStoreList = [];
+              } else {
+                _searchItemList = [];
+              }
+            } else {
+              if (_isStore) {
+                _storeResultText = term;
+                _searchStoreList = []; // Initialize the list
+                _allStoreList = []; // Initialize the list
+                StoreModel storeModel = StoreModel.fromJson(response.body);
+                if (storeModel.stores != null) {
+                  // Check for null
+                  _searchStoreList!.addAll(storeModel.stores!);
+                  _allStoreList!.addAll(storeModel.stores!);
+                }
+              } else {
+                _itemResultText = term;
+                _searchItemList = []; // Initialize the list
+                _allItemList = []; // Initialize the list
+                ItemModel itemModel = ItemModel.fromJson(response.body);
+                if (itemModel.items != null) {
+                  // Check for null
+                  _searchItemList!.addAll(itemModel.items!);
+                  _allItemList!.addAll(itemModel.items!);
+                }
+              }
+            }
           } else {
-            _itemResultText = query;
-            _searchItemList = [];
-            _allItemList = [];
-            _searchItemList!.addAll(ItemModel.fromJson(response.body).items!);
-            _allItemList!.addAll(ItemModel.fromJson(response.body).items!);
+            ApiChecker.checkApi(response);
           }
         }
-      } else {
-        ApiChecker.checkApi(response);
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('An error occurred: $e')),
+        );
+      } finally {
+        _isLoading = false;
+        update(); // Update the UI to hide the loading indicator
       }
-      update();
     }
   }
 

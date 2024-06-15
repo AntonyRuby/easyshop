@@ -158,23 +158,40 @@ class SplashScreenState extends State<SplashScreen> {
 
     return Scaffold(
       key: _globalKey,
-      body: GetBuilder<SplashController>(builder: (splashController) {
-        return Center(
-          child: splashController.hasConnection
-              ? Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Image.asset(
-                      Images.splash,
-                      fit: BoxFit.fill,
+      body: GetBuilder<SplashController>(
+        builder: (splashController) {
+          return Center(
+            child: splashController.hasConnection
+                ? Stack(
+                    children: [
+                      Image.asset(
+                        Images.splash,
+                        fit: BoxFit.cover,
+                        height: double.infinity, // Cover the full screen height
+                        width: double.infinity, // Cover the full screen width
+                      ),
+                      const Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(height: Dimensions.paddingSizeSmall),
+                            // Text(AppConstants.APP_NAME, style: robotoMedium.copyWith(fontSize: 25)),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                : NoInternetScreen(
+                    child: SplashScreen(
+                      body: widget.body,
                     ),
-                    const SizedBox(height: Dimensions.paddingSizeSmall),
-                    // Text(AppConstants.APP_NAME, style: robotoMedium.copyWith(fontSize: 25)),
-                  ],
-                )
-              : NoInternetScreen(child: SplashScreen(body: widget.body)),
-        );
-      }),
+                  ),
+          );
+        },
+      ),
     );
   }
 }

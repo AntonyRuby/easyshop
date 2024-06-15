@@ -52,7 +52,7 @@ class ModuleView extends StatelessWidget {
                     crossAxisCount: 3,
                     mainAxisSpacing: Dimensions.paddingSizeExtraLarge,
                     crossAxisSpacing: Dimensions.paddingSizeLarge,
-                    childAspectRatio: (1 / 1),
+                    childAspectRatio: (1 / 1.2),
                   ),
                   padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
                   itemCount: splashController.moduleList!.length,
@@ -104,9 +104,9 @@ class ModuleView extends StatelessWidget {
                 ))
           : ModuleShimmer(isEnabled: splashController.moduleList == null),
       Container(
-        margin: EdgeInsets.symmetric(vertical: 15),
+        margin: const EdgeInsets.symmetric(vertical: 15),
         width: double.infinity,
-        color: Color.fromARGB(0, 244, 67, 54),
+        color: const Color.fromARGB(0, 244, 67, 54),
         child: Image.asset(
           "assets/image/static.jpeg",
           fit: BoxFit.fitWidth,

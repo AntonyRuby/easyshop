@@ -37,69 +37,74 @@ class SearchResultWidgetState extends State<SearchResultWidget>
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       GetBuilder<SearchingController>(builder: (searchController) {
-        bool isNull = true;
-        int length = 0;
-        if (searchController.isStore) {
-          isNull = searchController.searchStoreList == null;
-          if (!isNull) {
-            length = searchController.searchStoreList!.length;
-          }
+        if (searchController.isLoading) {
+          return const Center(child: CircularProgressIndicator());
         } else {
-          isNull = searchController.searchItemList == null;
-          if (!isNull) {
-            length = searchController.searchItemList!.length;
+          bool isNull = true;
+          int length = 0;
+          if (searchController.isStore) {
+            isNull = searchController.searchStoreList == null;
+            if (!isNull) {
+              length = searchController.searchStoreList!.length;
+            }
+          } else {
+            isNull = searchController.searchItemList == null;
+            if (!isNull) {
+              length = searchController.searchItemList!.length;
+            }
           }
-        }
-        return isNull
-            ? const SizedBox()
-            : Center(
-                child: SizedBox(
-                    width: Dimensions.webMaxWidth,
-                    child: Padding(
-                      padding:
-                          const EdgeInsets.all(Dimensions.paddingSizeSmall),
-                      child: Row(children: [
-                        Text(
-                          length.toString(),
-                          style: robotoBold.copyWith(
-                              color: Theme.of(context).primaryColor,
-                              fontSize: Dimensions.fontSizeSmall),
-                        ),
-                        const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-                        Expanded(
-                            child: Text(
-                          'results_found'.tr,
-                          style: robotoRegular.copyWith(
-                              color: Theme.of(context).disabledColor,
-                              fontSize: Dimensions.fontSizeSmall),
-                        )),
-                        (ResponsiveHelper.isMobile(context) &&
-                                widget.searchText.isNotEmpty)
-                            ? InkWell(
-                                onTap: () {
-                                  List<double?> prices = [];
-                                  if (!Get.find<SearchingController>()
-                                      .isStore) {
-                                    for (var product
-                                        in Get.find<SearchingController>()
-                                            .allItemList!) {
-                                      prices.add(product.price);
+          return isNull
+              ? const SizedBox()
+              : Center(
+                  child: SizedBox(
+                      width: Dimensions.webMaxWidth,
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                        child: Row(children: [
+                          Text(
+                            length.toString(),
+                            style: robotoBold.copyWith(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: Dimensions.fontSizeSmall),
+                          ),
+                          const SizedBox(
+                              width: Dimensions.paddingSizeExtraSmall),
+                          Expanded(
+                              child: Text(
+                            'results_found'.tr,
+                            style: robotoRegular.copyWith(
+                                color: Theme.of(context).disabledColor,
+                                fontSize: Dimensions.fontSizeSmall),
+                          )),
+                          (ResponsiveHelper.isMobile(context) &&
+                                  widget.searchText.isNotEmpty)
+                              ? InkWell(
+                                  onTap: () {
+                                    List<double?> prices = [];
+                                    if (!Get.find<SearchingController>()
+                                        .isStore) {
+                                      for (var product
+                                          in Get.find<SearchingController>()
+                                              .allItemList!) {
+                                        prices.add(product.price);
+                                      }
+                                      prices.sort();
                                     }
-                                    prices.sort();
-                                  }
-                                  double? maxValue = prices.isNotEmpty
-                                      ? prices[prices.length - 1]
-                                      : 1000;
-                                  Get.dialog(FilterWidget(
-                                      maxValue: maxValue,
-                                      isStore: Get.find<SearchingController>()
-                                          .isStore));
-                                },
-                                child: const Icon(Icons.filter_list),
-                              )
-                            : const SizedBox(),
-                      ]),
-                    )));
+                                    double? maxValue = prices.isNotEmpty
+                                        ? prices[prices.length - 1]
+                                        : 1000;
+                                    Get.dialog(FilterWidget(
+                                        maxValue: maxValue,
+                                        isStore: Get.find<SearchingController>()
+                                            .isStore));
+                                  },
+                                  child: const Icon(Icons.filter_list),
+                                )
+                              : const SizedBox(),
+                        ]),
+                      )));
+        }
       }),
       ResponsiveHelper.isDesktop(context)
           ? const SizedBox()
@@ -138,8 +143,11 @@ class SearchResultWidgetState extends State<SearchResultWidget>
           if (scrollNotification is ScrollEndNotification) {
             Get.find<SearchingController>()
                 .setStore(_tabController!.index == 1);
-            Get.find<SearchingController>()
-                .searchData(widget.searchText, false);
+            Get.find<SearchingController>().searchData(
+              context,
+              widget.searchText,
+              false,
+            );
           }
           return false;
         },
