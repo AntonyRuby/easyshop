@@ -7,9 +7,7 @@ environment:
   sdk: '>=3.0.6 <4.0.0'
 
 dependencies:
-  animated_flip_counter: ^0.2.5
   audioplayers: ^0.20.1
-  cached_network_image: ^3.3.0
   card_swiper: ^3.0.1
   carousel_slider: ^4.0.0
   connectivity: ^3.0.6
