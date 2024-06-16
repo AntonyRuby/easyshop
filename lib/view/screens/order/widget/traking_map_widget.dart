@@ -241,6 +241,7 @@ class _TrackingMapWidgetState extends State<TrackingMapWidget> {
             ))
           : const SizedBox();
     } catch (_) {}
+    if (!mounted) return;
     setState(() {});
   }
 

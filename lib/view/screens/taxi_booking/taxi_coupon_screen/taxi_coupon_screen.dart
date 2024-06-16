@@ -318,6 +318,7 @@ class _TaxiCouponScreenState extends State<TaxiCouponScreen> {
             })
           : NotLoggedInScreen(callBack: (value) {
               initCall();
+              if (!mounted) return;
               setState(() {});
             }),
     );

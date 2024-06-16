@@ -24,6 +24,7 @@ class _TextHoverState extends State<TextHover> {
   }
 
   void onEntered(bool isHovered) {
+    if (!mounted) return;
     setState(() {
       this.isHovered = isHovered;
     });

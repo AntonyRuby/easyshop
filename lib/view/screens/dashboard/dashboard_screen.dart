@@ -35,8 +35,7 @@ class DashboardScreen extends StatefulWidget {
   final int pageIndex;
   final bool fromSplash;
   const DashboardScreen(
-      {Key? key, required this.pageIndex, this.fromSplash = false})
-      : super(key: key);
+      {super.key, required this.pageIndex, this.fromSplash = false});
 
   @override
   DashboardScreenState createState() => DashboardScreenState();
@@ -84,6 +83,8 @@ class DashboardScreenState extends State<DashboardScreen> {
     ];
 
     Future.delayed(const Duration(seconds: 1), () {
+      if (!mounted) return;
+      if (!mounted) return;
       setState(() {});
     });
   }
@@ -101,6 +102,8 @@ class DashboardScreenState extends State<DashboardScreen> {
           builder: (con) => const AddressBottomSheet(),
         ).then((value) {
           Get.find<LocationController>().hideSuggestedLocation();
+          if (!mounted) return;
+          if (!mounted) return;
           setState(() {});
         });
       });
@@ -415,6 +418,7 @@ class DashboardScreenState extends State<DashboardScreen> {
   }
 
   void _setPage(int pageIndex) {
+    if (!mounted) return;
     setState(() {
       _pageController!.jumpToPage(pageIndex);
       _pageIndex = pageIndex;

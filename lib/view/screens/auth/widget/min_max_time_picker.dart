@@ -39,6 +39,7 @@ class _MinMaxTimePickerState extends State<MinMaxTimePicker> {
           initialPage: widget.initialPosition,
           autoPlayInterval: const Duration(seconds: 7),
           onPageChanged: (index, reason) {
+            if (!mounted) return;
             setState(() {
               selectedIndex = index;
             });

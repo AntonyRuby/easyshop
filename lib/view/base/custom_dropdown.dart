@@ -22,7 +22,7 @@ class CustomDropdown<T> extends StatefulWidget {
   /// if true the dropdown icon will as a leading icon, default to false
   final bool leadingIcon;
   const CustomDropdown({
-    Key? key,
+    super.key,
     this.hideIcon = false,
     required this.child,
     required this.items,
@@ -31,7 +31,7 @@ class CustomDropdown<T> extends StatefulWidget {
     this.icon,
     this.leadingIcon = false,
     this.onChange,
-  }) : super(key: key);
+  });
 
   @override
   CustomDropdownState<T> createState() => CustomDropdownState<T>();
@@ -151,6 +151,7 @@ class CustomDropdownState<T> extends State<CustomDropdown<T?>>
                           children: widget.items.asMap().entries.map((item) {
                             return InkWell(
                               onTap: () {
+                                if (!mounted) return;
                                 setState(() => _currentIndex = item.key);
                                 widget.onChange!(item.value.value, item.key);
                                 _toggleDropdown();
@@ -172,15 +173,18 @@ class CustomDropdownState<T> extends State<CustomDropdown<T?>>
   }
 
   void _toggleDropdown({bool close = false}) async {
+    if (!mounted) return;
     if (_isOpen || close) {
       await _animationController.reverse();
       this._overlayEntry.remove();
+      if (!mounted) return;
       setState(() {
         _isOpen = false;
       });
     } else {
       this._overlayEntry = this._createOverlayEntry();
       Overlay.of(context).insert(this._overlayEntry);
+      if (!mounted) return;
       setState(() => _isOpen = true);
       _animationController.forward();
     }
@@ -193,7 +197,7 @@ class DropdownItem<T> extends StatelessWidget {
   final T? value;
   final Widget? child;
 
-  const DropdownItem({Key? key, this.value, this.child}) : super(key: key);
+  const DropdownItem({super.key, this.value, this.child});
   @override
   Widget build(BuildContext context) {
     return child!;

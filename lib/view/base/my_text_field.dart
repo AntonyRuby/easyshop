@@ -96,6 +96,7 @@ class MyTextFieldState extends State<MyTextField> {
   }
 
   void _toggle() {
+    if (!mounted) return;
     setState(() {
       _obscureText = !_obscureText;
     });

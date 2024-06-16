@@ -60,6 +60,7 @@ class _CircleListViewState extends State<CircleListView> {
                                 height: 200,
                                 isClip: true,
                                 onItemChanged: (index) {
+                                  if (!mounted) return;
                                   setState(() {
                                     currentIndex = index;
                                   });

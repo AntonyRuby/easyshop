@@ -10,7 +10,8 @@ class SearchRepo {
 
   Future<Response> getSearchData(String? query, bool isStore) async {
     return await apiClient.getData(
-        '${AppConstants.searchUri}${isStore ? 'stores' : 'items'}/search?name=$query&offset=1&limit=50');
+      '${AppConstants.searchUri}${isStore ? 'stores' : 'items'}/search?name=$query&offset=1&limit=50',
+    );
   }
 
   Future<Response> getSuggestedItems() async {

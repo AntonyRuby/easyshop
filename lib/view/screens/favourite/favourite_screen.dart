@@ -84,6 +84,7 @@ class FavouriteScreenState extends State<FavouriteScreen>
             ]))
           : NotLoggedInScreen(callBack: (value) {
               initCall();
+              if (!mounted) return;
               setState(() {});
             }),
     );

@@ -90,6 +90,7 @@ class _Gallery3DState extends State<Gallery3D>
 
   @override
   void jumpTo(angle) {
+    if (!mounted) return;
     setState(() {
       _updateAllGalleryItemTransformByAngle(angle);
     });
@@ -121,6 +122,7 @@ class _Gallery3DState extends State<Gallery3D>
         },
         onHorizontalDragStart: (details) {},
         onHorizontalDragUpdate: (details) {
+          if (!mounted) return;
           setState(() {
             _lastUpdateLocation = details.localPosition;
             _lastTouchMillisecond = DateTime.now().millisecondsSinceEpoch;
@@ -156,6 +158,7 @@ class _Gallery3DState extends State<Gallery3D>
 
     double lastValue = 0;
     animation.addListener(() {
+      if (!mounted) return;
       setState(() {
         _updateAllGalleryItemTransformByAngle(animation.value - lastValue);
         lastValue = animation.value;

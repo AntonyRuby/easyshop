@@ -225,6 +225,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
               })
             : NotLoggedInScreen(callBack: (value) {
                 _loadData();
+                if (!mounted) return;
                 setState(() {});
               }),
       ),

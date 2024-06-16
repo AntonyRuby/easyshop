@@ -15,7 +15,7 @@ import 'package:sixam_mart/view/base/web_page_title_widget.dart';
 import 'package:sixam_mart/view/screens/coupon/widget/coupon_card.dart';
 
 class CouponScreen extends StatefulWidget {
-  const CouponScreen({Key? key}) : super(key: key);
+  const CouponScreen({super.key});
 
   @override
   State<CouponScreen> createState() => _CouponScreenState();
@@ -40,7 +40,7 @@ class _CouponScreenState extends State<CouponScreen> {
   Widget build(BuildContext context) {
     bool isLoggedIn = Get.find<AuthController>().isLoggedIn();
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: CustomAppBar(title: 'coupon'.tr),
       endDrawer: const MenuDrawer(),
       endDrawerEnableOpenDragGesture: false,
@@ -126,6 +126,7 @@ class _CouponScreenState extends State<CouponScreen> {
             })
           : NotLoggedInScreen(callBack: (bool value) {
               initCall();
+              if (!mounted) return;
               setState(() {});
             }),
     );

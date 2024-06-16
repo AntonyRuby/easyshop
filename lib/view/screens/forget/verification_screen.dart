@@ -57,6 +57,7 @@ class VerificationScreenState extends State<VerificationScreen> {
         timer.cancel();
         _timer?.cancel();
       }
+      if (!mounted) return;
       setState(() {});
     });
   }

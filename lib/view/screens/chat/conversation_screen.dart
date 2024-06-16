@@ -465,6 +465,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                               : const Center(child: CircularProgressIndicator())
                           : NotLoggedInScreen(callBack: (value) {
                               initCall();
+                              if (!mounted) return;
                               setState(() {});
                             })),
                 ]),

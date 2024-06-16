@@ -51,6 +51,7 @@ class _WebBestStoreNearbyViewState extends State<WebBestStoreNearbyView> {
   }
 
   void _checkScrollPosition() {
+    if (!mounted) return;
     setState(() {
       if (scrollController.position.pixels <= 0) {
         showBackButton = false;

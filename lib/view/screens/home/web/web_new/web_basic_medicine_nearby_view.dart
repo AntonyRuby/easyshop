@@ -40,6 +40,7 @@ class _WebBasicMedicineNearbyViewState
   }
 
   void _checkScrollPosition() {
+    if (!mounted) return;
     setState(() {
       if (scrollController.position.pixels <= 0) {
         showBackButton = false;
@@ -112,6 +113,7 @@ class _WebBasicMedicineNearbyViewState
                                 children: [
                                   InkWell(
                                     onTap: () {
+                                      if (!mounted) return;
                                       setState(() {
                                         selectedCategory = index;
                                       });

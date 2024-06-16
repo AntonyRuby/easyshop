@@ -23,14 +23,13 @@ class PaymentWebViewScreen extends StatefulWidget {
   final String guestId;
   final String contactNumber;
   const PaymentWebViewScreen(
-      {Key? key,
+      {super.key,
       required this.orderModel,
       required this.isCashOnDelivery,
       this.addFundUrl,
       required this.paymentMethod,
       required this.guestId,
-      required this.contactNumber})
-      : super(key: key);
+      required this.contactNumber});
 
   @override
   PaymentScreenState createState() => PaymentScreenState();
@@ -127,6 +126,7 @@ class PaymentScreenState extends State<PaymentWebViewScreen> {
                     addFundUrl: widget.addFundUrl,
                     orderID: widget.orderModel.id.toString(),
                     contactNumber: widget.contactNumber);
+                if (!mounted) return;
                 setState(() {
                   _isLoading = true;
                 });
@@ -151,6 +151,7 @@ class PaymentScreenState extends State<PaymentWebViewScreen> {
               },
               onLoadStop: (controller, url) async {
                 pullToRefreshController?.endRefreshing();
+                if (!mounted) return;
                 setState(() {
                   _isLoading = false;
                 });

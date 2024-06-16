@@ -325,6 +325,7 @@ class _AddressScreenState extends State<AddressScreen> {
                 })
               : NotLoggedInScreen(callBack: (value) {
                   initCall();
+                  if (!mounted) return;
                   setState(() {});
                 }),
         ),

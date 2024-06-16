@@ -629,6 +629,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
             })
           : NotLoggedInScreen(callBack: (value) {
               initCall();
+              if (!mounted) return;
               setState(() {});
             }),
     );

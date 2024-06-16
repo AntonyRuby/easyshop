@@ -161,6 +161,7 @@ class MapScreenState extends State<MapScreen> {
       icon: BitmapDescriptor.fromBytes(destinationImageData),
     ));
 
+    if (!mounted) return;
     setState(() {});
   }
 

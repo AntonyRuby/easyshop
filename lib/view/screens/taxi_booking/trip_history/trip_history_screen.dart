@@ -93,6 +93,7 @@ class TripHistoryScreenState extends State<TripHistoryScreen>
             )
           : NotLoggedInScreen(callBack: (value) {
               initCall();
+              if (!mounted) return;
               setState(() {});
             }),
     );

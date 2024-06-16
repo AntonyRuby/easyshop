@@ -63,6 +63,7 @@ class _ScaledListState extends State<ScaledList> {
       if (offset > deltaReverse &&
           _scrollController!.position.userScrollDirection ==
               ScrollDirection.reverse) {
+        if (!mounted) return;
         setState(() {
           _selectedIndex += 1;
         });
@@ -70,6 +71,7 @@ class _ScaledListState extends State<ScaledList> {
       if (offset < deltaForward &&
           _scrollController!.position.userScrollDirection ==
               ScrollDirection.forward) {
+        if (!mounted) return;
         setState(() {
           _selectedIndex -= 1;
         });

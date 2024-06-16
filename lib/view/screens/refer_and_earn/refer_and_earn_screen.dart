@@ -347,6 +347,7 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
               )
             : NotLoggedInScreen(callBack: (value) {
                 initCall();
+                if (!mounted) return;
                 setState(() {});
               }),
         persistentContentHeight: ResponsiveHelper.isDesktop(context) ? 0 : 60,

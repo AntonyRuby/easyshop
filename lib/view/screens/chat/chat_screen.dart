@@ -469,6 +469,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 )
               : NotLoggedInScreen(callBack: (value) {
                   initCall();
+                  if (!mounted) return;
                   setState(() {});
                 }),
         ),

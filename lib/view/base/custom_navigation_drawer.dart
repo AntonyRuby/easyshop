@@ -12,7 +12,7 @@ class CustomNavigationDrawer extends StatefulWidget {
   final TextStyle selectedTextStyle;
   final Widget child;
   const CustomNavigationDrawer({
-    Key? key,
+    super.key,
     this.selectedColor = const Color(0xFF4AC8EA),
     this.backgroundColor,
     required this.child,
@@ -26,7 +26,7 @@ class CustomNavigationDrawer extends StatefulWidget {
       fontSize: 14,
       fontWeight: FontWeight.w600,
     ),
-  }) : super(key: key);
+  });
 
   @override
   CustomNavigationDrawerState createState() => CustomNavigationDrawerState();
@@ -80,12 +80,14 @@ class CustomNavigationDrawerState extends State<CustomNavigationDrawer>
       SplashController splashController) {
     return MouseRegion(
       onEnter: (event) {
+        if (!mounted) return;
         setState(() {
           isCollapsed = false;
           _animationController!.reverse();
         });
       },
       onExit: (event) {
+        if (!mounted) return;
         setState(() {
           isCollapsed = true;
           _animationController!.forward();
@@ -129,7 +131,8 @@ class CustomNavigationDrawerState extends State<CustomNavigationDrawer>
               ),
               // InkWell(
               //   onTap: () {
-              //     setState(() {
+              //     if (!mounted) return;
+// setState(() {
               //       isCollapsed = !isCollapsed;
               //       isCollapsed
               //           ? _animationController.forward()
@@ -165,7 +168,7 @@ class CollapsingListTile extends StatefulWidget {
   final Function? onTap;
 
   const CollapsingListTile({
-    Key? key,
+    super.key,
     required this.title,
     required this.icon,
     required this.selectedColor,
@@ -174,7 +177,7 @@ class CollapsingListTile extends StatefulWidget {
     required this.selectedTextStyle,
     this.isSelected = false,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   CollapsingListTileState createState() => CollapsingListTileState();

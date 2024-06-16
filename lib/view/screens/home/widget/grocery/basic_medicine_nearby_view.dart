@@ -84,6 +84,7 @@ class _ProductWithCategoriesViewState extends State<ProductWithCategoriesView> {
                               bool isSelected = selectedCategory == index;
                               return InkWell(
                                 onTap: () {
+                                  if (!mounted) return;
                                   setState(() {
                                     selectedCategory = index;
                                   });

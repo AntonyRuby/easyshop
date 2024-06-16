@@ -230,7 +230,7 @@ class ApiClient extends GetxService {
     if (kDebugMode) {
       log('====> API Response: [${response0.statusCode}] $uri');
       if (!ResponsiveHelper.isWeb() || response.statusCode != 500) {
-        log('${response0.body}');
+        log(jsonEncode(response0.body));
       }
     }
     return response0;

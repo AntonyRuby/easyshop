@@ -669,6 +669,7 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen>
                 indicatorSize: TabBarIndicatorSize.tab,
                 tabs: _tabs,
                 onTap: (int? value) {
+                  if (!mounted) return;
                   setState(() {});
                 },
               ),

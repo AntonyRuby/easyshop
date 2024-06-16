@@ -13,7 +13,7 @@ class PaginatedListView extends StatefulWidget {
   final bool enabledPagination;
   final bool reverse;
   const PaginatedListView({
-    Key? key,
+    super.key,
     required this.scrollController,
     required this.onPaginate,
     required this.totalSize,
@@ -21,7 +21,7 @@ class PaginatedListView extends StatefulWidget {
     required this.itemView,
     this.enabledPagination = true,
     this.reverse = false,
-  }) : super(key: key);
+  });
 
   @override
   State<PaginatedListView> createState() => _PaginatedListViewState();
@@ -53,19 +53,23 @@ class _PaginatedListViewState extends State<PaginatedListView> {
   }
 
   void _paginate() async {
+    if (!mounted) return;
     int pageSize = (widget.totalSize! / 10).ceil();
     if (_offset! < pageSize && !_offsetList.contains(_offset! + 1)) {
+      if (!mounted) return;
       setState(() {
         _offset = _offset! + 1;
         _offsetList.add(_offset);
         _isLoading = true;
       });
       await widget.onPaginate(_offset);
+      if (!mounted) return;
       setState(() {
         _isLoading = false;
       });
     } else {
       if (_isLoading) {
+        if (!mounted) return;
         setState(() {
           _isLoading = false;
         });

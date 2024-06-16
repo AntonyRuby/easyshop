@@ -40,6 +40,7 @@ class _WebSpecialOfferViewState extends State<WebSpecialOfferView> {
   }
 
   void _checkScrollPosition() {
+    if (!mounted) return;
     setState(() {
       if (scrollController.position.pixels <= 0) {
         showBackButton = false;

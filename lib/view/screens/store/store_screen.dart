@@ -47,8 +47,10 @@ class StoreScreen extends StatefulWidget {
   final bool fromModule;
   final String slug;
   const StoreScreen(
-      {Key? key, required this.store, required this.fromModule, this.slug = ''})
-      : super(key: key);
+      {super.key,
+      required this.store,
+      required this.fromModule,
+      this.slug = ''});
 
   @override
   State<StoreScreen> createState() => _StoreScreenState();
@@ -57,6 +59,9 @@ class StoreScreen extends StatefulWidget {
 class _StoreScreenState extends State<StoreScreen> {
   final ScrollController scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
+
+  StoreController storeController =
+      Get.put(StoreController(storeRepo: Get.find()));
 
   @override
   void initState() {
@@ -73,35 +78,38 @@ class _StoreScreenState extends State<StoreScreen> {
   }
 
   Future<void> initDataCall() async {
-    if (Get.find<StoreController>().isSearching) {
-      Get.find<StoreController>().changeSearchStatus(isUpdate: false);
+    if (storeController.isSearching) {
+      storeController.changeSearchStatus(isUpdate: false);
     }
-    Get.find<StoreController>().hideAnimation();
-    await Get.find<StoreController>()
+    storeController.hideAnimation();
+    await storeController
         .getStoreDetails(Store(id: widget.store!.id), widget.fromModule,
             slug: widget.slug)
         .then((value) {
-      Get.find<StoreController>().showButtonAnimation();
+      storeController.showButtonAnimation();
     });
     if (Get.find<CategoryController>().categoryList == null) {
       Get.find<CategoryController>().getCategoryList(true);
     }
-    Get.find<StoreController>().getStoreBannerList(
-        widget.store!.id ?? Get.find<StoreController>().store!.id);
-    Get.find<StoreController>().getRestaurantRecommendedItemList(
-        widget.store!.id ?? Get.find<StoreController>().store!.id, false);
-    Get.find<StoreController>().getStoreItemList(
-        widget.store!.id ?? Get.find<StoreController>().store!.id,
-        1,
-        'all',
-        false);
+    storeController
+        .getStoreBannerList(widget.store!.id ?? storeController.store!.id);
+    storeController.getRestaurantRecommendedItemList(
+      widget.store!.id ?? storeController.store!.id,
+      false,
+    );
+    storeController.getStoreItemList(
+      widget.store!.id ?? storeController.store!.id,
+      1,
+      'all',
+      false,
+    );
 
     scrollController.addListener(() {
       if (scrollController.position.userScrollDirection ==
           ScrollDirection.reverse) {
-        if (Get.find<StoreController>().showFavButton) {
-          Get.find<StoreController>().changeFavVisibility();
-          Get.find<StoreController>().hideAnimation();
+        if (storeController.showFavButton) {
+          storeController.changeFavVisibility();
+          storeController.hideAnimation();
         }
       } else {
         if (!Get.find<StoreController>().showFavButton) {
@@ -118,7 +126,7 @@ class _StoreScreenState extends State<StoreScreen> {
         appBar: ResponsiveHelper.isDesktop(context) ? const WebMenuBar() : null,
         endDrawer: const MenuDrawer(),
         endDrawerEnableOpenDragGesture: false,
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         body: GetBuilder<StoreController>(builder: (storeController) {
           return GetBuilder<CategoryController>(builder: (categoryController) {
             Store? store;
@@ -1039,38 +1047,22 @@ class _StoreScreenState extends State<StoreScreen> {
                                                           false);
                                                 }
                                               },
-                                              totalSize: storeController
-                                                      .isSearching
-                                                  ? storeController
-                                                              .storeSearchItemModel !=
-                                                          null
+                                              totalSize:
+                                                  storeController.isSearching
                                                       ? storeController
-                                                          .storeSearchItemModel!
-                                                          .totalSize
-                                                      : null
-                                                  : storeController
-                                                              .storeItemModel !=
-                                                          null
+                                                          .storeSearchItemModel
+                                                          ?.totalSize
+                                                      : storeController
+                                                          .storeItemModel
+                                                          ?.totalSize,
+                                              offset:
+                                                  storeController.isSearching
                                                       ? storeController
-                                                          .storeItemModel!
-                                                          .totalSize
-                                                      : null,
-                                              offset: storeController
-                                                      .isSearching
-                                                  ? storeController
-                                                              .storeSearchItemModel !=
-                                                          null
-                                                      ? storeController
-                                                          .storeSearchItemModel!
-                                                          .offset
-                                                      : null
-                                                  : storeController
-                                                              .storeItemModel !=
-                                                          null
-                                                      ? storeController
-                                                          .storeItemModel!
-                                                          .offset
-                                                      : null,
+                                                          .storeSearchItemModel
+                                                          ?.offset
+                                                      : storeController
+                                                          .storeItemModel
+                                                          ?.offset,
                                               itemView: WebItemsView(
                                                 isStore: false,
                                                 stores: null,
@@ -1078,12 +1070,8 @@ class _StoreScreenState extends State<StoreScreen> {
                                                 items: storeController
                                                         .isSearching
                                                     ? storeController
-                                                                .storeSearchItemModel !=
-                                                            null
-                                                        ? storeController
-                                                            .storeSearchItemModel!
-                                                            .items
-                                                        : null
+                                                        .storeSearchItemModel
+                                                        ?.items
                                                     : (storeController
                                                                 .categoryList!
                                                                 .isNotEmpty &&
@@ -1413,7 +1401,7 @@ class _StoreScreenState extends State<StoreScreen> {
                               child: Container(
                               width: Dimensions.webMaxWidth,
                               decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.background,
+                                color: Theme.of(context).colorScheme.surface,
                               ),
                               child: PaginatedListView(
                                 scrollController: scrollController,
@@ -1423,13 +1411,9 @@ class _StoreScreenState extends State<StoreScreen> {
                                         offset!,
                                         storeController.type,
                                         false),
-                                totalSize: storeController.storeItemModel !=
-                                        null
-                                    ? storeController.storeItemModel!.totalSize
-                                    : null,
-                                offset: storeController.storeItemModel != null
-                                    ? storeController.storeItemModel!.offset
-                                    : null,
+                                totalSize:
+                                    storeController.storeItemModel?.totalSize,
+                                offset: storeController.storeItemModel?.offset,
                                 itemView: ItemsView(
                                   isStore: false,
                                   stores: null,

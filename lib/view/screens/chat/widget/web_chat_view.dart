@@ -964,6 +964,7 @@ class _WebChatViewState extends State<WebChatView>
                         ))
                       : NotLoggedInScreen(callBack: (value) {
                           widget.initCall();
+                          if (!mounted) return;
                           setState(() {});
                         }),
                 )))

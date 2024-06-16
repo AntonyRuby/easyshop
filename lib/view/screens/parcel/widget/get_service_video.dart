@@ -49,7 +49,8 @@ class _GetServiceVideoState extends State<GetServiceVideo> {
               child: FloatingActionButton(
                   backgroundColor: Theme.of(context).cardColor,
                   onPressed: () {
-                    setState(() {
+                    if (!mounted) return;
+setState(() {
                       _controller.value.isPlaying ? _controller.pause() : _controller.play();
                     });
                   },

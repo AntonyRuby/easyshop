@@ -378,6 +378,7 @@ class OrderTrackingScreenState extends State<OrderTrackingScreen> {
         child: GetPlatform.isWeb ? const Icon(Icons.location_on, size: 18) : _customMarker('${Get.find<SplashController>().configModel!.baseUrls!.deliveryManImageUrl}/${deliveryMan.image}'),
       )) : const SizedBox();*/
     } catch (_) {}
+    if (!mounted) return;
     setState(() {});
   }
 

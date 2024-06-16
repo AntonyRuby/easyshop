@@ -39,6 +39,7 @@ class _FlashSaleCardState extends State<FlashSaleCard> {
         PageController(initialPage: _currentPage, viewportFraction: 0.8);
 
     Future.delayed(const Duration(milliseconds: 500), () {
+      if (!mounted) return;
       setState(() {});
     });
   }

@@ -302,6 +302,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 : const Center(child: CircularProgressIndicator())
             : NotLoggedInScreen(callBack: (value) {
                 initCall();
+                if (!mounted) return;
                 setState(() {});
               });
       }),

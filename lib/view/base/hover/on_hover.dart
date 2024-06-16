@@ -68,6 +68,7 @@ class _OnHoverState extends State<OnHover> {
   }
 
   void onEntered(bool isHovered) {
+    if (!mounted) return;
     setState(() {
       this.isHovered = isHovered;
     });

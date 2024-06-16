@@ -38,6 +38,7 @@ class _WebCommonConditionViewState extends State<WebCommonConditionView> {
   }
 
   void _checkScrollPosition() {
+    if (!mounted) return;
     setState(() {
       if (scrollController.position.pixels <= 0) {
         showBackButton = false;

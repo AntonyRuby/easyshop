@@ -40,6 +40,7 @@ class _WebCategoryViewState extends State<WebCategoryView> {
   }
 
   void _checkScrollPosition() {
+    if (!mounted) return;
     setState(() {
       if (scrollController.position.pixels <= 0) {
         showBackButton = false;
@@ -229,6 +230,7 @@ class _PharmacyCategoryViewState extends State<PharmacyCategoryView> {
   }
 
   void _checkScrollPosition() {
+    if (!mounted) return;
     setState(() {
       if (scrollController.position.pixels <= 0) {
         showBackButton = false;
@@ -403,6 +405,7 @@ class _FoodCategoryViewState extends State<FoodCategoryView> {
   }
 
   void _checkScrollPosition() {
+    if (!mounted) return;
     setState(() {
       if (scrollController.position.pixels <= 0) {
         showBackButton = false;

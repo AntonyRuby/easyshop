@@ -221,6 +221,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 : const Center(child: CircularProgressIndicator())
             : NotLoggedInScreen(callBack: (value) {
                 initCall();
+                if (!mounted) return;
                 setState(() {});
               });
       }),

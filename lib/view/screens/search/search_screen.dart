@@ -23,7 +23,7 @@ import '../../../util/images.dart';
 
 class SearchScreen extends StatefulWidget {
   final String? queryText;
-  const SearchScreen({Key? key, required this.queryText}) : super(key: key);
+  const SearchScreen({super.key, required this.queryText});
 
   @override
   SearchScreenState createState() => SearchScreenState();
@@ -344,13 +344,15 @@ class SearchScreenState extends State<SearchScreen>
                                                                 .radiusDefault),
                                                       ),
                                                       child: InkWell(
-                                                        onTap: () => searchController
-                                                            .searchData(
-                                                                context,
-                                                                searchController
-                                                                        .historyList[
-                                                                    index],
-                                                                false),
+                                                        onTap: () =>
+                                                            searchController
+                                                                .searchData(
+                                                          context,
+                                                          searchController
+                                                                  .historyList[
+                                                              index],
+                                                          false,
+                                                        ),
                                                         child: Row(
                                                           children: [
                                                             Text(

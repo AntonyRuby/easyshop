@@ -49,6 +49,7 @@ class _WebNewOnMartViewState extends State<WebNewOnMartView> {
   }
 
   void _checkScrollPosition() {
+    if (!mounted) return;
     setState(() {
       if (scrollController.position.pixels <= 0) {
         showBackButton = false;

@@ -37,6 +37,7 @@ class _WebJustForYouViewState extends State<WebJustForYouView> {
   }
 
   void _checkScrollPosition() {
+    if (!mounted) return;
     setState(() {
       if (scrollController.position.pixels <= 0) {
         showBackButton = false;
