@@ -1,4 +1,3 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -36,16 +35,17 @@ import 'package:sixam_mart/view/screens/parcel/widget/card_widget.dart';
 import 'package:sixam_mart/view/screens/parcel/widget/delivery_instruction_bottom_sheet.dart';
 import 'package:sixam_mart/view/screens/parcel/widget/details_widget.dart';
 
+import '../../../widget/dotted_border.dart';
+
 class ParcelRequestScreen extends StatefulWidget {
   final ParcelCategoryModel parcelCategory;
   final AddressModel pickedUpAddress;
   final AddressModel destinationAddress;
   const ParcelRequestScreen(
-      {Key? key,
+      {super.key,
       required this.parcelCategory,
       required this.pickedUpAddress,
-      required this.destinationAddress})
-      : super(key: key);
+      required this.destinationAddress});
 
   @override
   State<ParcelRequestScreen> createState() => _ParcelRequestScreenState();

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -25,8 +24,10 @@ import 'package:sixam_mart/view/screens/auth/widget/custom_time_picker.dart';
 import 'package:sixam_mart/view/screens/auth/widget/pass_view.dart';
 import 'package:sixam_mart/view/screens/auth/widget/select_location_view.dart';
 
+import '../../../widget/dotted_border.dart';
+
 class StoreRegistrationScreen extends StatefulWidget {
-  const StoreRegistrationScreen({Key? key}) : super(key: key);
+  const StoreRegistrationScreen({super.key});
 
   @override
   State<StoreRegistrationScreen> createState() =>

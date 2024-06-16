@@ -1,5 +1,4 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -11,8 +10,10 @@ import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/util/styles.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
 
+import '../../../../../widget/dotted_border.dart';
+
 class PromoCodeBannerView extends StatefulWidget {
-  const PromoCodeBannerView({Key? key}) : super(key: key);
+  const PromoCodeBannerView({super.key});
 
   @override
   State<PromoCodeBannerView> createState() => _PromoCodeBannerViewState();
@@ -194,7 +195,7 @@ class _PromoCodeBannerViewState extends State<PromoCodeBannerView> {
 }
 
 class PromoCodeShimmerView extends StatelessWidget {
-  const PromoCodeShimmerView({Key? key}) : super(key: key);
+  const PromoCodeShimmerView({super.key});
 
   @override
   Widget build(BuildContext context) {

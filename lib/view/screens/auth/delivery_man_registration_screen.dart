@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -24,6 +23,8 @@ import 'package:sixam_mart/view/base/menu_drawer.dart';
 import 'package:sixam_mart/view/base/web_page_title_widget.dart';
 import 'package:sixam_mart/view/screens/auth/widget/condition_check_box.dart';
 import 'package:sixam_mart/view/screens/auth/widget/pass_view.dart';
+
+import '../../../widget/dotted_border.dart';
 
 class DeliveryManRegistrationScreen extends StatefulWidget {
   const DeliveryManRegistrationScreen({super.key});

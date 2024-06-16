@@ -1,4 +1,3 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/controller/order_controller.dart';
@@ -10,6 +9,8 @@ import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/styles.dart';
 import 'package:sixam_mart/view/screens/order/widget/order_item_widget.dart';
 import 'package:sixam_mart/view/screens/parcel/widget/details_widget.dart';
+
+import '../../../../widget/dotted_border.dart';
 
 class OrderCalculationWidget extends StatelessWidget {
   final OrderController orderController;
@@ -29,7 +30,7 @@ class OrderCalculationWidget extends StatelessWidget {
   final double total;
   final Widget bottomView;
   const OrderCalculationWidget(
-      {Key? key,
+      {super.key,
       required this.orderController,
       required this.order,
       required this.ongoing,
@@ -45,8 +46,7 @@ class OrderCalculationWidget extends StatelessWidget {
       required this.taxIncluded,
       required this.subTotal,
       required this.total,
-      required this.bottomView})
-      : super(key: key);
+      required this.bottomView});
 
   @override
   Widget build(BuildContext context) {

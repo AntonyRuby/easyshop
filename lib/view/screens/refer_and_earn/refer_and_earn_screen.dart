@@ -2,7 +2,6 @@ import 'package:expandable_bottom_sheet/expandable_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
@@ -20,6 +19,8 @@ import 'package:sixam_mart/view/base/not_logged_in_screen.dart';
 import 'package:sixam_mart/view/base/web_page_title_widget.dart';
 import 'package:sixam_mart/view/screens/refer_and_earn/widget/bottom_sheet_view.dart';
 
+import '../../../widget/dotted_border.dart';
+
 enum ShareType {
   facebook,
   messenger,
@@ -28,7 +29,7 @@ enum ShareType {
 }
 
 class ReferAndEarnScreen extends StatefulWidget {
-  const ReferAndEarnScreen({Key? key}) : super(key: key);
+  const ReferAndEarnScreen({super.key});
 
   @override
   State<ReferAndEarnScreen> createState() => _ReferAndEarnScreenState();

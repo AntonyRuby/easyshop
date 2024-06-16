@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/controller/order_controller.dart';
@@ -10,10 +9,11 @@ import 'package:sixam_mart/view/base/custom_app_bar.dart';
 import 'package:sixam_mart/view/base/custom_button.dart';
 import 'package:sixam_mart/view/base/custom_text_field.dart';
 
+import '../../../widget/dotted_border.dart';
+
 class RefundRequestScreen extends StatefulWidget {
   final String? orderId;
-  const RefundRequestScreen({Key? key, required this.orderId})
-      : super(key: key);
+  const RefundRequestScreen({super.key, required this.orderId});
 
   @override
   State<RefundRequestScreen> createState() => _RefundRequestScreenState();

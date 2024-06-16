@@ -1,5 +1,4 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -11,8 +10,10 @@ import 'package:sixam_mart/util/styles.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
 import 'package:sixam_mart/view/screens/home/widget/grocery/promo_code_banner_view.dart';
 
+import '../../../../../widget/dotted_border.dart';
+
 class WebCouponBannerView extends StatefulWidget {
-  const WebCouponBannerView({Key? key}) : super(key: key);
+  const WebCouponBannerView({super.key});
 
   @override
   State<WebCouponBannerView> createState() => _WebCouponBannerViewState();

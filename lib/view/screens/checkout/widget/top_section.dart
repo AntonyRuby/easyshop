@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:get/get.dart';
 import 'package:image_compression_flutter/image_compression_flutter.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
@@ -27,6 +26,8 @@ import 'package:sixam_mart/view/screens/checkout/widget/time_slot_section.dart';
 import 'package:sixam_mart/view/screens/checkout/widget/web_delivery_instruction_view.dart';
 import 'package:sixam_mart/view/screens/store/widget/camera_button_sheet.dart';
 import 'dart:io';
+
+import '../../../../widget/dotted_border.dart';
 
 class TopSection extends StatelessWidget {
   final StoreController storeController;
@@ -59,7 +60,7 @@ class TopSection extends StatelessWidget {
   final JustTheController dmTipsTooltipController;
 
   const TopSection({
-    Key? key,
+    super.key,
     required this.deliveryCharge,
     required this.charge,
     required this.tomorrowClosed,
@@ -88,7 +89,7 @@ class TopSection extends StatelessWidget {
     required this.tooltipController1,
     required this.tooltipController2,
     required this.dmTipsTooltipController,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
