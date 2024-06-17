@@ -8,32 +8,41 @@ class CategoryRepo {
   CategoryRepo({required this.apiClient});
 
   Future<Response> getCategoryList(bool allCategory) async {
-    return await apiClient.getData(AppConstants.categoryUri, headers: allCategory ? {
-      'Content-Type': 'application/json; charset=UTF-8',
-      AppConstants.localizationKey: Get.find<LocalizationController>().locale.languageCode
-    } : null);
+    return await apiClient.getData(AppConstants.categoryUri,
+        headers: allCategory
+            ? {
+                'Content-Type': 'application/json; charset=UTF-8',
+                AppConstants.localizationKey:
+                    Get.find<LocalizationController>().locale.languageCode
+              }
+            : null);
   }
 
   Future<Response> getSubCategoryList(String? parentID) async {
     return await apiClient.getData('${AppConstants.subCategoryUri}$parentID');
   }
 
-  Future<Response> getCategoryItemList(String? categoryID, int offset, String type) async {
-    return await apiClient.getData('${AppConstants.categoryItemUri}$categoryID?limit=10&offset=$offset&type=$type');
+  Future<Response> getCategoryItemList(
+      String? categoryID, int offset, String type) async {
+    return await apiClient.getData(
+        '${AppConstants.categoryItemUri}$categoryID?limit=10&offset=$offset&type=$type');
   }
 
-  Future<Response> getCategoryStoreList(String? categoryID, int offset, String type) async {
-    return await apiClient.getData('${AppConstants.categoryStoreUri}$categoryID?limit=10&offset=$offset&type=$type');
+  Future<Response> getCategoryStoreList(
+      String? categoryID, int offset, String type) async {
+    return await apiClient.getData(
+        '${AppConstants.categoryStoreUri}$categoryID?limit=10&offset=$offset&type=$type');
   }
 
-  Future<Response> getSearchData(String? query, String? categoryID, bool isStore, String type) async {
+  Future<Response> getSearchData(
+      String? query, String? categoryID, bool isStore, String type) async {
     return await apiClient.getData(
       '${AppConstants.searchUri}${isStore ? 'stores' : 'items'}/search?name=$query&category_id=$categoryID&type=$type&offset=1&limit=50',
     );
   }
 
   Future<Response> saveUserInterests(List<int?> interests) async {
-    return await apiClient.postData(AppConstants.interestUri, {"interest": interests});
+    return await apiClient
+        .postData(AppConstants.interestUri, {"interest": interests});
   }
-
 }

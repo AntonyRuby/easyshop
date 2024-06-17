@@ -10,18 +10,18 @@ class DeliveryManBody {
   String? zoneId;
   String? vehicleId;
 
-  DeliveryManBody(
-      {this.fName,
-        this.lName,
-        this.phone,
-        this.email,
-        this.password,
-        this.identityType,
-        this.identityNumber,
-        this.earning,
-        this.zoneId,
-        this.vehicleId,
-      });
+  DeliveryManBody({
+    this.fName,
+    this.lName,
+    this.phone,
+    this.email,
+    this.password,
+    this.identityType,
+    this.identityNumber,
+    this.earning,
+    this.zoneId,
+    this.vehicleId,
+  });
 
   DeliveryManBody.fromJson(Map<String, dynamic> json) {
     fName = json['f_name'];

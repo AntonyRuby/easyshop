@@ -22,7 +22,10 @@ class _DigitalPaymentScreenState extends State<DigitalPaymentScreen> {
       endDrawerEnableOpenDragGesture: false,
       appBar: CustomAppBar(title: 'payment'.tr, backButton: true),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: ResponsiveHelper.isDesktop(context) ? 0.0 : Dimensions.paddingSizeLarge),
+        padding: EdgeInsets.symmetric(
+            horizontal: ResponsiveHelper.isDesktop(context)
+                ? 0.0
+                : Dimensions.paddingSizeLarge),
         child: FooterView(
           child: SizedBox(
             width: Dimensions.webMaxWidth,
@@ -30,14 +33,18 @@ class _DigitalPaymentScreenState extends State<DigitalPaymentScreen> {
               key: UniqueKey(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisSpacing: 50,
-                mainAxisSpacing: ResponsiveHelper.isDesktop(context) ? Dimensions.paddingSizeLarge : 0.01,
-                childAspectRatio: ResponsiveHelper.isDesktop(context) ? 5 : 4.45,
+                mainAxisSpacing: ResponsiveHelper.isDesktop(context)
+                    ? Dimensions.paddingSizeLarge
+                    : 0.01,
+                childAspectRatio:
+                    ResponsiveHelper.isDesktop(context) ? 5 : 4.45,
                 crossAxisCount: ResponsiveHelper.isMobile(context) ? 1 : 2,
               ),
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: 5,
-              padding: EdgeInsets.only(top: ResponsiveHelper.isDesktop(context) ? 28 : 25),
+              padding: EdgeInsets.only(
+                  top: ResponsiveHelper.isDesktop(context) ? 28 : 25),
               itemBuilder: (context, index) {
                 return Container(
                   color: const Color(0xFFFE0100),

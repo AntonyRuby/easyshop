@@ -1,6 +1,7 @@
 import 'package:sixam_mart/data/api/api_client.dart';
 import 'package:sixam_mart/util/app_constants.dart';
 import 'package:get/get_connect/http/src/response/response.dart';
+
 class BannerRepo {
   final ApiClient apiClient;
   BannerRepo({required this.apiClient});
@@ -24,5 +25,4 @@ class BannerRepo {
   Future<Response> getPromotionalBanner() async {
     return await apiClient.getData(AppConstants.promotionalBannerUri);
   }
-
 }

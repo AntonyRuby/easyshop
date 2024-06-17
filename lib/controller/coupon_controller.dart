@@ -28,7 +28,7 @@ class CouponController extends GetxController implements GetxService {
 
   void setCurrentIndex(int index, bool notify) {
     _currentIndex = index;
-    if(notify) {
+    if (notify) {
       update();
     }
   }
@@ -52,40 +52,46 @@ class CouponController extends GetxController implements GetxService {
     Response response = await couponRepo.getTaxiCouponList();
     if (response.statusCode == 200) {
       _taxiCouponList = [];
-      response.body.forEach((category) => _taxiCouponList!.add(CouponModel.fromJson(category)));
+      response.body.forEach(
+          (category) => _taxiCouponList!.add(CouponModel.fromJson(category)));
       update();
     } else {
       ApiChecker.checkApi(response);
     }
   }
 
-  Future<double?> applyCoupon(String coupon, double order, double? deliveryCharge, int? storeID) async {
+  Future<double?> applyCoupon(
+      String coupon, double order, double? deliveryCharge, int? storeID) async {
     _isLoading = true;
     _discount = 0;
     update();
     Response response = await couponRepo.applyCoupon(coupon, storeID);
     if (response.statusCode == 200) {
       _coupon = CouponModel.fromJson(response.body);
-      if(_coupon!.couponType == 'free_delivery') {
-        if(deliveryCharge! > 0) {
+      if (_coupon!.couponType == 'free_delivery') {
+        if (deliveryCharge! > 0) {
           if (_coupon!.minPurchase! <= order) {
             _discount = 0;
             _freeDelivery = true;
           } else {
-            showCustomSnackBar('${'the_minimum_item_purchase_amount_for_this_coupon_is'.tr} '
+            showCustomSnackBar(
+                '${'the_minimum_item_purchase_amount_for_this_coupon_is'.tr} '
                 '${PriceConverter.convertPrice(_coupon!.minPurchase)} '
                 '${'but_you_have'.tr} ${PriceConverter.convertPrice(order)}');
             _coupon = null;
             _discount = 0;
           }
-        }else {
+        } else {
           showCustomSnackBar('invalid_code_or'.tr);
         }
-      }else {
+      } else {
         if (_coupon!.minPurchase != null && _coupon!.minPurchase! <= order) {
           if (_coupon!.discountType == 'percent') {
             if (_coupon!.maxDiscount != null && _coupon!.maxDiscount! > 0) {
-              _discount = (_coupon!.discount! * order / 100) < _coupon!.maxDiscount! ? (_coupon!.discount! * order / 100) : _coupon!.maxDiscount;
+              _discount =
+                  (_coupon!.discount! * order / 100) < _coupon!.maxDiscount!
+                      ? (_coupon!.discount! * order / 100)
+                      : _coupon!.maxDiscount;
             } else {
               _discount = _coupon!.discount! * order / 100;
             }
@@ -94,7 +100,8 @@ class CouponController extends GetxController implements GetxService {
           }
         } else {
           _discount = 0.0;
-          showCustomSnackBar('${'the_minimum_item_purchase_amount_for_this_coupon_is'.tr} '
+          showCustomSnackBar(
+              '${'the_minimum_item_purchase_amount_for_this_coupon_is'.tr} '
               '${PriceConverter.convertPrice(_coupon!.minPurchase)} '
               '${'but_you_have'.tr} ${PriceConverter.convertPrice(order)}');
         }
@@ -109,7 +116,8 @@ class CouponController extends GetxController implements GetxService {
     return _discount;
   }
 
-  Future<double?> applyTaxiCoupon(String coupon, double orderAmount, int? providerId) async {
+  Future<double?> applyTaxiCoupon(
+      String coupon, double orderAmount, int? providerId) async {
     _isLoading = true;
     _discount = 0;
     update();
@@ -119,7 +127,10 @@ class CouponController extends GetxController implements GetxService {
       if (_coupon!.minPurchase != null && _coupon!.minPurchase! < orderAmount) {
         if (_coupon!.discountType == 'percent') {
           if (_coupon!.maxDiscount != null && _coupon!.maxDiscount! > 0) {
-            _discount = (_coupon!.discount! * orderAmount / 100) < _coupon!.maxDiscount! ? (_coupon!.discount! * orderAmount / 100) : _coupon!.maxDiscount;
+            _discount =
+                (_coupon!.discount! * orderAmount / 100) < _coupon!.maxDiscount!
+                    ? (_coupon!.discount! * orderAmount / 100)
+                    : _coupon!.maxDiscount;
           } else {
             _discount = _coupon!.discount! * orderAmount / 100;
           }
@@ -141,7 +152,7 @@ class CouponController extends GetxController implements GetxService {
     _isLoading = false;
     _discount = 0.0;
     _freeDelivery = false;
-    if(notify) {
+    if (notify) {
       update();
     }
   }

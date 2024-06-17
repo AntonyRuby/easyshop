@@ -1,4 +1,3 @@
-
 class StoreBody {
   String? translation;
   String? tax;
@@ -15,22 +14,22 @@ class StoreBody {
   String? moduleId;
   String? deliveryTimeType;
 
-  StoreBody(
-      { this.translation,
-        this.tax,
-        this.minDeliveryTime,
-        this.maxDeliveryTime,
-        this.lat,
-        this.lng,
-        this.fName,
-        this.lName,
-        this.phone,
-        this.email,
-        this.password,
-        this.zoneId,
-        this.moduleId,
-        this.deliveryTimeType,
-      });
+  StoreBody({
+    this.translation,
+    this.tax,
+    this.minDeliveryTime,
+    this.maxDeliveryTime,
+    this.lat,
+    this.lng,
+    this.fName,
+    this.lName,
+    this.phone,
+    this.email,
+    this.password,
+    this.zoneId,
+    this.moduleId,
+    this.deliveryTimeType,
+  });
 
   StoreBody.fromJson(Map<String, dynamic> json) {
     translation = json['translation'];

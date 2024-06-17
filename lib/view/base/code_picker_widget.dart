@@ -70,8 +70,8 @@ class CodePickerWidget extends StatefulWidget {
     this.dialogBackgroundColor,
     this.closeIcon = const Icon(Icons.close),
     this.countryList = codes,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   @override
   State<CodePickerWidget> createState() => _CodePickerWidgetState();
 }
@@ -193,7 +193,9 @@ class _CodePickerWidgetState extends State<CodePickerWidget> {
           ),
         ),
       ).then((e) {
+        if (!mounted) return;
         if (e != null) {
+          if (!mounted) return;
           setState(() {
             selectedItem = e;
           });
@@ -228,6 +230,7 @@ class _CodePickerWidgetState extends State<CodePickerWidget> {
         ),
       ).then((e) {
         if (e != null) {
+          if (!mounted) return;
           setState(() {
             selectedItem = e;
           });

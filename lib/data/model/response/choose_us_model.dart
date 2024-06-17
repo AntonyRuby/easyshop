@@ -1,4 +1,3 @@
-
 class ChooseUsModel {
   String icon;
   String title;

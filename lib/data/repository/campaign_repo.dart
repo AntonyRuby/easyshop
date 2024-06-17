@@ -11,11 +11,11 @@ class CampaignRepo {
   }
 
   Future<Response> getCampaignDetails(String campaignID) async {
-    return await apiClient.getData('${AppConstants.basicCampaignDetailsUri}$campaignID');
+    return await apiClient
+        .getData('${AppConstants.basicCampaignDetailsUri}$campaignID');
   }
 
   Future<Response> getItemCampaignList() async {
     return await apiClient.getData(AppConstants.itemCampaignUri);
   }
-
 }

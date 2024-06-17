@@ -11,19 +11,29 @@ class CustomNavigationDrawer extends StatefulWidget {
   final TextStyle defaultTextStyle;
   final TextStyle selectedTextStyle;
   final Widget child;
-  const CustomNavigationDrawer({Key? key, 
-    this.selectedColor = const Color(0xFF4AC8EA), this.backgroundColor,
+  const CustomNavigationDrawer({
+    super.key,
+    this.selectedColor = const Color(0xFF4AC8EA),
+    this.backgroundColor,
     required this.child,
-    this.defaultTextStyle = const TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w600),
-    this.selectedTextStyle = const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
-  }) : super(key: key);
+    this.defaultTextStyle = const TextStyle(
+      color: Colors.white70,
+      fontSize: 14,
+      fontWeight: FontWeight.w600,
+    ),
+    this.selectedTextStyle = const TextStyle(
+      color: Colors.white,
+      fontSize: 14,
+      fontWeight: FontWeight.w600,
+    ),
+  });
 
   @override
   CustomNavigationDrawerState createState() => CustomNavigationDrawerState();
 }
 
-class CustomNavigationDrawerState extends State<CustomNavigationDrawer> with SingleTickerProviderStateMixin {
-
+class CustomNavigationDrawerState extends State<CustomNavigationDrawer>
+    with SingleTickerProviderStateMixin {
   double maxWidth = 200;
   double minWidth = 45;
   bool isCollapsed = true;
@@ -39,7 +49,9 @@ class CustomNavigationDrawerState extends State<CustomNavigationDrawer> with Sin
     _animationController!.forward();
     widthAnimation = Tween<double>(begin: maxWidth, end: minWidth)
         .animate(_animationController!);
-    if(Get.find<SplashController>().moduleList == null && !mounted ? ResponsiveHelper.isDesktop(context) : true) {
+    if (Get.find<SplashController>().moduleList == null && !mounted
+        ? ResponsiveHelper.isDesktop(context)
+        : true) {
       Get.find<SplashController>().getModules();
     }
   }
@@ -49,26 +61,33 @@ class CustomNavigationDrawerState extends State<CustomNavigationDrawer> with Sin
     return GetBuilder<SplashController>(builder: (splashController) {
       return Stack(children: [
         widget.child,
-        splashController.moduleList != null ? Positioned(
-          top: 100, right: 0,
-          child: AnimatedBuilder(
-            animation: _animationController!,
-            builder: (context, widget1) => getWidget(context, widget1, widget.backgroundColor, splashController),
-          ),
-        ) : const SizedBox(),
+        splashController.moduleList != null
+            ? Positioned(
+                top: 100,
+                right: 0,
+                child: AnimatedBuilder(
+                  animation: _animationController!,
+                  builder: (context, widget1) => getWidget(context, widget1,
+                      widget.backgroundColor, splashController),
+                ),
+              )
+            : const SizedBox(),
       ]);
     });
   }
 
-  Widget getWidget(context, widget, Color? backgroundColor, SplashController splashController) {
+  Widget getWidget(context, widget, Color? backgroundColor,
+      SplashController splashController) {
     return MouseRegion(
       onEnter: (event) {
+        if (!mounted) return;
         setState(() {
           isCollapsed = false;
           _animationController!.reverse();
         });
       },
       onExit: (event) {
+        if (!mounted) return;
         setState(() {
           isCollapsed = true;
           _animationController!.forward();
@@ -81,9 +100,12 @@ class CustomNavigationDrawerState extends State<CustomNavigationDrawer> with Sin
           width: widthAnimation.value,
           decoration: BoxDecoration(
             color: backgroundColor ?? Theme.of(context).primaryColor,
-            borderRadius: const BorderRadius.horizontal(left: Radius.circular(Dimensions.radiusDefault)),
+            borderRadius: const BorderRadius.horizontal(
+              left: Radius.circular(Dimensions.radiusDefault),
+            ),
           ),
-          padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall),
+          padding:
+              const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -91,7 +113,8 @@ class CustomNavigationDrawerState extends State<CustomNavigationDrawer> with Sin
                 separatorBuilder: (context, counter) {
                   return const Divider(height: 12.0);
                 },
-                shrinkWrap: true, physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, counter) {
                   return CollapsingListTile(
                     onTap: () {},
@@ -108,7 +131,8 @@ class CustomNavigationDrawerState extends State<CustomNavigationDrawer> with Sin
               ),
               // InkWell(
               //   onTap: () {
-              //     setState(() {
+              //     if (!mounted) return;
+// setState(() {
               //       isCollapsed = !isCollapsed;
               //       isCollapsed
               //           ? _animationController.forward()
@@ -143,15 +167,17 @@ class CollapsingListTile extends StatefulWidget {
   final bool isSelected;
   final Function? onTap;
 
-  const CollapsingListTile(
-      {Key? key, required this.title,
-        required this.icon,
-        required this.selectedColor,
-        required this.animationController,
-        required this.defaultTextStyle,
-        required this.selectedTextStyle,
-        this.isSelected = false,
-        this.onTap}) : super(key: key);
+  const CollapsingListTile({
+    super.key,
+    required this.title,
+    required this.icon,
+    required this.selectedColor,
+    required this.animationController,
+    required this.defaultTextStyle,
+    required this.selectedTextStyle,
+    this.isSelected = false,
+    this.onTap,
+  });
 
   @override
   CollapsingListTileState createState() => CollapsingListTileState();
@@ -163,8 +189,10 @@ class CollapsingListTileState extends State<CollapsingListTile> {
   @override
   void initState() {
     super.initState();
-    widthAnimation = Tween<double>(begin: 200, end: 70).animate(widget.animationController!);
-    sizedBoxAnimation = Tween<double>(begin: 10, end: 0).animate(widget.animationController!);
+    widthAnimation =
+        Tween<double>(begin: 200, end: 70).animate(widget.animationController!);
+    sizedBoxAnimation =
+        Tween<double>(begin: 10, end: 0).animate(widget.animationController!);
   }
 
   @override
@@ -179,14 +207,17 @@ class CollapsingListTileState extends State<CollapsingListTile> {
               : Colors.transparent,
         ),
         width: widthAnimation.value,
-        margin: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall),
+        margin: const EdgeInsets.symmetric(
+          horizontal: Dimensions.paddingSizeExtraSmall,
+        ),
         padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
         child: Row(
           children: <Widget>[
             ClipRRect(
               borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
               child: CustomImage(
-                image: '${Get.find<SplashController>().configModel!.baseUrls!.moduleImageUrl}/${widget.icon}',
+                image:
+                    '${Get.find<SplashController>().configModel!.baseUrls!.moduleImageUrl}/${widget.icon}',
                 // color: widget.isSelected ? widget.selectedColor : Colors.white30,
                 width: 25, height: 25,
               ),
@@ -194,7 +225,9 @@ class CollapsingListTileState extends State<CollapsingListTile> {
             SizedBox(width: sizedBoxAnimation.value),
             (widthAnimation.value >= 190)
                 ? Text(widget.title!,
-                style: widget.isSelected ? widget.selectedTextStyle : widget.defaultTextStyle)
+                    style: widget.isSelected
+                        ? widget.selectedTextStyle
+                        : widget.defaultTextStyle)
                 : Container()
           ],
         ),

@@ -22,30 +22,29 @@ class LandingModel {
 
   LandingModel(
       {this.baseUrls,
-        this.fixedHeaderTitle,
-        this.fixedHeaderSubTitle,
-        this.fixedHeaderImage,
-        this.fixedModuleTitle,
-        this.fixedModuleSubTitle,
-        this.fixedLocationTitle,
-        this.joinSellerTitle,
-        this.joinSellerSubTitle,
-        this.joinSellerButtonName,
-        this.joinSellerButtonUrl,
-        this.joinDeliveryManTitle,
-        this.joinDeliveryManSubTitle,
-        this.joinDeliveryManButtonName,
-        this.joinDeliveryManButtonUrl,
-        this.downloadUserAppTitle,
-        this.downloadUserAppSubTitle,
-        this.downloadUserAppImage,
-        this.specialCriterias,
-        this.downloadUserAppLinks});
+      this.fixedHeaderTitle,
+      this.fixedHeaderSubTitle,
+      this.fixedHeaderImage,
+      this.fixedModuleTitle,
+      this.fixedModuleSubTitle,
+      this.fixedLocationTitle,
+      this.joinSellerTitle,
+      this.joinSellerSubTitle,
+      this.joinSellerButtonName,
+      this.joinSellerButtonUrl,
+      this.joinDeliveryManTitle,
+      this.joinDeliveryManSubTitle,
+      this.joinDeliveryManButtonName,
+      this.joinDeliveryManButtonUrl,
+      this.downloadUserAppTitle,
+      this.downloadUserAppSubTitle,
+      this.downloadUserAppImage,
+      this.specialCriterias,
+      this.downloadUserAppLinks});
 
   LandingModel.fromJson(Map<String, dynamic> json) {
-    baseUrls = json['base_urls'] != null
-        ? BaseUrls.fromJson(json['base_urls'])
-        : null;
+    baseUrls =
+        json['base_urls'] != null ? BaseUrls.fromJson(json['base_urls']) : null;
     fixedHeaderTitle = json['fixed_header_title'];
     fixedHeaderSubTitle = json['fixed_header_sub_title'];
     fixedHeaderImage = json['fixed_header_image'];
@@ -97,7 +96,8 @@ class LandingModel {
     data['download_user_app_sub_title'] = downloadUserAppSubTitle;
     data['download_user_app_image'] = downloadUserAppImage;
     if (specialCriterias != null) {
-      data['special_criterias'] = specialCriterias!.map((v) => v.toJson()).toList();
+      data['special_criterias'] =
+          specialCriterias!.map((v) => v.toJson()).toList();
     }
     if (downloadUserAppLinks != null) {
       data['download_user_app_links'] = downloadUserAppLinks!.toJson();
@@ -113,8 +113,8 @@ class BaseUrls {
 
   BaseUrls(
       {this.fixedHeaderImage,
-        this.specialCriteriaImage,
-        this.downloadUserAppImage});
+      this.specialCriteriaImage,
+      this.downloadUserAppImage});
 
   BaseUrls.fromJson(Map<String, dynamic> json) {
     fixedHeaderImage = json['fixed_header_image'];
@@ -142,12 +142,12 @@ class SpecialCriterias {
 
   SpecialCriterias(
       {this.id,
-        this.title,
-        this.image,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.translations});
+      this.title,
+      this.image,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.translations});
 
   SpecialCriterias.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -191,13 +191,13 @@ class Translations {
 
   Translations(
       {this.id,
-        this.translationableType,
-        this.translationableId,
-        this.locale,
-        this.key,
-        this.value,
-        this.createdAt,
-        this.updatedAt});
+      this.translationableType,
+      this.translationableId,
+      this.locale,
+      this.key,
+      this.value,
+      this.createdAt,
+      this.updatedAt});
 
   Translations.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -232,9 +232,9 @@ class DownloadUserAppLinks {
 
   DownloadUserAppLinks(
       {this.playstoreUrlStatus,
-        this.playstoreUrl,
-        this.appleStoreUrlStatus,
-        this.appleStoreUrl});
+      this.playstoreUrl,
+      this.appleStoreUrlStatus,
+      this.appleStoreUrl});
 
   DownloadUserAppLinks.fromJson(Map<String, dynamic> json) {
     playstoreUrlStatus = json['playstore_url_status'];

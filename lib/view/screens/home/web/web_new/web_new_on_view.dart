@@ -20,7 +20,6 @@ class WebNewOnView extends StatefulWidget {
 }
 
 class _WebNewOnViewState extends State<WebNewOnView> {
-
   ScrollController scrollController = ScrollController();
   bool showBackButton = false;
   bool showForwardButton = false;
@@ -39,6 +38,7 @@ class _WebNewOnViewState extends State<WebNewOnView> {
   }
 
   void _checkScrollPosition() {
+    if (!mounted) return;
     setState(() {
       if (scrollController.position.pixels <= 0) {
         showBackButton = false;
@@ -46,7 +46,8 @@ class _WebNewOnViewState extends State<WebNewOnView> {
         showBackButton = true;
       }
 
-      if (scrollController.position.pixels >= scrollController.position.maxScrollExtent) {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent) {
         showForwardButton = false;
       } else {
         showForwardButton = true;
@@ -58,62 +59,75 @@ class _WebNewOnViewState extends State<WebNewOnView> {
   Widget build(BuildContext context) {
     return Column(children: [
       Padding(
-        padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault),
+        padding:
+            const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault),
         child: TitleWidget(
-          title: widget.isFood ? 'best_store_nearby'.tr : '${'new_on'.tr} ${AppConstants.appName}',
-          onTap: () => Get.toNamed(RouteHelper.getAllStoreRoute('latest', isNearbyStore: widget.isFood ? true : false)),
+          title: widget.isFood
+              ? 'best_store_nearby'.tr
+              : '${'new_on'.tr} ${AppConstants.appName}',
+          onTap: () => Get.toNamed(RouteHelper.getAllStoreRoute('latest',
+              isNearbyStore: widget.isFood ? true : false)),
         ),
       ),
-
       GetBuilder<StoreController>(builder: (storeController) {
         List<Store>? storeList = storeController.popularStoreList;
 
-        if(storeList != null && storeList.length > 4 && isFirstTime){
+        if (storeList != null && storeList.length > 4 && isFirstTime) {
           showForwardButton = true;
           isFirstTime = false;
         }
 
-        return storeList != null && storeList.isNotEmpty ? Stack(children: [
-          SizedBox(
-            height: 215,
-            child: ListView.builder(
-              controller: scrollController,
-              physics: const BouncingScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              //padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault),
-              itemCount: storeList.length,
-              itemBuilder: (context, index){
-                return Padding(
-                  padding: EdgeInsets.only(
-                    bottom: Dimensions.paddingSizeDefault, top: Dimensions.paddingSizeDefault,
-                    left: Get.find<LocalizationController>().isLtr ? 0 : Dimensions.paddingSizeDefault,
-                    right: Get.find<LocalizationController>().isLtr ? Dimensions.paddingSizeDefault : 0,
+        return storeList != null && storeList.isNotEmpty
+            ? Stack(children: [
+                SizedBox(
+                  height: 215,
+                  child: ListView.builder(
+                      controller: scrollController,
+                      physics: const BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      //padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault),
+                      itemCount: storeList.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.only(
+                            bottom: Dimensions.paddingSizeDefault,
+                            top: Dimensions.paddingSizeDefault,
+                            left: Get.find<LocalizationController>().isLtr
+                                ? 0
+                                : Dimensions.paddingSizeDefault,
+                            right: Get.find<LocalizationController>().isLtr
+                                ? Dimensions.paddingSizeDefault
+                                : 0,
+                          ),
+                          child: StoreCardWithDistance(store: storeList[index]),
+                        );
+                      }),
+                ),
+                if (showBackButton)
+                  Positioned(
+                    top: 70,
+                    left: 0,
+                    child: ArrowIconButton(
+                      isRight: false,
+                      onTap: () => scrollController.animateTo(
+                          scrollController.offset - Dimensions.webMaxWidth,
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeInOut),
+                    ),
                   ),
-                  child: StoreCardWithDistance(store: storeList[index]),
-                );
-              }),
-          ),
-
-          if(showBackButton)
-            Positioned(
-              top: 70, left: 0,
-              child: ArrowIconButton(
-                isRight: false,
-                onTap: () => scrollController.animateTo(scrollController.offset - Dimensions.webMaxWidth,
-                    duration: const Duration(milliseconds: 500), curve: Curves.easeInOut),
-              ),
-            ),
-
-          if(showForwardButton)
-            Positioned(
-              top: 70, right: 0,
-              child: ArrowIconButton(
-                onTap: () => scrollController.animateTo(scrollController.offset + Dimensions.webMaxWidth,
-                    duration: const Duration(milliseconds: 500), curve: Curves.easeInOut),
-              ),
-            ),
-
-        ]) : const WebNewOnShimmerView();
+                if (showForwardButton)
+                  Positioned(
+                    top: 70,
+                    right: 0,
+                    child: ArrowIconButton(
+                      onTap: () => scrollController.animateTo(
+                          scrollController.offset + Dimensions.webMaxWidth,
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeInOut),
+                    ),
+                  ),
+              ])
+            : const WebNewOnShimmerView();
       }),
     ]);
   }
@@ -121,7 +135,8 @@ class _WebNewOnViewState extends State<WebNewOnView> {
 
 class WebNewOnShimmerView extends StatelessWidget {
   final bool fromAllStore;
-  const WebNewOnShimmerView({Key? key, this.fromAllStore = false}) : super(key: key);
+  const WebNewOnShimmerView({Key? key, this.fromAllStore = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -132,132 +147,166 @@ class WebNewOnShimmerView extends StatelessWidget {
         child: SizedBox(
           height: 215,
           child: ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              scrollDirection: fromAllStore ? Axis.vertical : Axis.horizontal,
-              //padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault),
-              itemCount: 5,
-              itemBuilder: (context, index){
-                return Padding(
-                  padding: EdgeInsets.only(
-                    bottom: Dimensions.paddingSizeDefault, top: Dimensions.paddingSizeDefault,
-                    left: Get.find<LocalizationController>().isLtr ? 0 : Dimensions.paddingSizeDefault,
-                    right: Get.find<LocalizationController>().isLtr ? Dimensions.paddingSizeDefault : 0,
-                  ),
-                  child: Stack(children: [
-                    Container(
-                      width: 260,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                      ),
-                      child: Column(children: [
-                        Expanded(
-                          flex: 1,
-                          child: ClipRRect(
-                            borderRadius: const BorderRadius.only(topLeft: Radius.circular(Dimensions.radiusDefault), topRight: Radius.circular(Dimensions.radiusDefault)),
-                            child: Stack(clipBehavior: Clip.none, children: [
-                              Container(
-                                height: double.infinity, width: double.infinity,
-                                color: Theme.of(context).primaryColor.withOpacity(0.1),
-                              ),
-
-                              Positioned(
-                                top: 15, right: 15,
-                                child: Container(
-                                  padding: const EdgeInsets.all(2),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Theme.of(context).cardColor.withOpacity(0.8),
-                                  ),
-                                  child: Icon(Icons.favorite_border, color: Theme.of(context).primaryColor, size: 20),
-                                ),
-                              ),
-                            ]),
-                          ),
-                        ),
-
-                        Expanded(
-                          flex: 1,
-                          child: Column(children: [
-                            Expanded(
-                              flex: 2,
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 95),
-                                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                                  Expanded(
-                                    child: Container(
-                                      height: 5, width: 100,
-                                      color: Theme.of(context).cardColor,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 2),
-
-                                  Row(children: [
-                                    const Icon(Icons.location_on_outlined, color: Colors.blue, size: 15),
-                                    const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-                                    Expanded(
-                                      child: Container(
-                                        height: 10, width: 100,
-                                        color: Theme.of(context).cardColor,
-                                      ),
-                                    ),
-                                  ]),
-                                ]),
-                              ),
+            physics: const NeverScrollableScrollPhysics(),
+            scrollDirection: fromAllStore ? Axis.vertical : Axis.horizontal,
+            //padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault),
+            itemCount: 5,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: EdgeInsets.only(
+                  bottom: Dimensions.paddingSizeDefault,
+                  top: Dimensions.paddingSizeDefault,
+                  left: Get.find<LocalizationController>().isLtr
+                      ? 0
+                      : Dimensions.paddingSizeDefault,
+                  right: Get.find<LocalizationController>().isLtr
+                      ? Dimensions.paddingSizeDefault
+                      : 0,
+                ),
+                child: Stack(children: [
+                  Container(
+                    width: 260,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius:
+                          BorderRadius.circular(Dimensions.radiusDefault),
+                    ),
+                    child: Column(children: [
+                      Expanded(
+                        flex: 1,
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                              topLeft:
+                                  Radius.circular(Dimensions.radiusDefault),
+                              topRight:
+                                  Radius.circular(Dimensions.radiusDefault)),
+                          child: Stack(clipBehavior: Clip.none, children: [
+                            Container(
+                              height: double.infinity,
+                              width: double.infinity,
+                              color: Theme.of(context)
+                                  .primaryColor
+                                  .withOpacity(0.1),
                             ),
-
-                            Expanded(
-                              flex: 3,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                  Container(
-                                    height: 10, width: 70,
-                                    padding: const EdgeInsets.symmetric(vertical: 3, horizontal: Dimensions.paddingSizeSmall),
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context).primaryColor.withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(Dimensions.radiusLarge),
-                                    ),
-                                  ),
-
-                                  Container(
-                                    height: 20, width: 65,
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context).cardColor,
-                                      borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                                    ),
-                                  ),
-                                ]),
+                            Positioned(
+                              top: 15,
+                              right: 15,
+                              child: Container(
+                                padding: const EdgeInsets.all(2),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Theme.of(context)
+                                      .cardColor
+                                      .withOpacity(0.8),
+                                ),
+                                child: Icon(Icons.favorite_border,
+                                    color: Theme.of(context).primaryColor,
+                                    size: 20),
                               ),
                             ),
                           ]),
                         ),
-                      ]),
-                    ),
-
-                    Positioned(
-                      top: 60, left: 15,
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          Container(
-                            height: 65, width: 65,
-                            padding: const EdgeInsets.all(2),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).cardColor,
-                              borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Column(children: [
+                          Expanded(
+                            flex: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 95),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        height: 5,
+                                        width: 100,
+                                        color: Theme.of(context).cardColor,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 2),
+                                    Row(children: [
+                                      const Icon(Icons.location_on_outlined,
+                                          color: Colors.blue, size: 15),
+                                      const SizedBox(
+                                          width:
+                                              Dimensions.paddingSizeExtraSmall),
+                                      Expanded(
+                                        child: Container(
+                                          height: 10,
+                                          width: 100,
+                                          color: Theme.of(context).cardColor,
+                                        ),
+                                      ),
+                                    ]),
+                                  ]),
                             ),
                           ),
-                        ],
+                          Expanded(
+                            flex: 3,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: Dimensions.paddingSizeDefault),
+                              child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      height: 10,
+                                      width: 70,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 3,
+                                          horizontal:
+                                              Dimensions.paddingSizeSmall),
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .primaryColor
+                                            .withOpacity(0.1),
+                                        borderRadius: BorderRadius.circular(
+                                            Dimensions.radiusLarge),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 20,
+                                      width: 65,
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).cardColor,
+                                        borderRadius: BorderRadius.circular(
+                                            Dimensions.radiusSmall),
+                                      ),
+                                    ),
+                                  ]),
+                            ),
+                          ),
+                        ]),
                       ),
+                    ]),
+                  ),
+                  Positioned(
+                    top: 60,
+                    left: 15,
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Container(
+                          height: 65,
+                          width: 65,
+                          padding: const EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).cardColor,
+                            borderRadius:
+                                BorderRadius.circular(Dimensions.radiusSmall),
+                          ),
+                        ),
+                      ],
                     ),
-                  ]),
-                );
-              },
+                  ),
+                ]),
+              );
+            },
           ),
         ),
       ),
     ]);
   }
 }
-

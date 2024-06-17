@@ -52,8 +52,12 @@ class _PickMapScreenState extends State<PickMapScreen> {
       Get.find<LocationController>().setPickData();
     }
     _initialPosition = LatLng(
-      double.parse(Get.find<SplashController>().configModel!.defaultLocation!.lat ?? '0'),
-      double.parse(Get.find<SplashController>().configModel!.defaultLocation!.lng ?? '0'),
+      double.parse(
+          Get.find<SplashController>().configModel!.defaultLocation!.lat ??
+              '0'),
+      double.parse(
+          Get.find<SplashController>().configModel!.defaultLocation!.lng ??
+              '0'),
     );
   }
 
@@ -61,14 +65,17 @@ class _PickMapScreenState extends State<PickMapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       //backgroundColor: Colors.red,
-      backgroundColor: ResponsiveHelper.isDesktop(context) ? Colors.transparent : Theme.of(context).cardColor,
+      backgroundColor: ResponsiveHelper.isDesktop(context)
+          ? Colors.transparent
+          : Theme.of(context).cardColor,
       appBar: ResponsiveHelper.isDesktop(context) ? const WebMenuBar() : null,
       endDrawer: const MenuDrawer(), endDrawerEnableOpenDragGesture: false,
       body: SafeArea(
           child: Center(
               child: Container(
         height: ResponsiveHelper.isDesktop(context) ? 600 : null,
-        width: ResponsiveHelper.isDesktop(context) ? 700 : Dimensions.webMaxWidth,
+        width:
+            ResponsiveHelper.isDesktop(context) ? 700 : Dimensions.webMaxWidth,
         // width: Dimensions.webMaxWidth,
         decoration: context.width > 700
             ? BoxDecoration(
@@ -84,7 +91,9 @@ class _PickMapScreenState extends State<PickMapScreen> {
 
           return ResponsiveHelper.isDesktop(context)
               ? Padding(
-                  padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall, horizontal: Dimensions.paddingSizeLarge),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: Dimensions.paddingSizeSmall,
+                      horizontal: Dimensions.paddingSizeLarge),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -96,29 +105,40 @@ class _PickMapScreenState extends State<PickMapScreen> {
                         ),
                       ),
                       const SizedBox(height: Dimensions.paddingSizeDefault),
-                      Text('type_your_address_here_to_pick_form_map'.tr, style: robotoBold),
+                      Text('type_your_address_here_to_pick_form_map'.tr,
+                          style: robotoBold),
                       const SizedBox(height: Dimensions.paddingSizeDefault),
                       SearchLocationWidget(
-                          mapController: _mapController, pickedAddress: locationController.pickAddress, isEnabled: null, fromDialog: true),
+                          mapController: _mapController,
+                          pickedAddress: locationController.pickAddress,
+                          isEnabled: null,
+                          fromDialog: true),
                       const SizedBox(height: Dimensions.paddingSizeDefault),
                       SizedBox(
                         height: 350,
                         child: Stack(children: [
                           ClipRRect(
-                            borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                            borderRadius:
+                                BorderRadius.circular(Dimensions.radiusDefault),
                             child: GoogleMap(
                               initialCameraPosition: CameraPosition(
                                 target: widget.fromAddAddress
-                                    ? LatLng(locationController.position.latitude, locationController.position.longitude)
+                                    ? LatLng(
+                                        locationController.position.latitude,
+                                        locationController.position.longitude)
                                     : _initialPosition,
                                 zoom: 16,
                               ),
-                              minMaxZoomPreference: const MinMaxZoomPreference(0, 16),
+                              minMaxZoomPreference:
+                                  const MinMaxZoomPreference(0, 16),
                               myLocationButtonEnabled: false,
-                              onMapCreated: (GoogleMapController mapController) {
+                              onMapCreated:
+                                  (GoogleMapController mapController) {
                                 _mapController = mapController;
                                 if (!widget.fromAddAddress) {
-                                  Get.find<LocationController>().getCurrentLocation(false, mapController: mapController);
+                                  Get.find<LocationController>()
+                                      .getCurrentLocation(false,
+                                          mapController: mapController);
                                 }
                               },
                               scrollGesturesEnabled: !Get.isDialogOpen!,
@@ -130,13 +150,15 @@ class _PickMapScreenState extends State<PickMapScreen> {
                                 locationController.disableButton();
                               },
                               onCameraIdle: () {
-                                Get.find<LocationController>().updatePosition(_cameraPosition, false);
+                                Get.find<LocationController>()
+                                    .updatePosition(_cameraPosition, false);
                               },
                             ),
                           ),
                           Center(
                               child: !locationController.loading
-                                  ? Image.asset(Images.pickMarker, height: 50, width: 50)
+                                  ? Image.asset(Images.pickMarker,
+                                      height: 50, width: 50)
                                   : const CircularProgressIndicator()),
                           Positioned(
                             bottom: 30,
@@ -144,10 +166,14 @@ class _PickMapScreenState extends State<PickMapScreen> {
                             child: FloatingActionButton(
                               mini: true,
                               backgroundColor: Theme.of(context).cardColor,
-                              onPressed: () => Get.find<LocationController>().checkPermission(() {
-                                Get.find<LocationController>().getCurrentLocation(false, mapController: _mapController);
+                              onPressed: () => Get.find<LocationController>()
+                                  .checkPermission(() {
+                                Get.find<LocationController>()
+                                    .getCurrentLocation(false,
+                                        mapController: _mapController);
                               }),
-                              child: Icon(Icons.my_location, color: Theme.of(context).primaryColor),
+                              child: Icon(Icons.my_location,
+                                  color: Theme.of(context).primaryColor),
                             ),
                           ),
                         ]),
@@ -164,73 +190,116 @@ class _PickMapScreenState extends State<PickMapScreen> {
                         isLoading: locationController.isLoading,
                         onPressed: locationController.isLoading
                             ? () {}
-                            : (locationController.buttonDisabled || locationController.loading)
+                            : (locationController.buttonDisabled ||
+                                    locationController.loading)
                                 ? null
                                 : () {
-                                    if (locationController.pickPosition.latitude != 0 && locationController.pickAddress!.isNotEmpty) {
+                                    if (locationController
+                                                .pickPosition.latitude !=
+                                            0 &&
+                                        locationController
+                                            .pickAddress!.isNotEmpty) {
                                       if (widget.onPicked != null) {
                                         AddressModel address = AddressModel(
-                                          latitude: locationController.pickPosition.latitude.toString(),
-                                          longitude: locationController.pickPosition.longitude.toString(),
+                                          latitude: locationController
+                                              .pickPosition.latitude
+                                              .toString(),
+                                          longitude: locationController
+                                              .pickPosition.longitude
+                                              .toString(),
                                           addressType: 'others',
-                                          address: locationController.pickAddress,
-                                          contactPersonName: locationController.getUserAddress()!.contactPersonName,
-                                          contactPersonNumber: locationController.getUserAddress()!.contactPersonNumber,
+                                          address:
+                                              locationController.pickAddress,
+                                          contactPersonName: locationController
+                                              .getUserAddress()!
+                                              .contactPersonName,
+                                          contactPersonNumber:
+                                              locationController
+                                                  .getUserAddress()!
+                                                  .contactPersonNumber,
                                         );
                                         widget.onPicked!(address);
                                         Get.back();
                                       } else if (widget.fromAddAddress) {
-                                        if (widget.googleMapController != null) {
-                                          widget.googleMapController!.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
-                                              target: LatLng(
-                                                locationController.pickPosition.latitude,
-                                                locationController.pickPosition.longitude,
-                                              ),
-                                              zoom: 16)));
-                                          locationController.setAddAddressData();
+                                        if (widget.googleMapController !=
+                                            null) {
+                                          widget.googleMapController!
+                                              .moveCamera(CameraUpdate
+                                                  .newCameraPosition(
+                                                      CameraPosition(
+                                                          target: LatLng(
+                                                            locationController
+                                                                .pickPosition
+                                                                .latitude,
+                                                            locationController
+                                                                .pickPosition
+                                                                .longitude,
+                                                          ),
+                                                          zoom: 16)));
+                                          locationController
+                                              .setAddAddressData();
                                         }
                                         Get.back();
                                       } else {
                                         AddressModel address = AddressModel(
-                                          latitude: locationController.pickPosition.latitude.toString(),
-                                          longitude: locationController.pickPosition.longitude.toString(),
+                                          latitude: locationController
+                                              .pickPosition.latitude
+                                              .toString(),
+                                          longitude: locationController
+                                              .pickPosition.longitude
+                                              .toString(),
                                           addressType: 'others',
-                                          address: locationController.pickAddress,
+                                          address:
+                                              locationController.pickAddress,
                                         );
 
                                         if (widget.fromLandingPage) {
-                                          print('---------from landing page..... 1 /// get guest id : ${Get.find<AuthController>().getGuestId()}');
-                                          if (!Get.find<AuthController>().isGuestLoggedIn() && !Get.find<AuthController>().isLoggedIn()) {
-                                            print('---------from landing page..... 2');
-                                            Get.find<AuthController>().guestLogin().then((response) {
+                                          print(
+                                              '---------from landing page..... 1 /// get guest id : ${Get.find<AuthController>().getGuestId()}');
+                                          if (!Get.find<AuthController>()
+                                                  .isGuestLoggedIn() &&
+                                              !Get.find<AuthController>()
+                                                  .isLoggedIn()) {
+                                            print(
+                                                '---------from landing page..... 2');
+                                            Get.find<AuthController>()
+                                                .guestLogin()
+                                                .then((response) {
                                               if (response.isSuccess) {
-                                                Get.find<UserController>().setForceFullyUserEmpty();
+                                                Get.find<UserController>()
+                                                    .setForceFullyUserEmpty();
                                                 Get.back();
-                                                locationController.saveAddressAndNavigate(
+                                                locationController
+                                                    .saveAddressAndNavigate(
                                                   address,
                                                   widget.fromSignUp,
                                                   widget.route,
                                                   widget.canRoute,
-                                                  ResponsiveHelper.isDesktop(context),
+                                                  ResponsiveHelper.isDesktop(
+                                                      context),
                                                 );
                                               }
                                             });
                                           } else {
-                                            print('---------from landing page..... 3');
+                                            print(
+                                                '---------from landing page..... 3');
                                             // if(Get.isDialogOpen!) {
                                             //   Get.back();
                                             // }
                                             Get.back();
-                                            locationController.saveAddressAndNavigate(
+                                            locationController
+                                                .saveAddressAndNavigate(
                                               address,
                                               widget.fromSignUp,
                                               widget.route,
                                               widget.canRoute,
-                                              ResponsiveHelper.isDesktop(context),
+                                              ResponsiveHelper.isDesktop(
+                                                  context),
                                             );
                                           }
                                         } else {
-                                          locationController.saveAddressAndNavigate(
+                                          locationController
+                                              .saveAddressAndNavigate(
                                             address,
                                             widget.fromSignUp,
                                             widget.route,
@@ -251,7 +320,8 @@ class _PickMapScreenState extends State<PickMapScreen> {
                   GoogleMap(
                     initialCameraPosition: CameraPosition(
                       target: widget.fromAddAddress
-                          ? LatLng(locationController.position.latitude, locationController.position.longitude)
+                          ? LatLng(locationController.position.latitude,
+                              locationController.position.longitude)
                           : _initialPosition,
                       zoom: 16,
                     ),
@@ -260,7 +330,8 @@ class _PickMapScreenState extends State<PickMapScreen> {
                     onMapCreated: (GoogleMapController mapController) {
                       _mapController = mapController;
                       if (!widget.fromAddAddress) {
-                        Get.find<LocationController>().getCurrentLocation(false, mapController: mapController);
+                        Get.find<LocationController>().getCurrentLocation(false,
+                            mapController: mapController);
                       }
                     },
                     scrollGesturesEnabled: !Get.isDialogOpen!,
@@ -272,16 +343,23 @@ class _PickMapScreenState extends State<PickMapScreen> {
                       locationController.disableButton();
                     },
                     onCameraIdle: () {
-                      Get.find<LocationController>().updatePosition(_cameraPosition, false);
+                      Get.find<LocationController>()
+                          .updatePosition(_cameraPosition, false);
                     },
                   ),
                   Center(
-                      child: !locationController.loading ? Image.asset(Images.pickMarker, height: 50, width: 50) : const CircularProgressIndicator()),
+                      child: !locationController.loading
+                          ? Image.asset(Images.pickMarker,
+                              height: 50, width: 50)
+                          : const CircularProgressIndicator()),
                   Positioned(
                     top: Dimensions.paddingSizeLarge,
                     left: Dimensions.paddingSizeSmall,
                     right: Dimensions.paddingSizeSmall,
-                    child: SearchLocationWidget(mapController: _mapController, pickedAddress: locationController.pickAddress, isEnabled: null),
+                    child: SearchLocationWidget(
+                        mapController: _mapController,
+                        pickedAddress: locationController.pickAddress,
+                        isEnabled: null),
                   ),
                   Positioned(
                     bottom: 80,
@@ -289,10 +367,13 @@ class _PickMapScreenState extends State<PickMapScreen> {
                     child: FloatingActionButton(
                       mini: true,
                       backgroundColor: Theme.of(context).cardColor,
-                      onPressed: () => Get.find<LocationController>().checkPermission(() {
-                        Get.find<LocationController>().getCurrentLocation(false, mapController: _mapController);
+                      onPressed: () =>
+                          Get.find<LocationController>().checkPermission(() {
+                        Get.find<LocationController>().getCurrentLocation(false,
+                            mapController: _mapController);
                       }),
-                      child: Icon(Icons.my_location, color: Theme.of(context).primaryColor),
+                      child: Icon(Icons.my_location,
+                          color: Theme.of(context).primaryColor),
                     ),
                   ),
                   Positioned(
@@ -308,36 +389,59 @@ class _PickMapScreenState extends State<PickMapScreen> {
                       isLoading: locationController.isLoading,
                       onPressed: locationController.isLoading
                           ? () {}
-                          : (locationController.buttonDisabled || locationController.loading)
+                          : (locationController.buttonDisabled ||
+                                  locationController.loading)
                               ? null
                               : () {
-                                  if (locationController.pickPosition.latitude != 0 && locationController.pickAddress!.isNotEmpty) {
+                                  if (locationController
+                                              .pickPosition.latitude !=
+                                          0 &&
+                                      locationController
+                                          .pickAddress!.isNotEmpty) {
                                     if (widget.onPicked != null) {
                                       AddressModel address = AddressModel(
-                                        latitude: locationController.pickPosition.latitude.toString(),
-                                        longitude: locationController.pickPosition.longitude.toString(),
+                                        latitude: locationController
+                                            .pickPosition.latitude
+                                            .toString(),
+                                        longitude: locationController
+                                            .pickPosition.longitude
+                                            .toString(),
                                         addressType: 'others',
                                         address: locationController.pickAddress,
-                                        contactPersonName: locationController.getUserAddress()!.contactPersonName,
-                                        contactPersonNumber: locationController.getUserAddress()!.contactPersonNumber,
+                                        contactPersonName: locationController
+                                            .getUserAddress()!
+                                            .contactPersonName,
+                                        contactPersonNumber: locationController
+                                            .getUserAddress()!
+                                            .contactPersonNumber,
                                       );
                                       widget.onPicked!(address);
                                       Get.back();
                                     } else if (widget.fromAddAddress) {
                                       if (widget.googleMapController != null) {
-                                        widget.googleMapController!.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
-                                            target: LatLng(
-                                              locationController.pickPosition.latitude,
-                                              locationController.pickPosition.longitude,
-                                            ),
-                                            zoom: 16)));
+                                        widget.googleMapController!.moveCamera(
+                                            CameraUpdate.newCameraPosition(
+                                                CameraPosition(
+                                                    target: LatLng(
+                                                      locationController
+                                                          .pickPosition
+                                                          .latitude,
+                                                      locationController
+                                                          .pickPosition
+                                                          .longitude,
+                                                    ),
+                                                    zoom: 16)));
                                         locationController.setAddAddressData();
                                       }
                                       Get.back();
                                     } else {
                                       AddressModel address = AddressModel(
-                                        latitude: locationController.pickPosition.latitude.toString(),
-                                        longitude: locationController.pickPosition.longitude.toString(),
+                                        latitude: locationController
+                                            .pickPosition.latitude
+                                            .toString(),
+                                        longitude: locationController
+                                            .pickPosition.longitude
+                                            .toString(),
                                         addressType: 'others',
                                         address: locationController.pickAddress,
                                       );

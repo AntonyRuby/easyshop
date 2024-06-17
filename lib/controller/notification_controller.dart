@@ -14,17 +14,20 @@ class NotificationController extends GetxController implements GetxService {
   bool get hasNotification => _hasNotification;
 
   Future<int> getNotificationList(bool reload) async {
-    if(_notificationList == null || reload) {
+    if (_notificationList == null || reload) {
       Response response = await notificationRepo.getNotificationList();
       if (response.statusCode == 200) {
         _notificationList = [];
-        response.body.forEach((notification) => _notificationList!.add(NotificationModel.fromJson(notification)));
+        response.body.forEach((notification) =>
+            _notificationList!.add(NotificationModel.fromJson(notification)));
         _notificationList!.sort((a, b) {
-          return DateConverter.isoStringToLocalDate(a.updatedAt!).compareTo(DateConverter.isoStringToLocalDate(b.updatedAt!));
+          return DateConverter.isoStringToLocalDate(a.updatedAt!)
+              .compareTo(DateConverter.isoStringToLocalDate(b.updatedAt!));
         });
         Iterable iterable = _notificationList!.reversed;
         _notificationList = iterable.toList() as List<NotificationModel>?;
-        _hasNotification = _notificationList!.length != getSeenNotificationCount();
+        _hasNotification =
+            _notificationList!.length != getSeenNotificationCount();
       } else {
         ApiChecker.checkApi(response);
       }
@@ -44,5 +47,4 @@ class NotificationController extends GetxController implements GetxService {
   void clearNotification() {
     _notificationList = null;
   }
-
 }

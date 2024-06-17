@@ -32,8 +32,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return ResponsiveHelper.isDesktop(context)
         ? const WebMenuBar()
         : AppBar(
-            title:
-                Text(title, style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).textTheme.bodyLarge!.color)),
+            title: Text(title,
+                style: robotoRegular.copyWith(
+                    fontSize: Dimensions.fontSizeLarge,
+                    color: Theme.of(context).textTheme.bodyLarge!.color)),
             centerTitle: true,
             leading: backButton
                 ? IconButton(
@@ -44,7 +46,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                             color: Colors.red,
                           ),
                     color: Theme.of(context).textTheme.bodyLarge!.color,
-                    onPressed: () => onBackPressed != null ? onBackPressed!() : Navigator.pop(context),
+                    onPressed: () => onBackPressed != null
+                        ? onBackPressed!()
+                        : Navigator.pop(context),
                   )
                 : const SizedBox(),
             backgroundColor: Theme.of(context).cardColor,
@@ -53,8 +57,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ? [
                     showCart
                         ? IconButton(
-                            onPressed: () => Get.toNamed(RouteHelper.getCartRoute()),
-                            icon: CartWidget(color: Theme.of(context).textTheme.bodyLarge!.color, size: 25),
+                            onPressed: () =>
+                                Get.toNamed(RouteHelper.getCartRoute()),
+                            icon: CartWidget(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .color,
+                                size: 25),
                           )
                         : const SizedBox(),
                     onVegFilterTap != null

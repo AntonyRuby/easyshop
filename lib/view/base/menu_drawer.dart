@@ -22,7 +22,8 @@ class MenuDrawer extends StatefulWidget {
   MenuDrawerState createState() => MenuDrawerState();
 }
 
-class MenuDrawerState extends State<MenuDrawer> with SingleTickerProviderStateMixin {
+class MenuDrawerState extends State<MenuDrawer>
+    with SingleTickerProviderStateMixin {
   final List<Menu> _menuList = [
     Menu(
         icon: Images.profile,
@@ -80,7 +81,8 @@ class MenuDrawerState extends State<MenuDrawer> with SingleTickerProviderStateMi
   static const _staggerTime = Duration(milliseconds: 50);
   static const _buttonDelayTime = Duration(milliseconds: 150);
   static const _buttonTime = Duration(milliseconds: 500);
-  final _animationDuration = _initialDelayTime + (_staggerTime * 7) + _buttonDelayTime + _buttonTime;
+  final _animationDuration =
+      _initialDelayTime + (_staggerTime * 7) + _buttonDelayTime + _buttonTime;
 
   late AnimationController _staggeredController;
   final List<Interval> _itemSlideIntervals = [];
@@ -98,7 +100,8 @@ class MenuDrawerState extends State<MenuDrawer> with SingleTickerProviderStateMi
             Get.toNamed(RouteHelper.getHtmlRoute('refund-policy'));
           }));
     }
-    if (Get.find<SplashController>().configModel!.cancellationPolicyStatus == 1) {
+    if (Get.find<SplashController>().configModel!.cancellationPolicyStatus ==
+        1) {
       _menuList.add(Menu(
           icon: Images.cancellation,
           title: 'cancellation_policy'.tr,
@@ -160,7 +163,13 @@ class MenuDrawerState extends State<MenuDrawer> with SingleTickerProviderStateMi
     if (Get.find<SplashController>().configModel!.toggleStoreRegistration!) {
       _menuList.add(Menu(
         icon: Images.restaurantJoin,
-        title: Get.find<SplashController>().configModel!.moduleConfig!.module!.showRestaurantText! ? 'join_as_a_restaurant'.tr : 'join_as_a_store'.tr,
+        title: Get.find<SplashController>()
+                .configModel!
+                .moduleConfig!
+                .module!
+                .showRestaurantText!
+            ? 'join_as_a_restaurant'.tr
+            : 'join_as_a_store'.tr,
         onTap: () {
           Get.back();
           Get.toNamed(RouteHelper.getRestaurantRegistrationRoute());
@@ -169,7 +178,9 @@ class MenuDrawerState extends State<MenuDrawer> with SingleTickerProviderStateMi
     }
     _menuList.add(Menu(
         icon: Images.logOut,
-        title: Get.find<AuthController>().isLoggedIn() ? 'logout'.tr : 'sign_in'.tr,
+        title: Get.find<AuthController>().isLoggedIn()
+            ? 'logout'.tr
+            : 'sign_in'.tr,
         onTap: () {
           Get.back();
           if (Get.find<AuthController>().isLoggedIn()) {
@@ -187,14 +198,16 @@ class MenuDrawerState extends State<MenuDrawer> with SingleTickerProviderStateMi
                       if (ResponsiveHelper.isDesktop(Get.context)) {
                         Get.offAllNamed(RouteHelper.getInitialRoute());
                       } else {
-                        Get.offAllNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
+                        Get.offAllNamed(
+                            RouteHelper.getSignInRoute(RouteHelper.splash));
                       }
                     }),
                 useSafeArea: false);
           } else {
             Get.find<WishListController>().removeWishes();
             if (ResponsiveHelper.isDesktop(context)) {
-              Get.dialog(const SignInScreen(exitFromApp: false, backFromThis: false));
+              Get.dialog(
+                  const SignInScreen(exitFromApp: false, backFromThis: false));
             } else {
               Get.toNamed(RouteHelper.getSignInRoute(RouteHelper.main));
             }
@@ -230,18 +243,24 @@ class MenuDrawerState extends State<MenuDrawer> with SingleTickerProviderStateMi
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveHelper.isDesktop(context) ? _buildContent() : const SizedBox();
+    return ResponsiveHelper.isDesktop(context)
+        ? _buildContent()
+        : const SizedBox();
   }
 
   Widget _buildContent() {
     return Align(
-        alignment: Get.find<LocalizationController>().isLtr ? Alignment.topRight : Alignment.topLeft,
+        alignment: Get.find<LocalizationController>().isLtr
+            ? Alignment.topRight
+            : Alignment.topLeft,
         child: Container(
           width: 300,
           decoration: BoxDecoration(color: Theme.of(context).cardColor),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Container(
-              padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeLarge, horizontal: 25),
+              padding: const EdgeInsets.symmetric(
+                  vertical: Dimensions.paddingSizeLarge, horizontal: 25),
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor.withOpacity(0.10),
               ),
@@ -250,7 +269,10 @@ class MenuDrawerState extends State<MenuDrawer> with SingleTickerProviderStateMi
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('menu'.tr, style: robotoBold.copyWith(fontSize: 20)),
-                  IconButton(padding: const EdgeInsets.all(0), onPressed: () => Get.back(), icon: const Icon(Icons.close))
+                  IconButton(
+                      padding: const EdgeInsets.all(0),
+                      onPressed: () => Get.back(),
+                      icon: const Icon(Icons.close))
                 ],
               ),
             ),
@@ -265,7 +287,8 @@ class MenuDrawerState extends State<MenuDrawer> with SingleTickerProviderStateMi
                     animation: _staggeredController,
                     builder: (context, child) {
                       final animationPercent = Curves.easeOut.transform(
-                        _itemSlideIntervals[index].transform(_staggeredController.value),
+                        _itemSlideIntervals[index]
+                            .transform(_staggeredController.value),
                       );
                       final opacity = animationPercent;
                       final slideDistance = (1.0 - animationPercent) * 150;
@@ -284,24 +307,32 @@ class MenuDrawerState extends State<MenuDrawer> with SingleTickerProviderStateMi
                       child: InkWell(
                         onTap: _menuList[index].onTap as void Function()?,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall, vertical: Dimensions.paddingSizeExtraSmall),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: Dimensions.paddingSizeSmall,
+                              vertical: Dimensions.paddingSizeExtraSmall),
                           child: Row(children: [
                             Container(
                               height: 55,
                               width: 55,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                                borderRadius: BorderRadius.circular(
+                                    Dimensions.radiusSmall),
                                 color: index != _menuList.length - 1
                                     ? Theme.of(context).primaryColor
                                     : Get.find<AuthController>().isLoggedIn()
                                         ? Theme.of(context).colorScheme.error
                                         : const Color(0xFFFE0100),
                               ),
-                              child: Image.asset(_menuList[index].icon, color: Colors.white, height: 30, width: 30),
+                              child: Image.asset(_menuList[index].icon,
+                                  color: Colors.white, height: 30, width: 30),
                             ),
                             const SizedBox(width: Dimensions.paddingSizeSmall),
-                            Expanded(child: Text(_menuList[index].title, style: robotoMedium, overflow: TextOverflow.ellipsis, maxLines: 1)),
+                            Expanded(
+                                child: Text(_menuList[index].title,
+                                    style: robotoMedium,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1)),
                           ]),
                         ),
                       ),

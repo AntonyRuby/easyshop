@@ -37,14 +37,14 @@ class Banners {
 
   Banners(
       {this.id,
-        this.moduleId,
-        this.title,
-        this.shortDescription,
-        this.image,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.translations});
+      this.moduleId,
+      this.title,
+      this.shortDescription,
+      this.image,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.translations});
 
   Banners.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -92,13 +92,13 @@ class Translations {
 
   Translations(
       {this.id,
-        this.translationableType,
-        this.translationableId,
-        this.locale,
-        this.key,
-        this.value,
-        this.createdAt,
-        this.updatedAt});
+      this.translationableType,
+      this.translationableId,
+      this.locale,
+      this.key,
+      this.value,
+      this.createdAt,
+      this.updatedAt});
 
   Translations.fromJson(Map<String, dynamic> json) {
     id = json['id'];

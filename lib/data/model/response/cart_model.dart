@@ -18,18 +18,18 @@ class CartModel {
 
   CartModel(
       int? id,
-        double? price,
-        double discountedPrice,
-        List<Variation> variation,
-        List<List<bool?>> foodVariations,
-        double discountAmount,
-        int? quantity,
-        List<AddOn> addOnIds,
-        List<AddOns> addOns,
-        bool isCampaign,
-        int? stock,
-        Item? item,
-        int? quantityLimit,
+      double? price,
+      double discountedPrice,
+      List<Variation> variation,
+      List<List<bool?>> foodVariations,
+      double discountAmount,
+      int? quantity,
+      List<AddOn> addOnIds,
+      List<AddOns> addOns,
+      bool isCampaign,
+      int? stock,
+      Item? item,
+      int? quantityLimit,
       {bool isLoading = false}) {
     _id = id;
     _price = price;
@@ -44,7 +44,7 @@ class CartModel {
     _stock = stock;
     _item = item;
     _quantityLimit = quantityLimit;
-    _isLoading = isLoading ;
+    _isLoading = isLoading;
   }
 
   int? get id => _id;
@@ -78,9 +78,9 @@ class CartModel {
     }
     if (json['food_variations'] != null) {
       _foodVariations = [];
-      for(int index=0; index<json['food_variations'].length; index++) {
+      for (int index = 0; index < json['food_variations'].length; index++) {
         _foodVariations!.add([]);
-        for(int i=0; i<json['food_variations'][index].length; i++) {
+        for (int i = 0; i < json['food_variations'][index].length; i++) {
           _foodVariations![index].add(json['food_variations'][index][i]);
         }
       }
@@ -104,7 +104,7 @@ class CartModel {
     if (json['item'] != null) {
       _item = Item.fromJson(json['item']);
     }
-    if(json['quantity_limit'] != null) {
+    if (json['quantity_limit'] != null) {
       _quantityLimit = int.parse(json['quantity_limit']);
     }
     _isLoading = json['is_loading'] ?? false;

@@ -8,14 +8,15 @@ class ProductFlashSale {
   FlashSaleModel? flashSale;
   List<Products>? products;
 
-  ProductFlashSale({this.totalSize, this.limit, this.offset, this.flashSale, this.products});
+  ProductFlashSale(
+      {this.totalSize, this.limit, this.offset, this.flashSale, this.products});
 
   ProductFlashSale.fromJson(Map<String, dynamic> json) {
     totalSize = json['total_size'];
     limit = int.parse(json['limit'].toString());
     offset = int.parse(json['offset'].toString());
     flashSale = json['flash_sale'] != null
-        ?  FlashSaleModel.fromJson(json['flash_sale'])
+        ? FlashSaleModel.fromJson(json['flash_sale'])
         : null;
     if (json['products'] != null) {
       products = <Products>[];
@@ -39,7 +40,6 @@ class ProductFlashSale {
     return data;
   }
 }
-
 
 class Products {
   int? id;
@@ -152,18 +152,18 @@ class Module {
 
   Module(
       {this.id,
-        this.moduleName,
-        this.moduleType,
-        this.thumbnail,
-        this.status,
-        this.storesCount,
-        this.createdAt,
-        this.updatedAt,
-        this.icon,
-        this.themeId,
-        this.description,
-        this.allZoneService,
-        this.translations});
+      this.moduleName,
+      this.moduleType,
+      this.thumbnail,
+      this.status,
+      this.storesCount,
+      this.createdAt,
+      this.updatedAt,
+      this.icon,
+      this.themeId,
+      this.description,
+      this.allZoneService,
+      this.translations});
 
   Module.fromJson(Map<String, dynamic> json) {
     id = json['id'];

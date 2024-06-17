@@ -9,10 +9,10 @@ class BasicMedicineModel {
 
   BasicMedicineModel(
       {this.totalSize,
-        this.limit,
-        this.offset,
-        this.products,
-        this.categories});
+      this.limit,
+      this.offset,
+      this.products,
+      this.categories});
 
   BasicMedicineModel.fromJson(Map<String, dynamic> json) {
     totalSize = json['total_size'];
@@ -94,7 +94,6 @@ class Unit {
   }
 }
 
-
 class Module {
   int? id;
   String? moduleName;
@@ -109,20 +108,20 @@ class Module {
   String? description;
   int? allZoneService;
 
-  Module(
-      {this.id,
-        this.moduleName,
-        this.moduleType,
-        this.thumbnail,
-        this.status,
-        this.storesCount,
-        this.createdAt,
-        this.updatedAt,
-        this.icon,
-        this.themeId,
-        this.description,
-        this.allZoneService,
-      });
+  Module({
+    this.id,
+    this.moduleName,
+    this.moduleType,
+    this.thumbnail,
+    this.status,
+    this.storesCount,
+    this.createdAt,
+    this.updatedAt,
+    this.icon,
+    this.themeId,
+    this.description,
+    this.allZoneService,
+  });
 
   Module.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -173,22 +172,22 @@ class Categories {
   int? productsCount;
   int? childesCount;
 
-  Categories(
-      {this.id,
-        this.name,
-        this.image,
-        this.parentId,
-        this.position,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.priority,
-        this.moduleId,
-        this.slug,
-        this.featured,
-        this.productsCount,
-        this.childesCount,
-      });
+  Categories({
+    this.id,
+    this.name,
+    this.image,
+    this.parentId,
+    this.position,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.priority,
+    this.moduleId,
+    this.slug,
+    this.featured,
+    this.productsCount,
+    this.childesCount,
+  });
 
   Categories.fromJson(Map<String, dynamic> json) {
     id = json['id'];

@@ -19,20 +19,20 @@ class UserInfoModel {
 
   UserInfoModel(
       {this.id,
-        this.fName,
-        this.lName,
-        this.email,
-        this.image,
-        this.phone,
-        this.createdAt,
-        this.password,
-        this.orderCount,
-        this.memberSinceDays,
-        this.walletBalance,
-        this.loyaltyPoint,
-        this.refCode,
-        this.socialId,
-        this.userInfo});
+      this.fName,
+      this.lName,
+      this.email,
+      this.image,
+      this.phone,
+      this.createdAt,
+      this.password,
+      this.orderCount,
+      this.memberSinceDays,
+      this.walletBalance,
+      this.loyaltyPoint,
+      this.refCode,
+      this.socialId,
+      this.userInfo});
 
   UserInfoModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -49,7 +49,8 @@ class UserInfoModel {
     loyaltyPoint = json['loyalty_point'];
     refCode = json['ref_code'];
     socialId = json['social_id'];
-    userInfo = json['userinfo'] != null ? User.fromJson(json['userinfo']) : null;
+    userInfo =
+        json['userinfo'] != null ? User.fromJson(json['userinfo']) : null;
   }
 
   Map<String, dynamic> toJson() {

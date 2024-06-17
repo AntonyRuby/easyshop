@@ -12,13 +12,15 @@ import 'package:get/get.dart';
 
 class OrderScreen extends StatefulWidget {
   final bool fromMenu; // Add this line
-  const OrderScreen({Key? key, this.fromMenu = false}) : super(key: key); // Update this line
+  const OrderScreen({Key? key, this.fromMenu = false})
+      : super(key: key); // Update this line
 
   @override
   OrderScreenState createState() => OrderScreenState();
 }
 
-class OrderScreenState extends State<OrderScreen> with TickerProviderStateMixin {
+class OrderScreenState extends State<OrderScreen>
+    with TickerProviderStateMixin {
   TabController? _tabController;
   bool _isLoggedIn = Get.find<AuthController>().isLoggedIn();
 
@@ -54,14 +56,18 @@ class OrderScreenState extends State<OrderScreen> with TickerProviderStateMixin 
               ? Column(
                   children: [
                     Container(
-                      color: ResponsiveHelper.isDesktop(context) ? Theme.of(context).primaryColor.withOpacity(0.1) : Colors.transparent,
+                      color: ResponsiveHelper.isDesktop(context)
+                          ? Theme.of(context).primaryColor.withOpacity(0.1)
+                          : Colors.transparent,
                       child: Column(
                         children: [
                           ResponsiveHelper.isDesktop(context)
                               ? Center(
                                   child: Padding(
-                                    padding: const EdgeInsets.only(top: Dimensions.paddingSizeSmall),
-                                    child: Text('my_orders'.tr, style: robotoMedium),
+                                    padding: const EdgeInsets.only(
+                                        top: Dimensions.paddingSizeSmall),
+                                    child: Text('my_orders'.tr,
+                                        style: robotoMedium),
                                   ),
                                 )
                               : const SizedBox(),
@@ -69,19 +75,32 @@ class OrderScreenState extends State<OrderScreen> with TickerProviderStateMixin 
                             child: SizedBox(
                               width: Dimensions.webMaxWidth,
                               child: Align(
-                                alignment: ResponsiveHelper.isDesktop(context) ? Alignment.centerLeft : Alignment.center,
+                                alignment: ResponsiveHelper.isDesktop(context)
+                                    ? Alignment.centerLeft
+                                    : Alignment.center,
                                 child: Container(
-                                  width: ResponsiveHelper.isDesktop(context) ? 300 : Dimensions.webMaxWidth,
-                                  color: ResponsiveHelper.isDesktop(context) ? Colors.transparent : Theme.of(context).cardColor,
+                                  width: ResponsiveHelper.isDesktop(context)
+                                      ? 300
+                                      : Dimensions.webMaxWidth,
+                                  color: ResponsiveHelper.isDesktop(context)
+                                      ? Colors.transparent
+                                      : Theme.of(context).cardColor,
                                   child: TabBar(
                                     controller: _tabController,
-                                    indicatorColor: Theme.of(context).primaryColor,
+                                    indicatorColor:
+                                        Theme.of(context).primaryColor,
                                     indicatorWeight: 3,
                                     labelColor: Theme.of(context).primaryColor,
-                                    unselectedLabelColor: Theme.of(context).disabledColor,
+                                    unselectedLabelColor:
+                                        Theme.of(context).disabledColor,
                                     unselectedLabelStyle:
-                                        robotoRegular.copyWith(color: Theme.of(context).disabledColor, fontSize: Dimensions.fontSizeSmall),
-                                    labelStyle: robotoBold.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).primaryColor),
+                                        robotoRegular.copyWith(
+                                            color:
+                                                Theme.of(context).disabledColor,
+                                            fontSize: Dimensions.fontSizeSmall),
+                                    labelStyle: robotoBold.copyWith(
+                                        fontSize: Dimensions.fontSizeSmall,
+                                        color: Theme.of(context).primaryColor),
                                     tabs: [
                                       Tab(text: 'running'.tr),
                                       Tab(text: 'history'.tr),

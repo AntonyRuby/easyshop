@@ -9,7 +9,12 @@ class ProfileBgWidget extends StatelessWidget {
   final Widget circularImage;
   final Widget mainWidget;
   final bool backButton;
-  const ProfileBgWidget({Key? key, required this.mainWidget, required this.circularImage, required this.backButton}) : super(key: key);
+  const ProfileBgWidget(
+      {Key? key,
+      required this.mainWidget,
+      required this.circularImage,
+      required this.backButton})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +30,11 @@ class ProfileBgWidget extends StatelessWidget {
         SizedBox(
           width: context.width,
           height: 160,
-          child: Center(child: Image.asset(Images.profileBg, height: 260, width: Dimensions.webMaxWidth, fit: BoxFit.fill)),
+          child: Center(
+              child: Image.asset(Images.profileBg,
+                  height: 260,
+                  width: Dimensions.webMaxWidth,
+                  fit: BoxFit.fill)),
         ),
         Positioned(
           top: 125,
@@ -36,7 +45,8 @@ class ProfileBgWidget extends StatelessWidget {
             child: Container(
               width: Dimensions.webMaxWidth,
               decoration: BoxDecoration(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(Dimensions.radiusExtraLarge)),
+                borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(Dimensions.radiusExtraLarge)),
                 color: Theme.of(context).cardColor,
               ),
             ),
@@ -49,7 +59,9 @@ class ProfileBgWidget extends StatelessWidget {
           child: Text(
             'profile'.tr,
             textAlign: TextAlign.center,
-            style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).cardColor),
+            style: robotoRegular.copyWith(
+                fontSize: Dimensions.fontSizeLarge,
+                color: Theme.of(context).cardColor),
           ),
         ),
         backButton

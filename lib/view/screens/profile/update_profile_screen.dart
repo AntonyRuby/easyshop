@@ -43,7 +43,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   }
 
   void initCall() {
-    if(Get.find<AuthController>().isLoggedIn() && Get.find<UserController>().userInfoModel == null) {
+    if (Get.find<AuthController>().isLoggedIn() &&
+        Get.find<UserController>().userInfoModel == null) {
       Get.find<UserController>().getUserInfo();
     }
     Get.find<UserController>().initData();
@@ -54,116 +55,175 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).cardColor,
       appBar: ResponsiveHelper.isDesktop(context) ? const WebMenuBar() : null,
-      endDrawer: const MenuDrawer(),endDrawerEnableOpenDragGesture: false,
+      endDrawer: const MenuDrawer(),
+      endDrawerEnableOpenDragGesture: false,
       body: GetBuilder<UserController>(builder: (userController) {
         bool isLoggedIn = Get.find<AuthController>().isLoggedIn();
-        if(userController.userInfoModel != null && _phoneController.text.isEmpty) {
+        if (userController.userInfoModel != null &&
+            _phoneController.text.isEmpty) {
           _firstNameController.text = userController.userInfoModel!.fName ?? '';
           _lastNameController.text = userController.userInfoModel!.lName ?? '';
           _phoneController.text = userController.userInfoModel!.phone ?? '';
           _emailController.text = userController.userInfoModel!.email ?? '';
         }
 
-        return isLoggedIn ? userController.userInfoModel != null ? ProfileBgWidget(
-          backButton: true,
-          circularImage: ImagePickerWidget(
-            image: '${Get.find<SplashController>().configModel!.baseUrls!.customerImageUrl}/${userController.userInfoModel!.image}',
-            onTap: () => userController.pickImage(), rawFile: userController.rawFile,
-          ),
-          mainWidget: Column(children: [
-
-            Expanded(child: Scrollbar(child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              padding: ResponsiveHelper.isDesktop(context) ? EdgeInsets.zero : const EdgeInsets.all(Dimensions.paddingSizeSmall),
-              child: Center(child: FooterView(
-                minHeight: 0.45,
-                child: SizedBox(width: Dimensions.webMaxWidth, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-
-                  Text(
-                    'first_name'.tr,
-                    style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor),
-                  ),
-                  const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-                  MyTextField(
-                    hintText: 'first_name'.tr,
-                    controller: _firstNameController,
-                    focusNode: _firstNameFocus,
-                    nextFocus: _lastNameFocus,
-                    inputType: TextInputType.name,
-                    capitalization: TextCapitalization.words,
-                  ),
-                  const SizedBox(height: Dimensions.paddingSizeLarge),
-
-                  Text(
-                    'last_name'.tr,
-                    style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor),
-                  ),
-                  const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-                  MyTextField(
-                    hintText: 'last_name'.tr,
-                    controller: _lastNameController,
-                    focusNode: _lastNameFocus,
-                    nextFocus: _emailFocus,
-                    inputType: TextInputType.name,
-                    capitalization: TextCapitalization.words,
-                  ),
-                  const SizedBox(height: Dimensions.paddingSizeLarge),
-
-                  Text(
-                    'email'.tr,
-                    style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor),
-                  ),
-                  const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-                  MyTextField(
-                    hintText: 'email'.tr,
-                    controller: _emailController,
-                    focusNode: _emailFocus,
-                    inputAction: TextInputAction.done,
-                    inputType: TextInputType.emailAddress,
-                  ),
-                  const SizedBox(height: Dimensions.paddingSizeLarge),
-
-                  Row(children: [
-                    Text(
-                      'phone'.tr,
-                      style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor),
+        return isLoggedIn
+            ? userController.userInfoModel != null
+                ? ProfileBgWidget(
+                    backButton: true,
+                    circularImage: ImagePickerWidget(
+                      image:
+                          '${Get.find<SplashController>().configModel!.baseUrls!.customerImageUrl}/${userController.userInfoModel!.image}',
+                      onTap: () => userController.pickImage(),
+                      rawFile: userController.rawFile,
                     ),
-                    const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-                    Text('(${'non_changeable'.tr})', style: robotoRegular.copyWith(
-                      fontSize: Dimensions.fontSizeExtraSmall, color: Theme.of(context).colorScheme.error,
-                    )),
-                  ]),
-                  const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-                  MyTextField(
-                    hintText: 'phone'.tr,
-                    controller: _phoneController,
-                    focusNode: _phoneFocus,
-                    inputType: TextInputType.phone,
-                    isEnabled: false,
-                  ),
+                    mainWidget: Column(children: [
+                      Expanded(
+                          child: Scrollbar(
+                              child: SingleChildScrollView(
+                        physics: const BouncingScrollPhysics(),
+                        padding: ResponsiveHelper.isDesktop(context)
+                            ? EdgeInsets.zero
+                            : const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                        child: Center(
+                            child: FooterView(
+                          minHeight: 0.45,
+                          child: SizedBox(
+                              width: Dimensions.webMaxWidth,
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'first_name'.tr,
+                                      style: robotoRegular.copyWith(
+                                          fontSize: Dimensions.fontSizeSmall,
+                                          color:
+                                              Theme.of(context).disabledColor),
+                                    ),
+                                    const SizedBox(
+                                        height:
+                                            Dimensions.paddingSizeExtraSmall),
+                                    MyTextField(
+                                      hintText: 'first_name'.tr,
+                                      controller: _firstNameController,
+                                      focusNode: _firstNameFocus,
+                                      nextFocus: _lastNameFocus,
+                                      inputType: TextInputType.name,
+                                      capitalization: TextCapitalization.words,
+                                    ),
+                                    const SizedBox(
+                                        height: Dimensions.paddingSizeLarge),
 
-                  //
-                  ResponsiveHelper.isDesktop(context) ? Padding(
-                    padding: const EdgeInsets.only(top: Dimensions.paddingSizeLarge),
-                    child: UpdateProfileButton(isLoading: userController.isLoading, onPressed: () {
-                      return _updateProfile(userController);
-                    }),
-                  ) : const SizedBox.shrink() ,
+                                    Text(
+                                      'last_name'.tr,
+                                      style: robotoRegular.copyWith(
+                                          fontSize: Dimensions.fontSizeSmall,
+                                          color:
+                                              Theme.of(context).disabledColor),
+                                    ),
+                                    const SizedBox(
+                                        height:
+                                            Dimensions.paddingSizeExtraSmall),
+                                    MyTextField(
+                                      hintText: 'last_name'.tr,
+                                      controller: _lastNameController,
+                                      focusNode: _lastNameFocus,
+                                      nextFocus: _emailFocus,
+                                      inputType: TextInputType.name,
+                                      capitalization: TextCapitalization.words,
+                                    ),
+                                    const SizedBox(
+                                        height: Dimensions.paddingSizeLarge),
 
-                ])),
-              )),
-            ))),
+                                    Text(
+                                      'email'.tr,
+                                      style: robotoRegular.copyWith(
+                                          fontSize: Dimensions.fontSizeSmall,
+                                          color:
+                                              Theme.of(context).disabledColor),
+                                    ),
+                                    const SizedBox(
+                                        height:
+                                            Dimensions.paddingSizeExtraSmall),
+                                    MyTextField(
+                                      hintText: 'email'.tr,
+                                      controller: _emailController,
+                                      focusNode: _emailFocus,
+                                      inputAction: TextInputAction.done,
+                                      inputType: TextInputType.emailAddress,
+                                    ),
+                                    const SizedBox(
+                                        height: Dimensions.paddingSizeLarge),
 
-            ResponsiveHelper.isDesktop(context) ? const SizedBox.shrink() : Padding(
-              padding: EdgeInsets.only(bottom: GetPlatform.isIOS ? Dimensions.paddingSizeLarge : 0),
-              child: UpdateProfileButton(isLoading: userController.isLoading, onPressed: () => _updateProfile(userController)),
-            ),
+                                    Row(children: [
+                                      Text(
+                                        'phone'.tr,
+                                        style: robotoRegular.copyWith(
+                                            fontSize: Dimensions.fontSizeSmall,
+                                            color: Theme.of(context)
+                                                .disabledColor),
+                                      ),
+                                      const SizedBox(
+                                          width:
+                                              Dimensions.paddingSizeExtraSmall),
+                                      Text('(${'non_changeable'.tr})',
+                                          style: robotoRegular.copyWith(
+                                            fontSize:
+                                                Dimensions.fontSizeExtraSmall,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .error,
+                                          )),
+                                    ]),
+                                    const SizedBox(
+                                        height:
+                                            Dimensions.paddingSizeExtraSmall),
+                                    MyTextField(
+                                      hintText: 'phone'.tr,
+                                      controller: _phoneController,
+                                      focusNode: _phoneFocus,
+                                      inputType: TextInputType.phone,
+                                      isEnabled: false,
+                                    ),
 
-          ]),
-        ) : const Center(child: CircularProgressIndicator()) :  NotLoggedInScreen(callBack: (value){
-          initCall();
-          setState(() {});
-        });
+                                    //
+                                    ResponsiveHelper.isDesktop(context)
+                                        ? Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: Dimensions
+                                                    .paddingSizeLarge),
+                                            child: UpdateProfileButton(
+                                                isLoading:
+                                                    userController.isLoading,
+                                                onPressed: () {
+                                                  return _updateProfile(
+                                                      userController);
+                                                }),
+                                          )
+                                        : const SizedBox.shrink(),
+                                  ])),
+                        )),
+                      ))),
+                      ResponsiveHelper.isDesktop(context)
+                          ? const SizedBox.shrink()
+                          : Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: GetPlatform.isIOS
+                                      ? Dimensions.paddingSizeLarge
+                                      : 0),
+                              child: UpdateProfileButton(
+                                  isLoading: userController.isLoading,
+                                  onPressed: () =>
+                                      _updateProfile(userController)),
+                            ),
+                    ]),
+                  )
+                : const Center(child: CircularProgressIndicator())
+            : NotLoggedInScreen(callBack: (value) {
+                initCall();
+                if (!mounted) return;
+                setState(() {});
+              });
       }),
     );
   }
@@ -174,27 +234,31 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     String email = _emailController.text.trim();
     String phoneNumber = _phoneController.text.trim();
     if (userController.userInfoModel!.fName == firstName &&
-        userController.userInfoModel!.lName == lastName && userController.userInfoModel!.phone == phoneNumber &&
-        userController.userInfoModel!.email == _emailController.text && userController.pickedFile == null) {
+        userController.userInfoModel!.lName == lastName &&
+        userController.userInfoModel!.phone == phoneNumber &&
+        userController.userInfoModel!.email == _emailController.text &&
+        userController.pickedFile == null) {
       showCustomSnackBar('change_something_to_update'.tr);
-    }else if (firstName.isEmpty) {
+    } else if (firstName.isEmpty) {
       showCustomSnackBar('enter_your_first_name'.tr);
-    }else if (lastName.isEmpty) {
+    } else if (lastName.isEmpty) {
       showCustomSnackBar('enter_your_last_name'.tr);
-    }else if (email.isEmpty) {
+    } else if (email.isEmpty) {
       showCustomSnackBar('enter_email_address'.tr);
-    }else if (!GetUtils.isEmail(email)) {
+    } else if (!GetUtils.isEmail(email)) {
       showCustomSnackBar('enter_a_valid_email_address'.tr);
-    }else if (phoneNumber.isEmpty) {
+    } else if (phoneNumber.isEmpty) {
       showCustomSnackBar('enter_phone_number'.tr);
-    }else if (phoneNumber.length < 6) {
+    } else if (phoneNumber.length < 6) {
       showCustomSnackBar('enter_a_valid_phone_number'.tr);
     } else {
-      UserInfoModel updatedUser = UserInfoModel(fName: firstName, lName: lastName, email: email, phone: phoneNumber);
-      ResponseModel responseModel = await userController.updateUserInfo(updatedUser, Get.find<AuthController>().getUserToken());
-      if(responseModel.isSuccess) {
+      UserInfoModel updatedUser = UserInfoModel(
+          fName: firstName, lName: lastName, email: email, phone: phoneNumber);
+      ResponseModel responseModel = await userController.updateUserInfo(
+          updatedUser, Get.find<AuthController>().getUserToken());
+      if (responseModel.isSuccess) {
         showCustomSnackBar('profile_updated_successfully'.tr, isError: false);
-      }else {
+      } else {
         showCustomSnackBar(responseModel.message);
       }
     }
@@ -204,14 +268,18 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 class UpdateProfileButton extends StatelessWidget {
   final bool isLoading;
   final Function onPressed;
-  const UpdateProfileButton({Key? key, required this.isLoading, required this.onPressed}) : super(key: key);
+  const UpdateProfileButton(
+      {Key? key, required this.isLoading, required this.onPressed})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return !isLoading ? CustomButton(
-      onPressed: onPressed,
-      margin: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-      buttonText: 'update'.tr,
-    ) : const Center(child: CircularProgressIndicator());
+    return !isLoading
+        ? CustomButton(
+            onPressed: onPressed,
+            margin: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+            buttonText: 'update'.tr,
+          )
+        : const Center(child: CircularProgressIndicator());
   }
 }

@@ -10,37 +10,55 @@ class FilterView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return storeController.storeModel != null ? PopupMenuButton(
-      itemBuilder: (context) {
-        return [
-          PopupMenuItem(value: 'all', textStyle: robotoMedium.copyWith(
-            color: storeController.storeType == 'all'
-                ? Theme.of(context).textTheme.bodyLarge!.color : Theme.of(context).disabledColor,
-          ), child: Text('all'.tr)),
-          PopupMenuItem(value: 'take_away', textStyle: robotoMedium.copyWith(
-            color: storeController.storeType == 'take_away'
-                ? Theme.of(context).textTheme.bodyLarge!.color : Theme.of(context).disabledColor,
-          ), child: Text('take_away'.tr)),
-          PopupMenuItem(value: 'delivery', textStyle: robotoMedium.copyWith(
-            color: storeController.storeType == 'delivery'
-                ? Theme.of(context).textTheme.bodyLarge!.color : Theme.of(context).disabledColor,
-          ), child: Text('delivery'.tr)),
-        ];
-      },
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.radiusSmall)),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
-        child: Container(
-          height: 40, width: 40,
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-            border: Border.all(color: Theme.of(context).primaryColor),
-          ),
-          child: Icon(Icons.filter_list, color: Theme.of(context).primaryColor),
-        ),
-      ),
-      onSelected: (dynamic value) => storeController.setStoreType(value),
-    ) : const SizedBox();
+    return storeController.storeModel != null
+        ? PopupMenuButton(
+            itemBuilder: (context) {
+              return [
+                PopupMenuItem(
+                    value: 'all',
+                    textStyle: robotoMedium.copyWith(
+                      color: storeController.storeType == 'all'
+                          ? Theme.of(context).textTheme.bodyLarge!.color
+                          : Theme.of(context).disabledColor,
+                    ),
+                    child: Text('all'.tr)),
+                PopupMenuItem(
+                    value: 'take_away',
+                    textStyle: robotoMedium.copyWith(
+                      color: storeController.storeType == 'take_away'
+                          ? Theme.of(context).textTheme.bodyLarge!.color
+                          : Theme.of(context).disabledColor,
+                    ),
+                    child: Text('take_away'.tr)),
+                PopupMenuItem(
+                    value: 'delivery',
+                    textStyle: robotoMedium.copyWith(
+                      color: storeController.storeType == 'delivery'
+                          ? Theme.of(context).textTheme.bodyLarge!.color
+                          : Theme.of(context).disabledColor,
+                    ),
+                    child: Text('delivery'.tr)),
+              ];
+            },
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(Dimensions.radiusSmall)),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: Dimensions.paddingSizeSmall),
+              child: Container(
+                height: 40,
+                width: 40,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                  border: Border.all(color: Theme.of(context).primaryColor),
+                ),
+                child: Icon(Icons.filter_list,
+                    color: Theme.of(context).primaryColor),
+              ),
+            ),
+            onSelected: (dynamic value) => storeController.setStoreType(value),
+          )
+        : const SizedBox();
   }
 }

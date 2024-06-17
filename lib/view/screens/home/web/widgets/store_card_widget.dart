@@ -27,7 +27,8 @@ class StoreCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double? discount = store!.discount != null ? store!.discount!.discount : 0;
-    String? discountType = store!.discount != null ? store!.discount!.discountType : 'percent';
+    String? discountType =
+        store!.discount != null ? store!.discount!.discountType : 'percent';
     bool isAvailable = store!.open == 1 && store!.active!;
     return OnHover(
       isItem: true,
@@ -37,7 +38,8 @@ class StoreCardWidget extends StatelessWidget {
             onTap: () {
               if (store != null) {
                 if (Get.find<SplashController>().moduleList != null) {
-                  for (ModuleModel module in Get.find<SplashController>().moduleList!) {
+                  for (ModuleModel module
+                      in Get.find<SplashController>().moduleList!) {
                     if (module.id == store!.moduleId) {
                       Get.find<SplashController>().setModule(module);
                       break;
@@ -56,146 +58,222 @@ class StoreCardWidget extends StatelessWidget {
               decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                  border: Border.all(color: Theme.of(context).disabledColor.withOpacity(0.1)),
-                  boxShadow: ResponsiveHelper.isDesktop(context) ? [] : [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10)]),
+                  border: Border.all(
+                      color: Theme.of(context).disabledColor.withOpacity(0.1)),
+                  boxShadow: ResponsiveHelper.isDesktop(context)
+                      ? []
+                      : [
+                          BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 10)
+                        ]),
               padding: const EdgeInsets.all(1),
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
-                Stack(clipBehavior: Clip.none, children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(Dimensions.radiusDefault)),
-                    child: CustomImage(
-                      image: '${Get.find<SplashController>().configModel!.baseUrls!.storeCoverPhotoUrl}'
-                          '/${store!.coverPhoto}',
-                      height: 120,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  DiscountTag(
-                    discount: discount,
-                    discountType: discountType,
-                  ),
-                  isAvailable ? const SizedBox() : NotAvailableWidget(isStore: true, fontSize: Dimensions.fontSizeExtraSmall, isAllSideRound: false),
-                  Positioned(
-                    top: Dimensions.paddingSizeSmall,
-                    right: Dimensions.paddingSizeSmall,
-                    child: GetBuilder<WishListController>(builder: (wishController) {
-                      bool isWished = wishController.wishStoreIdList.contains(store!.id);
-                      return InkWell(
-                        onTap: () {
-                          if (Get.find<AuthController>().isLoggedIn()) {
-                            isWished ? wishController.removeFromWishList(store!.id, true) : wishController.addToWishList(null, store!, true);
-                          } else {
-                            showCustomSnackBar('you_are_not_logged_in'.tr);
-                          }
-                        },
-                        child: Icon(
-                          isWished ? Icons.favorite : Icons.favorite_border,
-                          size: 24,
-                          color: isWished ? Theme.of(context).primaryColor : Theme.of(context).disabledColor,
-                        ),
-                      );
-                    }),
-                  ),
-                  Positioned(
-                    bottom: -15,
-                    left: Get.find<LocalizationController>().isLtr ? null : 10,
-                    right: Get.find<LocalizationController>().isLtr ? 10 : null,
-                    child: Container(
-                      padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).cardColor,
-                        borderRadius: const BorderRadius.all(Radius.circular(100)),
-                        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, spreadRadius: 1)],
-                      ),
-                      child: Row(children: [
-                        Icon(Icons.star, size: 15, color: Theme.of(context).primaryColor),
-                        const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-                        Text(
-                          store!.avgRating!.toStringAsFixed(1),
-                          style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeExtraSmall),
-                        ),
-                        const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-                        Text(
-                          '(${store!.ratingCount})',
-                          style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeExtraSmall, color: Theme.of(context).disabledColor),
-                        ),
-                      ]),
-                    ),
-                  ),
-                ]),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
-                      SizedBox(
-                        width: context.width * 0.7,
-                        child: Text(
-                          store!.name ?? '',
-                          style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeDefault),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Stack(clipBehavior: Clip.none, children: [
+                      ClipRRect(
+                        borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(Dimensions.radiusDefault)),
+                        child: CustomImage(
+                          image:
+                              '${Get.find<SplashController>().configModel!.baseUrls!.storeCoverPhotoUrl}'
+                              '/${store!.coverPhoto}',
+                          height: 120,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
                         ),
                       ),
-                      const SizedBox(height: Dimensions.paddingSizeSmall),
-                      Row(
-                        children: [
-                          // Expanded(
-                          //   child: Row(children: [
-                          //     Icon(Icons.location_on_outlined, size: 15, color: Theme.of(context).primaryColor),
-                          //     const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-                          //     Flexible(
-                          //       child: Text(
-                          //         store!.address ?? '',
-                          //         style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor),
-                          //         maxLines: 1,
-                          //         overflow: TextOverflow.ellipsis,
-                          //       ),
-                          //     ),
-                          //   ]),
-                          // ),
-                          // const SizedBox(width: Dimensions.paddingSizeExtraSmall
-                          // ),
-                          Expanded(
-                            child: Row(children: [
-                              Icon(Icons.timer, size: 15, color: Theme.of(context).primaryColor),
-                              const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-                              Text(
-                                '${store!.deliveryTime}',
-                                style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor),
-                              ),
-                            ]),
+                      DiscountTag(
+                        discount: discount,
+                        discountType: discountType,
+                      ),
+                      isAvailable
+                          ? const SizedBox()
+                          : NotAvailableWidget(
+                              isStore: true,
+                              fontSize: Dimensions.fontSizeExtraSmall,
+                              isAllSideRound: false),
+                      Positioned(
+                        top: Dimensions.paddingSizeSmall,
+                        right: Dimensions.paddingSizeSmall,
+                        child: GetBuilder<WishListController>(
+                            builder: (wishController) {
+                          bool isWished = wishController.wishStoreIdList
+                              .contains(store!.id);
+                          return InkWell(
+                            onTap: () {
+                              if (Get.find<AuthController>().isLoggedIn()) {
+                                isWished
+                                    ? wishController.removeFromWishList(
+                                        store!.id, true)
+                                    : wishController.addToWishList(
+                                        null, store!, true);
+                              } else {
+                                showCustomSnackBar('you_are_not_logged_in'.tr);
+                              }
+                            },
+                            child: Icon(
+                              isWished ? Icons.favorite : Icons.favorite_border,
+                              size: 24,
+                              color: isWished
+                                  ? Theme.of(context).primaryColor
+                                  : Theme.of(context).disabledColor,
+                            ),
+                          );
+                        }),
+                      ),
+                      Positioned(
+                        bottom: -15,
+                        left: Get.find<LocalizationController>().isLtr
+                            ? null
+                            : 10,
+                        right: Get.find<LocalizationController>().isLtr
+                            ? 10
+                            : null,
+                        child: Container(
+                          padding: const EdgeInsets.all(
+                              Dimensions.paddingSizeExtraSmall),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).cardColor,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(100)),
+                            boxShadow: const [
+                              BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 5,
+                                  spreadRadius: 1)
+                            ],
                           ),
-                          const SizedBox(width: Dimensions.paddingSizeSmall),
-                          Expanded(
-                            child: true || store!.freeDelivery!
-                                ? Row(children: [
-                                    Image.asset(Images.deliveryIcon, height: 15, width: 15, color: Theme.of(context).primaryColor),
-                                    const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-                                    Text(
-                                      'free_delivery'.tr,
-                                      style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor),
-                                    ),
-                                  ])
-                                : const SizedBox(),
-                          ),
-                          const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-                          Row(children: [
-                            Icon(Icons.sell, size: 15, color: Theme.of(context).primaryColor),
-                            const SizedBox(width: Dimensions.paddingSizeExtraSmall),
+                          child: Row(children: [
+                            Icon(Icons.star,
+                                size: 15,
+                                color: Theme.of(context).primaryColor),
+                            const SizedBox(
+                                width: Dimensions.paddingSizeExtraSmall),
                             Text(
-                              'No minimum orders',
-                              style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                              store!.avgRating!.toStringAsFixed(1),
+                              style: robotoMedium.copyWith(
+                                  fontSize: Dimensions.fontSizeExtraSmall),
+                            ),
+                            const SizedBox(
+                                width: Dimensions.paddingSizeExtraSmall),
+                            Text(
+                              '(${store!.ratingCount})',
+                              style: robotoMedium.copyWith(
+                                  fontSize: Dimensions.fontSizeExtraSmall,
+                                  color: Theme.of(context).disabledColor),
                             ),
                           ]),
-                        ],
+                        ),
                       ),
                     ]),
-                  ),
-                ),
-              ]),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: Dimensions.paddingSizeSmall),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: context.width * 0.7,
+                                child: Text(
+                                  store!.name ?? '',
+                                  style: robotoMedium.copyWith(
+                                      fontSize: Dimensions.fontSizeDefault),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              const SizedBox(
+                                  height: Dimensions.paddingSizeSmall),
+                              Row(
+                                children: [
+                                  // Expanded(
+                                  //   child: Row(children: [
+                                  //     Icon(Icons.location_on_outlined, size: 15, color: Theme.of(context).primaryColor),
+                                  //     const SizedBox(width: Dimensions.paddingSizeExtraSmall),
+                                  //     Flexible(
+                                  //       child: Text(
+                                  //         store!.address ?? '',
+                                  //         style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor),
+                                  //         maxLines: 1,
+                                  //         overflow: TextOverflow.ellipsis,
+                                  //       ),
+                                  //     ),
+                                  //   ]),
+                                  // ),
+                                  // const SizedBox(width: Dimensions.paddingSizeExtraSmall
+                                  // ),
+                                  Expanded(
+                                    child: Row(children: [
+                                      Icon(Icons.timer,
+                                          size: 15,
+                                          color:
+                                              Theme.of(context).primaryColor),
+                                      const SizedBox(
+                                          width:
+                                              Dimensions.paddingSizeExtraSmall),
+                                      Text(
+                                        '${store!.deliveryTime}',
+                                        style: robotoMedium.copyWith(
+                                            fontSize: Dimensions.fontSizeSmall,
+                                            color: Theme.of(context)
+                                                .disabledColor),
+                                      ),
+                                    ]),
+                                  ),
+                                  const SizedBox(
+                                      width: Dimensions.paddingSizeSmall),
+                                  Expanded(
+                                    child: true || store!.freeDelivery!
+                                        ? Row(children: [
+                                            Image.asset(Images.deliveryIcon,
+                                                height: 15,
+                                                width: 15,
+                                                color: Theme.of(context)
+                                                    .primaryColor),
+                                            const SizedBox(
+                                                width: Dimensions
+                                                    .paddingSizeExtraSmall),
+                                            Text(
+                                              'free_delivery'.tr,
+                                              style: robotoMedium.copyWith(
+                                                  fontSize:
+                                                      Dimensions.fontSizeSmall,
+                                                  color: Theme.of(context)
+                                                      .disabledColor),
+                                            ),
+                                          ])
+                                        : const SizedBox(),
+                                  ),
+                                  const SizedBox(
+                                      width: Dimensions.paddingSizeExtraSmall),
+                                  Row(children: [
+                                    Icon(Icons.sell,
+                                        size: 15,
+                                        color: Theme.of(context).primaryColor),
+                                    const SizedBox(
+                                        width:
+                                            Dimensions.paddingSizeExtraSmall),
+                                    Text(
+                                      'No minimum orders',
+                                      style: robotoMedium.copyWith(
+                                          fontSize: Dimensions.fontSizeSmall,
+                                          color:
+                                              Theme.of(context).disabledColor),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ]),
+                                ],
+                              ),
+                            ]),
+                      ),
+                    ),
+                  ]),
             ),
           ),
         ],
@@ -214,26 +292,33 @@ class StoreCardShimmer extends StatelessWidget {
       decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-          boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 1)]),
+          boxShadow: const [
+            BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 1)
+          ]),
       child: Shimmer(
         duration: const Duration(seconds: 2),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Container(
             height: 120,
             width: 500,
-            decoration:
-                BoxDecoration(borderRadius: const BorderRadius.vertical(top: Radius.circular(Dimensions.radiusSmall)), color: Colors.grey[300]),
+            decoration: BoxDecoration(
+                borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(Dimensions.radiusSmall)),
+                color: Colors.grey[300]),
           ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
-                Container(height: 15, width: 100, color: Colors.grey[300]),
-                const SizedBox(height: 5),
-                Container(height: 10, width: 130, color: Colors.grey[300]),
-                const SizedBox(height: 5),
-                const RatingBar(rating: 0.0, size: 12, ratingCount: 0),
-              ]),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(height: 15, width: 100, color: Colors.grey[300]),
+                    const SizedBox(height: 5),
+                    Container(height: 10, width: 130, color: Colors.grey[300]),
+                    const SizedBox(height: 5),
+                    const RatingBar(rating: 0.0, size: 12, ratingCount: 0),
+                  ]),
             ),
           ),
         ]),

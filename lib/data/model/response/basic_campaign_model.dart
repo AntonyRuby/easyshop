@@ -13,14 +13,14 @@ class BasicCampaignModel {
 
   BasicCampaignModel(
       {this.id,
-        this.title,
-        this.image,
-        this.description,
-        this.availableDateStarts,
-        this.availableDateEnds,
-        this.startTime,
-        this.endTime,
-        this.store});
+      this.title,
+      this.image,
+      this.description,
+      this.availableDateStarts,
+      this.availableDateEnds,
+      this.startTime,
+      this.endTime,
+      this.store});
 
   BasicCampaignModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];

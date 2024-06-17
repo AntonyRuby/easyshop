@@ -15,10 +15,12 @@ class CouponRepo {
   }
 
   Future<Response> applyCoupon(String couponCode, int? storeID) async {
-    return await apiClient.getData('${AppConstants.couponApplyUri}$couponCode&store_id=$storeID');
+    return await apiClient
+        .getData('${AppConstants.couponApplyUri}$couponCode&store_id=$storeID');
   }
 
   Future<Response> applyTaxiCoupon(String couponCode, int? providerId) async {
-    return await apiClient.getData('${AppConstants.taxiCouponApplyUri}$couponCode&provider_id=$providerId');
+    return await apiClient.getData(
+        '${AppConstants.taxiCouponApplyUri}$couponCode&provider_id=$providerId');
   }
 }

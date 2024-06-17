@@ -220,6 +220,7 @@ class CustomTextFieldState extends State<CustomTextField> {
   }
 
   void _toggle() {
+    if (!mounted) return;
     setState(() {
       _obscureText = !_obscureText;
     });

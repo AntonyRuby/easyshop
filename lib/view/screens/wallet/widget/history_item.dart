@@ -11,7 +11,12 @@ class HistoryItem extends StatelessWidget {
   final int index;
   final bool fromWallet;
   final List<Transaction>? data;
-  const HistoryItem({Key? key, required this.index, required this.fromWallet, required this.data}) : super(key: key);
+  const HistoryItem(
+      {Key? key,
+      required this.index,
+      required this.fromWallet,
+      required this.data})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,15 +25,20 @@ class HistoryItem extends StatelessWidget {
         Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           fromWallet
               ? Row(children: [
-                  data![index].transactionType == 'order_place' || data![index].transactionType == 'partial_payment'
-                      ? Image.asset(Images.walletDebitIcon, height: 15, width: 15)
-                      : Image.asset(Images.walletCreditIcon, height: 15, width: 15),
+                  data![index].transactionType == 'order_place' ||
+                          data![index].transactionType == 'partial_payment'
+                      ? Image.asset(Images.walletDebitIcon,
+                          height: 15, width: 15)
+                      : Image.asset(Images.walletCreditIcon,
+                          height: 15, width: 15),
                   const SizedBox(width: Dimensions.paddingSizeExtraSmall),
                   Text(
-                    data![index].transactionType == 'order_place' || data![index].transactionType == 'partial_payment'
+                    data![index].transactionType == 'order_place' ||
+                            data![index].transactionType == 'partial_payment'
                         ? '- ${PriceConverter.convertPrice(data![index].debit! + data![index].adminBonus!)}'
                         : '+ ${PriceConverter.convertPrice(data![index].credit! + data![index].adminBonus!)}',
-                    style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeDefault),
+                    style: robotoMedium.copyWith(
+                        fontSize: Dimensions.fontSizeDefault),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     textDirection: TextDirection.ltr,
@@ -43,13 +53,16 @@ class HistoryItem extends StatelessWidget {
                       data![index].transactionType == 'point_to_wallet'
                           ? '-${data![index].debit!.toStringAsFixed(0)}'
                           : '+${data![index].credit!.toStringAsFixed(0)}',
-                      style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeDefault),
+                      style: robotoMedium.copyWith(
+                          fontSize: Dimensions.fontSizeDefault),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis),
                   const SizedBox(width: Dimensions.paddingSizeExtraSmall),
                   Text(
                     'points'.tr,
-                    style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor),
+                    style: robotoRegular.copyWith(
+                        fontSize: Dimensions.fontSizeSmall,
+                        color: Theme.of(context).disabledColor),
                   )
                 ]),
           const SizedBox(height: Dimensions.paddingSizeExtraSmall),
@@ -65,7 +78,9 @@ class HistoryItem extends StatelessWidget {
                             : data![index].transactionType == 'order_place'
                                 ? '${'order_place'.tr} # ${data![index].reference}'
                                 : data![index].transactionType!.tr,
-            style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).hintColor),
+            style: robotoRegular.copyWith(
+                fontSize: Dimensions.fontSizeSmall,
+                color: Theme.of(context).hintColor),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -73,14 +88,17 @@ class HistoryItem extends StatelessWidget {
         Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
           Text(
             DateConverter.dateToDateAndTimeAm(data![index].createdAt!),
-            style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).hintColor),
+            style: robotoRegular.copyWith(
+                fontSize: Dimensions.fontSizeSmall,
+                color: Theme.of(context).hintColor),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: Dimensions.paddingSizeExtraSmall),
           Text(
             fromWallet
-                ? data![index].transactionType == 'order_place' || data![index].transactionType == 'partial_payment'
+                ? data![index].transactionType == 'order_place' ||
+                        data![index].transactionType == 'partial_payment'
                     ? 'debit'.tr
                     : 'credit'.tr
                 : data![index].transactionType == 'point_to_wallet'
@@ -89,7 +107,8 @@ class HistoryItem extends StatelessWidget {
             style: robotoRegular.copyWith(
                 fontSize: Dimensions.fontSizeSmall,
                 color: fromWallet
-                    ? data![index].transactionType == 'order_place' || data![index].transactionType == 'partial_payment'
+                    ? data![index].transactionType == 'order_place' ||
+                            data![index].transactionType == 'partial_payment'
                         ? Colors.red
                         : const Color(0xFFFE0100)
                     : data![index].transactionType == 'point_to_wallet'

@@ -9,12 +9,12 @@ class CategoryModel {
 
   CategoryModel(
       {int? id,
-        String? name,
-        int? parentId,
-        int? position,
-        String? createdAt,
-        String? updatedAt,
-        String? image}) {
+      String? name,
+      int? parentId,
+      int? position,
+      String? createdAt,
+      String? updatedAt,
+      String? image}) {
     _id = id;
     _name = name;
     _parentId = parentId;

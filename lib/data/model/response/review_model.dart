@@ -10,13 +10,13 @@ class ReviewModel {
 
   ReviewModel(
       {this.id,
-        this.comment,
-        this.rating,
-        this.itemName,
-        this.itemImage,
-        this.customerName,
-        this.createdAt,
-        this.updatedAt});
+      this.comment,
+      this.rating,
+      this.itemName,
+      this.itemImage,
+      this.customerName,
+      this.createdAt,
+      this.updatedAt});
 
   ReviewModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];

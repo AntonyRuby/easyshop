@@ -21,21 +21,22 @@ class CampaignController extends GetxController implements GetxService {
 
   void setCurrentIndex(int index, bool notify) {
     _currentIndex = index;
-    if(notify) {
+    if (notify) {
       update();
     }
   }
 
-  void itemCampaignNull(){
+  void itemCampaignNull() {
     _itemCampaignList = null;
   }
 
   Future<void> getBasicCampaignList(bool reload) async {
-    if(_basicCampaignList == null || reload) {
+    if (_basicCampaignList == null || reload) {
       Response response = await campaignRepo.getBasicCampaignList();
       if (response.statusCode == 200) {
         _basicCampaignList = [];
-        response.body.forEach((campaign) => _basicCampaignList!.add(BasicCampaignModel.fromJson(campaign)));
+        response.body.forEach((campaign) =>
+            _basicCampaignList!.add(BasicCampaignModel.fromJson(campaign)));
       } else {
         ApiChecker.checkApi(response);
       }
@@ -45,7 +46,8 @@ class CampaignController extends GetxController implements GetxService {
 
   Future<void> getBasicCampaignDetails(int? campaignID) async {
     _campaign = null;
-    Response response = await campaignRepo.getCampaignDetails(campaignID.toString());
+    Response response =
+        await campaignRepo.getCampaignDetails(campaignID.toString());
     if (response.statusCode == 200) {
       _campaign = BasicCampaignModel.fromJson(response.body);
     } else {
@@ -55,15 +57,18 @@ class CampaignController extends GetxController implements GetxService {
   }
 
   Future<void> getItemCampaignList(bool reload) async {
-    if(_itemCampaignList == null || reload) {
+    if (_itemCampaignList == null || reload) {
       Response response = await campaignRepo.getItemCampaignList();
       if (response.statusCode == 200) {
         _itemCampaignList = [];
         List<Item> campaign = [];
         response.body.forEach((camp) => campaign.add(Item.fromJson(camp)));
         for (var c in campaign) {
-          if(!Get.find<SplashController>().getModuleConfig(c.moduleType).newVariation!
-              || c.variations!.isEmpty || c.foodVariations!.isNotEmpty) {
+          if (!Get.find<SplashController>()
+                  .getModuleConfig(c.moduleType)
+                  .newVariation! ||
+              c.variations!.isEmpty ||
+              c.foodVariations!.isNotEmpty) {
             _itemCampaignList!.add(c);
           }
         }
@@ -73,5 +78,4 @@ class CampaignController extends GetxController implements GetxService {
       update();
     }
   }
-
 }

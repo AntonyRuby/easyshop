@@ -47,11 +47,13 @@ class UserController extends GetxController implements GetxService {
     _userInfoModel = null;
   }
 
-  Future<ResponseModel> updateUserInfo(UserInfoModel updateUserModel, String token) async {
+  Future<ResponseModel> updateUserInfo(
+      UserInfoModel updateUserModel, String token) async {
     _isLoading = true;
     update();
     ResponseModel responseModel;
-    Response response = await userRepo.updateProfile(updateUserModel, _pickedFile, token);
+    Response response =
+        await userRepo.updateProfile(updateUserModel, _pickedFile, token);
     _isLoading = false;
     if (response.statusCode == 200) {
       _userInfoModel = updateUserModel;
@@ -88,7 +90,7 @@ class UserController extends GetxController implements GetxService {
 
   void pickImage() async {
     _pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if(_pickedFile != null) {
+    if (_pickedFile != null) {
       _pickedFile = await NetworkInfo.compressImage(_pickedFile!);
       _rawFile = await _pickedFile!.readAsBytes();
     }
@@ -98,7 +100,7 @@ class UserController extends GetxController implements GetxService {
   void initData({bool isUpdate = false}) {
     _pickedFile = null;
     _rawFile = null;
-    if(isUpdate){
+    if (isUpdate) {
       update();
     }
   }
@@ -113,8 +115,7 @@ class UserController extends GetxController implements GetxService {
       Get.find<AuthController>().clearSharedData();
       Get.find<WishListController>().removeWishes();
       Get.offAllNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
-
-    }else{
+    } else {
       Get.back();
       ApiChecker.checkApi(response);
     }
@@ -124,5 +125,4 @@ class UserController extends GetxController implements GetxService {
     _userInfoModel = null;
     update();
   }
-
 }

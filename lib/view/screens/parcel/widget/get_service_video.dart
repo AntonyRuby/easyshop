@@ -4,7 +4,7 @@ import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class GetServiceVideo extends StatefulWidget {
   final String videoUrl;
-  const GetServiceVideo({Key? key, required this.videoUrl}) : super(key: key);
+  const GetServiceVideo({super.key, required this.videoUrl});
 
   @override
   State<GetServiceVideo> createState() => _GetServiceVideoState();
@@ -16,11 +16,17 @@ class _GetServiceVideoState extends State<GetServiceVideo> {
   @override
   Widget build(BuildContext context) {
     String url = widget.videoUrl;
-    _controller = YoutubePlayerController(params: const YoutubePlayerParams(
-      enableCaption: false, showControls: true, showVideoAnnotations: false, showFullscreenButton: false, loop: true,
-    ))..onInit = () {
-      _controller.loadVideo(url);
-    };
+    _controller = YoutubePlayerController(
+        params: const YoutubePlayerParams(
+      enableCaption: false,
+      showControls: true,
+      showVideoAnnotations: false,
+      showFullscreenButton: false,
+      loop: true,
+    ))
+      ..onInit = () {
+        _controller.loadVideo(url);
+      };
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
@@ -43,7 +49,8 @@ class _GetServiceVideoState extends State<GetServiceVideo> {
               child: FloatingActionButton(
                   backgroundColor: Theme.of(context).cardColor,
                   onPressed: () {
-                    setState(() {
+                    if (!mounted) return;
+setState(() {
                       _controller.value.isPlaying ? _controller.pause() : _controller.play();
                     });
                   },

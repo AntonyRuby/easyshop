@@ -18,12 +18,18 @@ class ItemView extends StatelessWidget {
         return SingleChildScrollView(
           child: FooterView(
             child: SizedBox(
-                width: Dimensions.webMaxWidth,
-                child: ResponsiveHelper.isDesktop(context) ? WebItemsView(
-                  isStore: isItem, items: searchController.searchItemList, stores: searchController.searchStoreList,
-                ) : ItemsView(
-                  isStore: isItem, items: searchController.searchItemList, stores: searchController.searchStoreList,
-                ),
+              width: Dimensions.webMaxWidth,
+              child: ResponsiveHelper.isDesktop(context)
+                  ? WebItemsView(
+                      isStore: isItem,
+                      items: searchController.searchItemList,
+                      stores: searchController.searchStoreList,
+                    )
+                  : ItemsView(
+                      isStore: isItem,
+                      items: searchController.searchItemList,
+                      stores: searchController.searchStoreList,
+                    ),
             ),
           ),
         );

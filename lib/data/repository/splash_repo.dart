@@ -23,34 +23,36 @@ class SplashRepo {
   }
 
   Future<ModuleModel?> initSharedData() async {
-    if(!sharedPreferences.containsKey(AppConstants.theme)) {
+    if (!sharedPreferences.containsKey(AppConstants.theme)) {
       sharedPreferences.setBool(AppConstants.theme, false);
     }
-    if(!sharedPreferences.containsKey(AppConstants.countryCode)) {
-      sharedPreferences.setString(AppConstants.countryCode, AppConstants.languages[0].countryCode!);
+    if (!sharedPreferences.containsKey(AppConstants.countryCode)) {
+      sharedPreferences.setString(
+          AppConstants.countryCode, AppConstants.languages[0].countryCode!);
     }
-    if(!sharedPreferences.containsKey(AppConstants.languageCode)) {
-      sharedPreferences.setString(AppConstants.languageCode, AppConstants.languages[0].languageCode!);
+    if (!sharedPreferences.containsKey(AppConstants.languageCode)) {
+      sharedPreferences.setString(
+          AppConstants.languageCode, AppConstants.languages[0].languageCode!);
     }
-    if(!sharedPreferences.containsKey(AppConstants.cartList)) {
+    if (!sharedPreferences.containsKey(AppConstants.cartList)) {
       sharedPreferences.setStringList(AppConstants.cartList, []);
     }
-    if(!sharedPreferences.containsKey(AppConstants.searchHistory)) {
+    if (!sharedPreferences.containsKey(AppConstants.searchHistory)) {
       sharedPreferences.setStringList(AppConstants.searchHistory, []);
     }
-    if(!sharedPreferences.containsKey(AppConstants.notification)) {
+    if (!sharedPreferences.containsKey(AppConstants.notification)) {
       sharedPreferences.setBool(AppConstants.notification, true);
     }
-    if(!sharedPreferences.containsKey(AppConstants.intro)) {
+    if (!sharedPreferences.containsKey(AppConstants.intro)) {
       sharedPreferences.setBool(AppConstants.intro, true);
     }
-    if(!sharedPreferences.containsKey(AppConstants.notificationCount)) {
+    if (!sharedPreferences.containsKey(AppConstants.notificationCount)) {
       sharedPreferences.setInt(AppConstants.notificationCount, 0);
     }
     // if(!sharedPreferences.containsKey(AppConstants.acceptCookies)) {
     //   sharedPreferences.setBool(AppConstants.acceptCookies, false);
     // }
-    if(!sharedPreferences.containsKey(AppConstants.suggestedLocation)) {
+    if (!sharedPreferences.containsKey(AppConstants.suggestedLocation)) {
       sharedPreferences.setBool(AppConstants.suggestedLocation, false);
     }
     // if(!sharedPreferences.containsKey(AppConstants.guestId)) {
@@ -58,10 +60,11 @@ class SplashRepo {
     // }
 
     ModuleModel? module;
-    if(sharedPreferences.containsKey(AppConstants.moduleId)) {
+    if (sharedPreferences.containsKey(AppConstants.moduleId)) {
       try {
-        module = ModuleModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.moduleId)!));
-      }catch(_) {}
+        module = ModuleModel.fromJson(
+            jsonDecode(sharedPreferences.getString(AppConstants.moduleId)!));
+      } catch (_) {}
     }
     return module;
   }
@@ -77,12 +80,17 @@ class SplashRepo {
   Future<void> setStoreCategory(int storeCategoryID) async {
     AddressModel? addressModel;
     try {
-      addressModel = AddressModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.userAddress)!));
-    }catch(_) {}
+      addressModel = AddressModel.fromJson(
+          jsonDecode(sharedPreferences.getString(AppConstants.userAddress)!));
+    } catch (_) {}
     apiClient.updateHeader(
-      sharedPreferences.getString(AppConstants.token), addressModel?.zoneIds,
-      addressModel?.areaIds, sharedPreferences.getString(AppConstants.languageCode),
-      storeCategoryID, addressModel?.latitude, addressModel?.longitude,
+      sharedPreferences.getString(AppConstants.token),
+      addressModel?.zoneIds,
+      addressModel?.areaIds,
+      sharedPreferences.getString(AppConstants.languageCode),
+      storeCategoryID,
+      addressModel?.latitude,
+      addressModel?.longitude,
     );
   }
 
@@ -93,64 +101,81 @@ class SplashRepo {
   Future<void> setModule(ModuleModel? module) async {
     AddressModel? addressModel;
     try {
-      addressModel = AddressModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.userAddress)!));
-    }catch(_) {}
+      addressModel = AddressModel.fromJson(
+          jsonDecode(sharedPreferences.getString(AppConstants.userAddress)!));
+    } catch (_) {}
     apiClient.updateHeader(
-      sharedPreferences.getString(AppConstants.token), addressModel?.zoneIds, addressModel?.areaIds,
-      sharedPreferences.getString(AppConstants.languageCode), module?.id,
-        addressModel?.latitude, addressModel?.longitude
-    );
-    if(module != null) {
-      await sharedPreferences.setString(AppConstants.moduleId, jsonEncode(module.toJson()));
-    }else {
+        sharedPreferences.getString(AppConstants.token),
+        addressModel?.zoneIds,
+        addressModel?.areaIds,
+        sharedPreferences.getString(AppConstants.languageCode),
+        module?.id,
+        addressModel?.latitude,
+        addressModel?.longitude);
+    if (module != null) {
+      await sharedPreferences.setString(
+          AppConstants.moduleId, jsonEncode(module.toJson()));
+    } else {
       await sharedPreferences.remove(AppConstants.moduleId);
     }
   }
 
   Future<void> setCacheModule(ModuleModel? module) async {
-    if(module != null) {
-      await sharedPreferences.setString(AppConstants.cacheModuleId, jsonEncode(module.toJson()));
-    }else {
+    if (module != null) {
+      await sharedPreferences.setString(
+          AppConstants.cacheModuleId, jsonEncode(module.toJson()));
+    } else {
       await sharedPreferences.remove(AppConstants.cacheModuleId);
     }
   }
 
   ModuleModel? getCacheModule() {
     ModuleModel? module;
-    if(sharedPreferences.containsKey(AppConstants.cacheModuleId)) {
+    if (sharedPreferences.containsKey(AppConstants.cacheModuleId)) {
       try {
-        module = ModuleModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.cacheModuleId)!));
-      }catch(_) {}
+        module = ModuleModel.fromJson(jsonDecode(
+            sharedPreferences.getString(AppConstants.cacheModuleId)!));
+      } catch (_) {}
     }
     return module;
   }
 
   ModuleModel? getModule() {
     ModuleModel? module;
-    if(sharedPreferences.containsKey(AppConstants.moduleId)) {
+    if (sharedPreferences.containsKey(AppConstants.moduleId)) {
       try {
-        module = ModuleModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.moduleId)!));
-      }catch(_) {}
+        module = ModuleModel.fromJson(
+            jsonDecode(sharedPreferences.getString(AppConstants.moduleId)!));
+      } catch (_) {}
     }
     return module;
   }
 
   Future<Response> getHtmlText(HtmlType htmlType) async {
     return await apiClient.getData(
-      htmlType == HtmlType.termsAndCondition ? AppConstants.termsAndConditionUri
-        : htmlType == HtmlType.privacyPolicy ? AppConstants.privacyPolicyUri : htmlType == HtmlType.aboutUs
-          ? AppConstants.aboutUsUri : htmlType == HtmlType.shippingPolicy ? AppConstants.shippingPolicyUri
-          : htmlType == HtmlType.cancellation ? AppConstants.cancellationUri : AppConstants.refundUri,
+      htmlType == HtmlType.termsAndCondition
+          ? AppConstants.termsAndConditionUri
+          : htmlType == HtmlType.privacyPolicy
+              ? AppConstants.privacyPolicyUri
+              : htmlType == HtmlType.aboutUs
+                  ? AppConstants.aboutUsUri
+                  : htmlType == HtmlType.shippingPolicy
+                      ? AppConstants.shippingPolicyUri
+                      : htmlType == HtmlType.cancellation
+                          ? AppConstants.cancellationUri
+                          : AppConstants.refundUri,
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json',
-        AppConstants.localizationKey: Get.find<LocalizationController>().locale.languageCode,
+        AppConstants.localizationKey:
+            Get.find<LocalizationController>().locale.languageCode,
       },
     );
   }
 
   Future<Response> subscribeEmail(String email) async {
-    return await apiClient.postData(AppConstants.subscriptionUri, {'email': email});
+    return await apiClient
+        .postData(AppConstants.subscriptionUri, {'email': email});
   }
 
   bool getSavedCookiesData() {
@@ -160,20 +185,20 @@ class SplashRepo {
   Future<void> saveCookiesData(bool data) async {
     try {
       await sharedPreferences.setBool(AppConstants.acceptCookies, data);
-
     } catch (e) {
       rethrow;
     }
   }
+
   void cookiesStatusChange(String? data) {
-    if(data != null){
+    if (data != null) {
       sharedPreferences.setString(AppConstants.cookiesManagement, data);
     }
   }
 
-  bool getAcceptCookiesStatus(String data) => sharedPreferences.getString(AppConstants.cookiesManagement) != null
-      && sharedPreferences.getString(AppConstants.cookiesManagement) == data;
-
+  bool getAcceptCookiesStatus(String data) =>
+      sharedPreferences.getString(AppConstants.cookiesManagement) != null &&
+      sharedPreferences.getString(AppConstants.cookiesManagement) == data;
 
   bool getSuggestedLocationStatus() {
     return sharedPreferences.getBool(AppConstants.suggestedLocation)!;
@@ -182,7 +207,6 @@ class SplashRepo {
   Future<void> saveSuggestedLocationStatus(bool data) async {
     try {
       await sharedPreferences.setBool(AppConstants.suggestedLocation, data);
-
     } catch (e) {
       rethrow;
     }
