@@ -20,7 +20,8 @@ import 'package:sixam_mart/view/screens/home/widget/grocery/best_reviewed_item_v
 
 class ModuleView extends StatelessWidget {
   final SplashController splashController;
-  const ModuleView({Key? key, required this.splashController}) : super(key: key);
+  const ModuleView({Key? key, required this.splashController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -67,17 +68,22 @@ class ModuleView extends StatelessWidget {
                           border: Border.all(color: Theme.of(context).primaryColor, width: 0.15),
                           boxShadow: [BoxShadow(color: Theme.of(context).primaryColor.withOpacity(0.1), spreadRadius: 1, blurRadius: 3)],
                         ),*/
-                        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                            child: CustomImage(
-                              image: '${splashController.configModel!.baseUrls!.moduleImageUrl}/${splashController.moduleList![index].icon}',
-                              height: 110,
-                              width: 110,
-                            ),
-                          ),
-                          const SizedBox(height: Dimensions.paddingSizeSmall),
-                          /*Center(
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(
+                                    Dimensions.radiusSmall),
+                                child: CustomImage(
+                                  image:
+                                      '${splashController.configModel!.baseUrls!.moduleImageUrl}/${splashController.moduleList![index].icon}',
+                                  height: 110,
+                                  width: 110,
+                                ),
+                              ),
+                              const SizedBox(
+                                  height: Dimensions.paddingSizeSmall),
+                              /*Center(
                               child: Text(
                             splashController.moduleList![index].moduleName!,
                             textAlign: TextAlign.center,
@@ -85,34 +91,41 @@ class ModuleView extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall),
                           )),*/
-                        ]),
+                            ]),
                       ),
                     );
                   },
                 )
               : Center(
                   child: Padding(
-                  padding: const EdgeInsets.only(top: Dimensions.paddingSizeSmall),
+                  padding:
+                      const EdgeInsets.only(top: Dimensions.paddingSizeSmall),
                   child: Text('no_module_found'.tr),
                 ))
           : ModuleShimmer(isEnabled: splashController.moduleList == null),
       Container(
-        margin: EdgeInsets.symmetric(vertical: 15),
+        margin: const EdgeInsets.symmetric(vertical: 15),
         width: double.infinity,
-        color: Color.fromARGB(0, 244, 67, 54),
+        color: const Color.fromARGB(0, 244, 67, 54),
         child: Image.asset(
           "assets/image/static.jpeg",
           fit: BoxFit.fitWidth,
         ),
       ),
+
+      VisitAgainView(),
       GetBuilder<LocationController>(builder: (locationController) {
         List<AddressModel?> addressList = [];
-        if (Get.find<AuthController>().isLoggedIn() && locationController.addressList != null) {
+        if (Get.find<AuthController>().isLoggedIn() &&
+            locationController.addressList != null) {
           addressList = [];
           bool contain = false;
           if (locationController.getUserAddress()!.id != null) {
-            for (int index = 0; index < locationController.addressList!.length; index++) {
-              if (locationController.addressList![index].id == locationController.getUserAddress()!.id) {
+            for (int index = 0;
+                index < locationController.addressList!.length;
+                index++) {
+              if (locationController.addressList![index].id ==
+                  locationController.getUserAddress()!.id) {
                 contain = true;
                 break;
               }
@@ -123,13 +136,15 @@ class ModuleView extends StatelessWidget {
           }
           addressList.addAll(locationController.addressList!);
         }
-        return (!Get.find<AuthController>().isLoggedIn() || locationController.addressList != null)
+        return (!Get.find<AuthController>().isLoggedIn() ||
+                locationController.addressList != null)
             ? addressList.isNotEmpty
                 ? Column(
                     children: [
                       const SizedBox(height: Dimensions.paddingSizeLarge),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: Dimensions.paddingSizeSmall),
                         child: TitleWidget(title: 'deliver_to'.tr),
                       ),
                       const SizedBox(height: Dimensions.paddingSizeExtraSmall),
@@ -139,17 +154,21 @@ class ModuleView extends StatelessWidget {
                           physics: const BouncingScrollPhysics(),
                           itemCount: addressList.length,
                           scrollDirection: Axis.horizontal,
-                          padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: Dimensions.paddingSizeSmall),
                           itemBuilder: (context, index) {
                             return Container(
                               width: 300,
-                              padding: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
+                              padding: const EdgeInsets.only(
+                                  right: Dimensions.paddingSizeSmall),
                               child: AddressWidget(
                                 address: addressList[index],
                                 fromAddress: false,
                                 onTap: () {
-                                  if (locationController.getUserAddress()!.id != addressList[index]!.id) {
-                                    Get.dialog(const CustomLoader(), barrierDismissible: false);
+                                  if (locationController.getUserAddress()!.id !=
+                                      addressList[index]!.id) {
+                                    Get.dialog(const CustomLoader(),
+                                        barrierDismissible: false);
                                     locationController.saveAddressAndNavigate(
                                       addressList[index],
                                       false,
@@ -167,7 +186,9 @@ class ModuleView extends StatelessWidget {
                     ],
                   )
                 : const SizedBox()
-            : AddressShimmer(isEnabled: Get.find<AuthController>().isLoggedIn() && locationController.addressList == null);
+            : AddressShimmer(
+                isEnabled: Get.find<AuthController>().isLoggedIn() &&
+                    locationController.addressList == null);
       }),
       // Container(
       //   margin: EdgeInsets.symmetric(vertical: 15),
@@ -178,7 +199,7 @@ class ModuleView extends StatelessWidget {
       //     fit: BoxFit.fitWidth,
       //   ),
       // ),
-
+      BestReviewItemView(),
       const PopularStoreView(isPopular: false, isFeatured: true),
       const SizedBox(height: 120),
     ]);
@@ -207,19 +228,29 @@ class ModuleShimmer extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
             color: Theme.of(context).cardColor,
-            boxShadow: [BoxShadow(color: Colors.grey[Get.isDarkMode ? 700 : 200]!, spreadRadius: 1, blurRadius: 5)],
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey[Get.isDarkMode ? 700 : 200]!,
+                  spreadRadius: 1,
+                  blurRadius: 5)
+            ],
           ),
           child: Shimmer(
             duration: const Duration(seconds: 2),
             enabled: isEnabled,
-            child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Container(
                 height: 50,
                 width: 50,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(Dimensions.radiusSmall), color: Colors.grey[300]),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                    color: Colors.grey[300]),
               ),
               const SizedBox(height: Dimensions.paddingSizeSmall),
-              Center(child: Container(height: 15, width: 50, color: Colors.grey[300])),
+              Center(
+                  child: Container(
+                      height: 15, width: 50, color: Colors.grey[300])),
             ]),
           ),
         );
@@ -238,7 +269,8 @@ class AddressShimmer extends StatelessWidget {
       children: [
         const SizedBox(height: Dimensions.paddingSizeLarge),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
+          padding: const EdgeInsets.symmetric(
+              horizontal: Dimensions.paddingSizeSmall),
           child: TitleWidget(title: 'deliver_to'.tr),
         ),
         const SizedBox(height: Dimensions.paddingSizeExtraSmall),
@@ -248,40 +280,59 @@ class AddressShimmer extends StatelessWidget {
             physics: const BouncingScrollPhysics(),
             itemCount: 5,
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
+            padding: const EdgeInsets.symmetric(
+                horizontal: Dimensions.paddingSizeSmall),
             itemBuilder: (context, index) {
               var isLoggedIn;
               return Container(
-                  width: 300,
-                  padding: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
-                  child: Container(
-                    padding: EdgeInsets.all(ResponsiveHelper.isDesktop(context) ? Dimensions.paddingSizeDefault : Dimensions.paddingSizeSmall),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor,
-                      borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                      boxShadow: [BoxShadow(color: Colors.grey[Get.isDarkMode ? 800 : 200]!, blurRadius: 5, spreadRadius: 1)],
-                    ),
-                    child: Row(mainAxisSize: MainAxisSize.min, children: [
-                      Icon(
-                        Icons.location_on,
-                        size: ResponsiveHelper.isDesktop(context) ? 50 : 40,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      const SizedBox(width: Dimensions.paddingSizeSmall),
-                      Expanded(
-                        child: Shimmer(
-                          duration: const Duration(seconds: 2),
-                          enabled: isEnabled,
-                          child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
-                            Container(height: 15, width: 100, color: Colors.grey[300]),
-                            const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-                            Container(height: 10, width: 150, color: Colors.grey[300]),
-                          ]),
-                        ),
-                      ),
-                    ]),
+                width: 300,
+                padding:
+                    const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
+                child: Container(
+                  padding: EdgeInsets.all(ResponsiveHelper.isDesktop(context)
+                      ? Dimensions.paddingSizeDefault
+                      : Dimensions.paddingSizeSmall),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.grey[Get.isDarkMode ? 800 : 200]!,
+                          blurRadius: 5,
+                          spreadRadius: 1)
+                    ],
                   ),
-                );
+                  child: Row(mainAxisSize: MainAxisSize.min, children: [
+                    Icon(
+                      Icons.location_on,
+                      size: ResponsiveHelper.isDesktop(context) ? 50 : 40,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    const SizedBox(width: Dimensions.paddingSizeSmall),
+                    Expanded(
+                      child: Shimmer(
+                        duration: const Duration(seconds: 2),
+                        enabled: isEnabled,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                  height: 15,
+                                  width: 100,
+                                  color: Colors.grey[300]),
+                              const SizedBox(
+                                  height: Dimensions.paddingSizeExtraSmall),
+                              Container(
+                                  height: 10,
+                                  width: 150,
+                                  color: Colors.grey[300]),
+                            ]),
+                      ),
+                    ),
+                  ]),
+                ),
+              );
             },
           ),
         ),
