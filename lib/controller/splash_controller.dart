@@ -149,8 +149,28 @@ class SplashController extends GetxController implements GetxService {
     }
   }
 
+  // Module getModuleConfig(String? moduleType) {
+    
+  //   Module module = Module.fromJson(_data?.['module_config']?[moduleType]);
+  //   if (moduleType == 'food') {
+  //     module.newVariation = true;
+  //   } else {
+  //     module.newVariation = false;
+  //   }
+  //   return module;
+  // }
+
   Module getModuleConfig(String? moduleType) {
-    Module module = Module.fromJson(_data!['module_config'][moduleType]);
+    if (_data == null) {
+      throw Exception('_data is null');
+    }
+    Module? module;
+    if (_data?.containsKey('module_config') ?? false) {
+      module = Module.fromJson(_data!['module_config'][moduleType] ?? {});
+    }
+    if (module == null) {
+      throw Exception('Module config not found for $moduleType');
+    }
     if (moduleType == 'food') {
       module.newVariation = true;
     } else {
@@ -158,6 +178,7 @@ class SplashController extends GetxController implements GetxService {
     }
     return module;
   }
+
 
   Future<void> getModules({Map<String, String>? headers}) async {
     _moduleIndex = 0;
