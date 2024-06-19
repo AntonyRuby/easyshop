@@ -27,7 +27,7 @@ class _VisitAgainViewState extends State<VisitAgainView> {
               ? Padding(
                   padding: const EdgeInsets.only(
                     top: Dimensions.paddingSizeSmall,
-                    left: Dimensions.paddingSizeSmall,
+                    left: Dimensions.paddingSizeDefault,
                   ),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,14 +49,16 @@ class _VisitAgainViewState extends State<VisitAgainView> {
                           itemCount: stores.length,
                           options: CarouselOptions(
                             aspectRatio: 2.0,
-                            enlargeCenterPage: true,
                             disableCenter: true,
+                            viewportFraction: 0.5,
+                            padEnds: false,
                           ),
                           itemBuilder:
                               (BuildContext context, int index, int realIndex) {
                             return VisitAgainCard(
-                                store: stores[index],
-                                fromFood: widget.fromFood!);
+                              store: stores[index],
+                              fromFood: widget.fromFood!,
+                            );
                           },
                         ),
                       ]),
