@@ -13,23 +13,32 @@ class PromotionalBannerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<BannerController>(builder: (bannerController) {
-
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault, horizontal: Dimensions.paddingSizeDefault),
-        child: bannerController.promotionalBanner != null ? Container(
-          height: 90, width: double.infinity,
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(Dimensions.paddingSizeExtraSmall),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(Dimensions.paddingSizeExtraSmall),
-            child: CustomImage(
-              image: '${bannerController.promotionalBanner!.promotionalBannerUrl}/${bannerController.promotionalBanner!.bottomSectionBanner}',
-              fit: BoxFit.cover, height: 80, width: double.infinity,
-            ),
-          ),
-        ) : const PromotionalBannerShimmerView(),
+        padding: const EdgeInsets.symmetric(
+            vertical: Dimensions.paddingSizeDefault,
+            horizontal: Dimensions.paddingSizeDefault),
+        child: bannerController.promotionalBanner != null
+            ? Container(
+                height: 90,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius:
+                      BorderRadius.circular(Dimensions.paddingSizeExtraSmall),
+                ),
+                child: ClipRRect(
+                  borderRadius:
+                      BorderRadius.circular(Dimensions.paddingSizeExtraSmall),
+                  child: CustomImage(
+                    image:
+                        '${bannerController.promotionalBanner!.promotionalBannerUrl}/${bannerController.promotionalBanner!.bottomSectionBanner}',
+                    fit: BoxFit.cover,
+                    height: 80,
+                    width: double.infinity,
+                  ),
+                ),
+              )
+            : const PromotionalBannerShimmerView(),
       );
     });
   }
@@ -44,7 +53,8 @@ class PromotionalBannerShimmerView extends StatelessWidget {
       duration: const Duration(seconds: 2),
       enabled: true,
       child: Container(
-        height: 90, width: double.infinity,
+        height: 90,
+        width: double.infinity,
         decoration: BoxDecoration(
           color: Colors.grey[300],
           borderRadius: BorderRadius.circular(Dimensions.paddingSizeExtraSmall),

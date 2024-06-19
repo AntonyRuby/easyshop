@@ -35,7 +35,7 @@ class _BestReviewItemViewState extends State<BestReviewItemView> {
           ),
         ),
         SizedBox(
-          height: 285,
+          height: 260,
           width: Get.width,
           child: reviewItemList != null
               ? ListView.builder(
@@ -88,7 +88,7 @@ class BestReviewItemShimmer extends StatelessWidget {
             duration: const Duration(seconds: 2),
             enabled: true,
             child: Container(
-              width: 210,
+              width: 250,
               height: 285,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(Dimensions.radiusSmall),

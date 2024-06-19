@@ -150,7 +150,7 @@ class SplashController extends GetxController implements GetxService {
   }
 
   // Module getModuleConfig(String? moduleType) {
-    
+
   //   Module module = Module.fromJson(_data?.['module_config']?[moduleType]);
   //   if (moduleType == 'food') {
   //     module.newVariation = true;
@@ -178,7 +178,6 @@ class SplashController extends GetxController implements GetxService {
     }
     return module;
   }
-
 
   Future<void> getModules({Map<String, String>? headers}) async {
     _moduleIndex = 0;

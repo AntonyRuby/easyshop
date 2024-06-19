@@ -113,7 +113,7 @@ class ModuleView extends StatelessWidget {
         ),
       ),
 
-      VisitAgainView(),
+      const VisitAgainView(),
       GetBuilder<LocationController>(builder: (locationController) {
         List<AddressModel?> addressList = [];
         if (Get.find<AuthController>().isLoggedIn() &&
@@ -199,7 +199,7 @@ class ModuleView extends StatelessWidget {
       //     fit: BoxFit.fitWidth,
       //   ),
       // ),
-      BestReviewItemView(),
+      const BestReviewItemView(),
       const PopularStoreView(isPopular: false, isFeatured: true),
       const SizedBox(height: 120),
     ]);
