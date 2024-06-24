@@ -15,7 +15,7 @@ class VisitAgainCard extends StatelessWidget {
   final Store store;
   final bool fromFood;
 
-  const VisitAgainCard({
+  VisitAgainCard({
     Key? key,
     required this.store,
     required this.fromFood,
@@ -58,10 +58,10 @@ class VisitAgainCard extends StatelessWidget {
                     fromFood ? 100 : Dimensions.radiusDefault),
                 child: CustomImage(
                   image:
-                      '${Get.find<SplashController>().configModel!.baseUrls!.businessLogoUrl}/${store.logo}',
+                      '${Get.find<SplashController>().configModel!.baseUrls!.storeImageUrl}/${store.logo}',
                   fit: BoxFit.cover,
                   height: 124,
-                  width: 124,
+                  width: 144,
                 ),
               ),
               const SizedBox(height: 10),

@@ -46,7 +46,7 @@ class CategoryController extends GetxController implements GetxService {
   int get offset => _offset;
 
   Future<void> getCategoryList(bool reload, {bool allCategory = false}) async {
-    if(_categoryList == null || reload) {
+    if (_categoryList == null || reload) {
       _categoryList = null;
       Response response = await categoryRepo.getCategoryList(allCategory);
       if (response.statusCode == 200) {
@@ -69,9 +69,11 @@ class CategoryController extends GetxController implements GetxService {
     _categoryItemList = null;
     Response response = await categoryRepo.getSubCategoryList(categoryID);
     if (response.statusCode == 200) {
-      _subCategoryList= [];
-      _subCategoryList!.add(CategoryModel(id: int.parse(categoryID!), name: 'all'.tr));
-      response.body.forEach((category) => _subCategoryList!.add(CategoryModel.fromJson(category)));
+      _subCategoryList = [];
+      _subCategoryList!
+          .add(CategoryModel(id: int.parse(categoryID!), name: 'all'.tr));
+      response.body.forEach((category) =>
+          _subCategoryList!.add(CategoryModel.fromJson(category)));
       getCategoryItemList(categoryID, 1, 'all', false);
     } else {
       ApiChecker.checkApi(response);
@@ -80,26 +82,40 @@ class CategoryController extends GetxController implements GetxService {
 
   void setSubCategoryIndex(int index, String? categoryID) {
     _subCategoryIndex = index;
-    if(_isStore) {
-      getCategoryStoreList(_subCategoryIndex == 0 ? categoryID : _subCategoryList![index].id.toString(), 1, _type, true);
-    }else {
-      getCategoryItemList(_subCategoryIndex == 0 ? categoryID : _subCategoryList![index].id.toString(), 1, _type, true);
+    if (_isStore) {
+      getCategoryStoreList(
+          _subCategoryIndex == 0
+              ? categoryID
+              : _subCategoryList![index].id.toString(),
+          1,
+          _type,
+          true);
+    } else {
+      getCategoryItemList(
+          _subCategoryIndex == 0
+              ? categoryID
+              : _subCategoryList![index].id.toString(),
+          1,
+          _type,
+          true);
     }
   }
 
-  void getCategoryItemList(String? categoryID, int offset, String type, bool notify) async {
+  void getCategoryItemList(
+      String? categoryID, int offset, String type, bool notify) async {
     _offset = offset;
-    if(offset == 1) {
-      if(_type == type) {
+    if (offset == 1) {
+      if (_type == type) {
         _isSearching = false;
       }
       _type = type;
-      if(notify) {
+      if (notify) {
         update();
       }
       _categoryItemList = null;
     }
-    Response response = await categoryRepo.getCategoryItemList(categoryID, offset, type);
+    Response response =
+        await categoryRepo.getCategoryItemList(categoryID, offset, type);
     if (response.statusCode == 200) {
       if (offset == 1) {
         _categoryItemList = [];
@@ -113,19 +129,21 @@ class CategoryController extends GetxController implements GetxService {
     update();
   }
 
-  void getCategoryStoreList(String? categoryID, int offset, String type, bool notify) async {
+  void getCategoryStoreList(
+      String? categoryID, int offset, String type, bool notify) async {
     _offset = offset;
-    if(offset == 1) {
-      if(_type == type) {
+    if (offset == 1) {
+      if (_type == type) {
         _isSearching = false;
       }
       _type = type;
-      if(notify) {
+      if (notify) {
         update();
       }
       _categoryStoreList = null;
     }
-    Response response = await categoryRepo.getCategoryStoreList(categoryID, offset, type);
+    Response response =
+        await categoryRepo.getCategoryStoreList(categoryID, offset, type);
     if (response.statusCode == 200) {
       if (offset == 1) {
         _categoryStoreList = [];
@@ -140,7 +158,8 @@ class CategoryController extends GetxController implements GetxService {
   }
 
   void searchData(String? query, String? categoryID, String type) async {
-    if((_isStore && query!.isNotEmpty && query != _storeResultText) || (!_isStore && query!.isNotEmpty && query != _itemResultText)) {
+    if ((_isStore && query!.isNotEmpty && query != _storeResultText) ||
+        (!_isStore && query!.isNotEmpty && query != _itemResultText)) {
       _searchText = query;
       _type = type;
       if (_isStore) {
@@ -151,7 +170,8 @@ class CategoryController extends GetxController implements GetxService {
       _isSearching = true;
       update();
 
-      Response response = await categoryRepo.getSearchData(query, categoryID, _isStore, type);
+      Response response =
+          await categoryRepo.getSearchData(query, categoryID, _isStore, type);
       if (response.statusCode == 200) {
         if (query.isEmpty) {
           if (_isStore) {
@@ -163,7 +183,8 @@ class CategoryController extends GetxController implements GetxService {
           if (_isStore) {
             _storeResultText = query;
             _searchStoreList = [];
-            _searchStoreList!.addAll(StoreModel.fromJson(response.body).stores!);
+            _searchStoreList!
+                .addAll(StoreModel.fromJson(response.body).stores!);
             update();
           } else {
             _itemResultText = query;
@@ -181,7 +202,7 @@ class CategoryController extends GetxController implements GetxService {
   void toggleSearch() {
     _isSearching = !_isSearching;
     _searchItemList = [];
-    if(_categoryItemList != null) {
+    if (_categoryItemList != null) {
       _searchItemList!.addAll(_categoryItemList!);
     }
     update();
@@ -197,9 +218,9 @@ class CategoryController extends GetxController implements GetxService {
     update();
     Response response = await categoryRepo.saveUserInterests(interests);
     bool isSuccess;
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       isSuccess = true;
-    }else {
+    } else {
       isSuccess = false;
       ApiChecker.checkApi(response);
     }
@@ -217,5 +238,4 @@ class CategoryController extends GetxController implements GetxService {
     _isStore = isRestaurant;
     update();
   }
-
 }
