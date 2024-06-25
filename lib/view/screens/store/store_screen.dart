@@ -47,59 +47,69 @@ class StoreScreen extends StatefulWidget {
   final bool fromModule;
   final String slug;
   const StoreScreen(
-      {Key? key, required this.store, required this.fromModule, this.slug = ''})
-      : super(key: key);
+      {super.key,
+      required this.store,
+      required this.fromModule,
+      this.slug = ''});
 
   @override
   State<StoreScreen> createState() => _StoreScreenState();
 }
 
 class _StoreScreenState extends State<StoreScreen> {
-  final ScrollController _scrollController = ScrollController();
   final ScrollController scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
+
+  StoreController storeController =
+      Get.put(StoreController(storeRepo: Get.find()));
 
   @override
   void initState() {
     super.initState();
+
+    initDataCall();
   }
 
   @override
   void dispose() {
-    _scrollController.dispose();
     super.dispose();
+
+    scrollController.dispose();
   }
 
   Future<void> initDataCall() async {
-    if (Get.find<StoreController>().isSearching) {
-      Get.find<StoreController>().changeSearchStatus(isUpdate: false);
+    if (storeController.isSearching) {
+      storeController.changeSearchStatus(isUpdate: false);
     }
-    Get.find<StoreController>().hideAnimation();
-    await Get.find<StoreController>()
+    storeController.hideAnimation();
+    await storeController
         .getStoreDetails(Store(id: widget.store!.id), widget.fromModule,
             slug: widget.slug)
         .then((value) {
-      Get.find<StoreController>().showButtonAnimation();
+      storeController.showButtonAnimation();
     });
     if (Get.find<CategoryController>().categoryList == null) {
       Get.find<CategoryController>().getCategoryList(true);
     }
-    Get.find<StoreController>().getStoreBannerList(
-        widget.store!.id ?? Get.find<StoreController>().store!.id);
-    Get.find<StoreController>().getRestaurantRecommendedItemList(
-        widget.store!.id ?? Get.find<StoreController>().store!.id, false);
-    Get.find<StoreController>().getStoreItemList(
-        widget.store!.id ?? Get.find<StoreController>().store!.id,
-        1,
-        'all',
-        false);
+    storeController
+        .getStoreBannerList(widget.store!.id ?? storeController.store!.id);
+    storeController.getRestaurantRecommendedItemList(
+      widget.store!.id ?? storeController.store!.id,
+      false,
+    );
+    storeController.getStoreItemList(
+      widget.store!.id ?? storeController.store!.id,
+      1,
+      'all',
+      false,
+    );
 
     scrollController.addListener(() {
       if (scrollController.position.userScrollDirection ==
           ScrollDirection.reverse) {
-        if (Get.find<StoreController>().showFavButton) {
-          Get.find<StoreController>().changeFavVisibility();
-          Get.find<StoreController>().hideAnimation();
+        if (storeController.showFavButton) {
+          storeController.changeFavVisibility();
+          storeController.hideAnimation();
         }
       } else {
         if (!Get.find<StoreController>().showFavButton) {
@@ -591,7 +601,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                             height: Dimensions
                                                 .paddingSizeExtraSmall),
                                         SizedBox(
-                                          height: 270,
+                                          height: 250,
                                           child: ListView.builder(
                                             shrinkWrap: true,
                                             scrollDirection: Axis.horizontal,
@@ -1390,57 +1400,33 @@ class _StoreScreenState extends State<StoreScreen> {
                           : SliverToBoxAdapter(
                               child: Container(
                               width: Dimensions.webMaxWidth,
-                              decoration: const BoxDecoration(
-                                color: Colors.blue,
-                                // color: Theme.of(context).colorScheme.surface,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.surface,
                               ),
                               child: PaginatedListView(
-                                enabledPagination: true,
                                 scrollController: scrollController,
-                                onPaginate: (int? offset) {
-                                  storeController.getStoreItemList(
-                                    widget.store!.id,
-                                    offset!,
-                                    storeController.type,
-                                    false,
-                                  );
-                                  // print("Scrollend");
-                                },
-                                onPaginateEnd: () {
-                                  _autoScrollToEnd();
-                                  print("Scrollend");
-                                },
-                                totalSize: storeController
-                                    .storeItemModel?.totalSize
-                                    ?.toInt(),
-                                offset: storeController.storeItemModel?.offset
-                                    ?.toInt(),
-                                itemView:
-                                    NotificationListener<ScrollNotification>(
-                                  onNotification: (notification) {
-                                    if (notification is ScrollEndNotification &&
-                                        notification.metrics.pixels ==
-                                            notification
-                                                .metrics.maxScrollExtent) {
-                                      _autoScrollToEnd();
-                                      print("Scrollend");
-                                    }
-                                    return false;
-                                  },
-                                  child: ItemsView(
-                                    isStore: false,
-                                    stores: null,
-                                    items: (storeController
-                                                .categoryList!.isNotEmpty &&
-                                            storeController.storeItemModel !=
-                                                null)
-                                        ? storeController.storeItemModel!.items
-                                        : null,
-                                    inStorePage: true,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: Dimensions.paddingSizeSmall,
-                                      vertical: Dimensions.paddingSizeSmall,
-                                    ),
+                                onPaginate: (int? offset) =>
+                                    storeController.getStoreItemList(
+                                        widget.store!.id,
+                                        offset!,
+                                        storeController.type,
+                                        false),
+                                totalSize:
+                                    storeController.storeItemModel?.totalSize,
+                                offset: storeController.storeItemModel?.offset,
+                                itemView: ItemsView(
+                                  isStore: false,
+                                  stores: null,
+                                  items: (storeController
+                                              .categoryList!.isNotEmpty &&
+                                          storeController.storeItemModel !=
+                                              null)
+                                      ? storeController.storeItemModel!.items
+                                      : null,
+                                  inStorePage: true,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: Dimensions.paddingSizeSmall,
+                                    vertical: Dimensions.paddingSizeSmall,
                                   ),
                                 ),
                               ),
@@ -1526,16 +1512,6 @@ class _StoreScreenState extends State<StoreScreen> {
               ? const BottomCartWidget()
               : const SizedBox();
         }));
-  }
-
-  void _autoScrollToEnd() {
-    if (scrollController.hasClients) {
-      scrollController.animateTo(
-        scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 500),
-        curve: Curves.easeInOut,
-      );
-    }
   }
 }
 

@@ -132,14 +132,13 @@ class CategoryController extends GetxController implements GetxService {
   void getCategoryStoreList(
       String? categoryID, int offset, String type, bool notify) async {
     _offset = offset;
+    update();
     if (offset == 1) {
       if (_type == type) {
         _isSearching = false;
       }
       _type = type;
-      if (notify) {
-        update();
-      }
+      if (notify) {}
       _categoryStoreList = null;
     }
     Response response =
