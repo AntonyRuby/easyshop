@@ -312,10 +312,10 @@ class _StoreScreenState extends State<StoreScreen> {
                                                       CustomImage(
                                                         image:
                                                             '${Get.find<SplashController>().configModel!.baseUrls!.storeImageUrl}/${store.logo}',
-                                                        height: 60 -
+                                                        height: 80 -
                                                             (scrollingRate *
                                                                 15),
-                                                        width: 70 -
+                                                        width: 80 -
                                                             (scrollingRate *
                                                                 15),
                                                         fit: BoxFit.cover,
@@ -1169,7 +1169,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                             height: ResponsiveHelper.isDesktop(
                                                     context)
                                                 ? 150
-                                                : 125,
+                                                : 200,
                                             child: ListView.builder(
                                               scrollDirection: Axis.horizontal,
                                               itemCount: storeController
