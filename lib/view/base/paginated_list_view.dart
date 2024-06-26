@@ -13,7 +13,7 @@ class PaginatedListView extends StatefulWidget {
   final Widget itemView;
   final bool enabledPagination;
   final bool reverse;
-  final NotificationListenerCallback<ScrollNotification>? notificationListener;
+
   const PaginatedListView({
     Key? key,
     required this.scrollController,
@@ -24,7 +24,6 @@ class PaginatedListView extends StatefulWidget {
     this.enabledPagination = true,
     this.reverse = false,
     this.onPaginateEnd,
-    this.notificationListener,
   }) : super(key: key);
 
   @override
@@ -44,7 +43,6 @@ class _PaginatedListViewState extends State<PaginatedListView> {
     _offsetList = [1];
 
     widget.scrollController.addListener(() {
-      // print("test 1");
       if (widget.scrollController.position.pixels ==
           widget.scrollController.position.maxScrollExtent) {
         if (widget.onPaginateEnd != null) {
@@ -56,9 +54,7 @@ class _PaginatedListViewState extends State<PaginatedListView> {
           widget.totalSize != null &&
           !_isLoading &&
           widget.enabledPagination) {
-        print("tset 2");
         if (mounted && !ResponsiveHelper.isDesktop(context)) {
-          print("tset 3");
           _paginate();
         }
       }
@@ -74,11 +70,12 @@ class _PaginatedListViewState extends State<PaginatedListView> {
         _isLoading = true;
       });
       await widget.onPaginate(_offset);
+      if (!mounted) return;
       setState(() {
         _isLoading = false;
       });
     } else {
-      if (_isLoading) {
+      if (widget.enabledPagination != null) if (_isLoading) {
         setState(() {
           _isLoading = false;
         });

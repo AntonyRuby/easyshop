@@ -1405,12 +1405,17 @@ class _StoreScreenState extends State<StoreScreen> {
                               ),
                               child: PaginatedListView(
                                 scrollController: scrollController,
-                                onPaginate: (int? offset) =>
-                                    storeController.getStoreItemList(
-                                        widget.store!.id,
-                                        offset!,
-                                        storeController.type,
-                                        false),
+                                onPaginate: (int? offset) {
+                                  storeController.getStoreItemList(
+                                      widget.store!.id,
+                                      offset!,
+                                      storeController.type,
+                                      false);
+                                },
+                                onPaginateEnd: () {
+                                  storeController.setCategoryIndex(
+                                      storeController.categoryIndex + 1);
+                                },
                                 totalSize:
                                     storeController.storeItemModel?.totalSize,
                                 offset: storeController.storeItemModel?.offset,
