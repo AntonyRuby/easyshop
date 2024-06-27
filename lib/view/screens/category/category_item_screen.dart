@@ -37,7 +37,7 @@ class CategoryItemScreenState extends State<CategoryItemScreen>
   void initState() {
     super.initState();
 
-    _tabController = TabController(length: 2, initialIndex: 0, vsync: this);
+    _tabController = TabController(length: 2, initialIndex: 1, vsync: this);
     Get.find<CategoryController>().getSubCategoryList(widget.categoryID);
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
@@ -307,58 +307,18 @@ class CategoryItemScreenState extends State<CategoryItemScreen>
                       ),
                     ))
                   : const SizedBox(),
-              Center(
-                  child: Container(
-                width: Dimensions.webMaxWidth,
-                color: Theme.of(context).cardColor,
-                child: TabBar(
-                  controller: _tabController,
-                  indicatorColor: Theme.of(context).primaryColor,
-                  indicatorWeight: 3,
-                  labelColor: Theme.of(context).primaryColor,
-                  unselectedLabelColor: Theme.of(context).disabledColor,
-                  unselectedLabelStyle: robotoRegular.copyWith(
-                      color: Theme.of(context).disabledColor,
-                      fontSize: Dimensions.fontSizeSmall),
-                  labelStyle: robotoBold.copyWith(
-                      fontSize: Dimensions.fontSizeSmall,
-                      color: Theme.of(context).primaryColor),
-                  tabs: [
-                    Tab(text: 'item'.tr),
-                    Tab(
-                        text: Get.find<SplashController>()
-                                .configModel!
-                                .moduleConfig!
-                                .module!
-                                .showRestaurantText!
-                            ? 'restaurants'.tr
-                            : 'stores'.tr),
-                  ],
-                ),
-              )),
               Expanded(
-                  child: NotificationListener(
-                onNotification: (dynamic scrollNotification) {
-                  if (scrollNotification is ScrollEndNotification) {
-                    if ((_tabController!.index == 1 &&
-                            !catController.isStore) ||
-                        _tabController!.index == 0 && catController.isStore) {
-                      catController.setRestaurant(_tabController!.index == 1);
-                      if (catController.isSearching) {
-                        catController.searchData(
-                          catController.searchText,
-                          catController.subCategoryIndex == 0
-                              ? widget.categoryID
-                              : catController
-                                  .subCategoryList![
-                                      catController.subCategoryIndex]
-                                  .id
-                                  .toString(),
-                          catController.type,
-                        );
-                      } else {
-                        if (_tabController!.index == 1) {
-                          catController.getCategoryStoreList(
+                child: NotificationListener(
+                    child: NotificationListener(
+                  onNotification: (dynamic scrollNotification) {
+                    if (scrollNotification is ScrollEndNotification) {
+                      if ((_tabController!.index == 1 &&
+                              !catController.isStore) ||
+                          _tabController!.index == 0 && catController.isStore) {
+                        catController.setRestaurant(_tabController!.index == 1);
+                        if (catController.isSearching) {
+                          catController.searchData(
+                            catController.searchText,
                             catController.subCategoryIndex == 0
                                 ? widget.categoryID
                                 : catController
@@ -366,59 +326,170 @@ class CategoryItemScreenState extends State<CategoryItemScreen>
                                         catController.subCategoryIndex]
                                     .id
                                     .toString(),
-                            1,
                             catController.type,
-                            false,
                           );
                         } else {
-                          catController.getCategoryItemList(
-                            catController.subCategoryIndex == 0
-                                ? widget.categoryID
-                                : catController
-                                    .subCategoryList![
-                                        catController.subCategoryIndex]
-                                    .id
-                                    .toString(),
-                            1,
-                            catController.type,
-                            false,
-                          );
+                          if (_tabController!.index == 1) {
+                            catController.getCategoryStoreList(
+                              catController.subCategoryIndex == 0
+                                  ? widget.categoryID
+                                  : catController
+                                      .subCategoryList![
+                                          catController.subCategoryIndex]
+                                      .id
+                                      .toString(),
+                              1,
+                              catController.type,
+                              false,
+                            );
+                          } else {
+                            catController.getCategoryItemList(
+                              catController.subCategoryIndex == 0
+                                  ? widget.categoryID
+                                  : catController
+                                      .subCategoryList![
+                                          catController.subCategoryIndex]
+                                      .id
+                                      .toString(),
+                              1,
+                              catController.type,
+                              false,
+                            );
+                          }
                         }
                       }
                     }
-                  }
-                  return false;
-                },
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    SingleChildScrollView(
-                      controller: scrollController,
-                      child: ItemsView(
-                        isStore: false,
-                        items: item,
-                        stores: null,
-                        noDataText: 'no_category_item_found'.tr,
-                      ),
+                    return false;
+                  },
+                  child: SingleChildScrollView(
+                    controller: storeScrollController,
+                    child: ItemsView(
+                      isStore: true,
+                      items: null,
+                      stores: stores,
+                      noDataText: Get.find<SplashController>()
+                              .configModel!
+                              .moduleConfig!
+                              .module!
+                              .showRestaurantText!
+                          ? 'no_category_restaurant_found'.tr
+                          : 'no_category_store_found'.tr,
                     ),
-                    SingleChildScrollView(
-                      controller: storeScrollController,
-                      child: ItemsView(
-                        isStore: true,
-                        items: null,
-                        stores: stores,
-                        noDataText: Get.find<SplashController>()
-                                .configModel!
-                                .moduleConfig!
-                                .module!
-                                .showRestaurantText!
-                            ? 'no_category_restaurant_found'.tr
-                            : 'no_category_store_found'.tr,
-                      ),
-                    ),
-                  ],
-                ),
-              )),
+                  ),
+                )),
+              ),
+              // Center(
+              //     child: Container(
+              //   width: Dimensions.webMaxWidth,
+              //   color: Theme.of(context).cardColor,
+              //   child: TabBar(
+              //     controller: _tabController,
+              //     indicatorColor: Theme.of(context).primaryColor,
+              //     indicatorWeight: 3,
+              //     labelColor: Theme.of(context).primaryColor,
+              //     unselectedLabelColor: Theme.of(context).disabledColor,
+              //     unselectedLabelStyle: robotoRegular.copyWith(
+              //         color: Theme.of(context).disabledColor,
+              //         fontSize: Dimensions.fontSizeSmall),
+              //     labelStyle: robotoBold.copyWith(
+              //         fontSize: Dimensions.fontSizeSmall,
+              //         color: Theme.of(context).primaryColor),
+              //     tabs: [
+              //       Tab(text: 'item'.tr),
+              //       Tab(
+              //           text: Get.find<SplashController>()
+              //                   .configModel!
+              //                   .moduleConfig!
+              //                   .module!
+              //                   .showRestaurantText!
+              //               ? 'restaurants'.tr
+              //               : 'stores'.tr),
+              //     ],
+              //   ),
+              // )),
+              // Expanded(
+              //     child: NotificationListener(
+              //   onNotification: (dynamic scrollNotification) {
+              //     if (scrollNotification is ScrollEndNotification) {
+              //       if ((_tabController!.index == 1 &&
+              //               !catController.isStore) ||
+              //           _tabController!.index == 0 && catController.isStore) {
+              //         catController.setRestaurant(_tabController!.index == 1);
+              //         if (catController.isSearching) {
+              //           catController.searchData(
+              //             catController.searchText,
+              //             catController.subCategoryIndex == 0
+              //                 ? widget.categoryID
+              //                 : catController
+              //                     .subCategoryList![
+              //                         catController.subCategoryIndex]
+              //                     .id
+              //                     .toString(),
+              //             catController.type,
+              //           );
+              //         } else {
+              //           if (_tabController!.index == 1) {
+              //             catController.getCategoryStoreList(
+              //               catController.subCategoryIndex == 0
+              //                   ? widget.categoryID
+              //                   : catController
+              //                       .subCategoryList![
+              //                           catController.subCategoryIndex]
+              //                       .id
+              //                       .toString(),
+              //               1,
+              //               catController.type,
+              //               false,
+              //             );
+              //           } else {
+              //             catController.getCategoryItemList(
+              //               catController.subCategoryIndex == 0
+              //                   ? widget.categoryID
+              //                   : catController
+              //                       .subCategoryList![
+              //                           catController.subCategoryIndex]
+              //                       .id
+              //                       .toString(),
+              //               1,
+              //               catController.type,
+              //               false,
+              //             );
+              //           }
+              //         }
+              //       }
+              //     }
+              //     return false;
+              //   },
+              //   child: TabBarView(
+              //     controller: _tabController,
+              //     children: [
+              //       SingleChildScrollView(
+              //         controller: scrollController,
+              //         child: ItemsView(
+              //           isStore: false,
+              //           items: item,
+              //           stores: null,
+              //           noDataText: 'no_category_item_found'.tr,
+              //         ),
+              //       ),
+              //       SingleChildScrollView(
+              //         controller: storeScrollController,
+              //         child: ItemsView(
+              //           isStore: true,
+              //           items: null,
+              //           stores: stores,
+              //           noDataText: Get.find<SplashController>()
+              //                   .configModel!
+              //                   .moduleConfig!
+              //                   .module!
+              //                   .showRestaurantText!
+              //               ? 'no_category_restaurant_found'.tr
+              //               : 'no_category_store_found'.tr,
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // )),
               catController.isLoading
                   ? Center(
                       child: Padding(
