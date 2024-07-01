@@ -230,16 +230,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               backgroundColor:
                                   ResponsiveHelper.isDesktop(context)
                                       ? Colors.transparent
-                                      : Theme.of(context)
-                                          .colorScheme
-                                          .background,
+                                      : Theme.of(context).colorScheme.surface,
                               toolbarHeight: 100,
                               title: Container(
                                 width: Dimensions.webMaxWidth,
                                 height: Get.find<LocalizationController>().isLtr
                                     ? 100
                                     : 80,
-                                color: Theme.of(context).colorScheme.background,
+                                color: Theme.of(context).colorScheme.surface,
                                 child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.stretch,

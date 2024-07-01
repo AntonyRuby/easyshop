@@ -378,17 +378,6 @@ class StoreController extends GetxController implements GetxService {
         update();
       }
     }
-    // int categoryId = 0;
-    // if (_store != null &&
-    //     _store!.categoryIds!.isNotEmpty &&
-    //     _categoryIndex != 0) {
-    //   if (_categoryIndex < 0) {
-    //     _categoryIndex = 0; // Move to the first category
-    //   } else if (_categoryIndex >= _categoryList!.length) {
-    //     _categoryIndex = _categoryList!.length - 1; // Stay at the last category
-    //   }
-    //   categoryId = _categoryList![_categoryIndex].id!;
-    // }
 
     int categoryId = 0;
     if (_store != null &&
