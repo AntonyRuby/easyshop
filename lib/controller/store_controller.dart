@@ -366,45 +366,68 @@ class StoreController extends GetxController implements GetxService {
   }
 
   Future<void> getStoreItemList(
-  int? storeID, 
-  int offset, 
-  String type, 
-  bool notify,
-) async {
-  if (offset == 1 || _storeItemModel == null) {
-    _type = type;
-    _storeItemModel = null;
-    if (notify) {
-      update();
-    }
-  }
-  Response response = await storeRepo.getStoreItemList(
-    storeID,
-    offset,
-    (_store != null && _store!.categoryIds!.isNotEmpty && _categoryIndex != 0)
-        ? _categoryList![_categoryIndex].id
-        : 0,
-    type,
-  );
-  if (response.statusCode == 200) {
-    if (offset == 1) {
-      _storeItemModel = ItemModel.fromJson(response.body);
-    } else {
-      if (_storeItemModel == null) {
-        _storeItemModel = ItemModel.fromJson(response.body);
-      } else {
-        _storeItemModel!.items!
-            .addAll(ItemModel.fromJson(response.body).items!);
-        _storeItemModel!.totalSize =
-            ItemModel.fromJson(response.body).totalSize;
-        _storeItemModel!.offset = ItemModel.fromJson(response.body).offset;
+    int? storeID,
+    int offset,
+    String type,
+    bool notify,
+  ) async {
+    if (offset == 1 || _storeItemModel == null) {
+      _type = type;
+      _storeItemModel = null;
+      if (notify) {
+        update();
       }
     }
-  } else {
-    ApiChecker.checkApi(response);
+    // int categoryId = 0;
+    // if (_store != null &&
+    //     _store!.categoryIds!.isNotEmpty &&
+    //     _categoryIndex != 0) {
+    //   if (_categoryIndex < 0) {
+    //     _categoryIndex = 0; // Move to the first category
+    //   } else if (_categoryIndex >= _categoryList!.length) {
+    //     _categoryIndex = _categoryList!.length - 1; // Stay at the last category
+    //   }
+    //   categoryId = _categoryList![_categoryIndex].id!;
+    // }
+
+    int categoryId = 0;
+    if (_store != null &&
+        _store!.categoryIds!.isNotEmpty &&
+        _categoryIndex != 0) {
+      if (_categoryIndex < 0) {
+        _categoryIndex = 0; // Move to the first category
+      } else if (_categoryIndex >= _categoryList!.length) {
+        // Stay at the last category
+        categoryId = _categoryList!.last.id!;
+      } else {
+        categoryId = _categoryList![_categoryIndex].id!;
+      }
+    }
+    Response response = await storeRepo.getStoreItemList(
+      storeID,
+      offset,
+      categoryId,
+      type,
+    );
+    if (response.statusCode == 200) {
+      if (offset == 1) {
+        _storeItemModel = ItemModel.fromJson(response.body);
+      } else {
+        if (_storeItemModel == null) {
+          _storeItemModel = ItemModel.fromJson(response.body);
+        } else {
+          _storeItemModel!.items!
+              .addAll(ItemModel.fromJson(response.body).items!);
+          _storeItemModel!.totalSize =
+              ItemModel.fromJson(response.body).totalSize;
+          _storeItemModel!.offset = ItemModel.fromJson(response.body).offset;
+        }
+      }
+    } else {
+      ApiChecker.checkApi(response);
+    }
+    update();
   }
-  update();
-}
 
   Future<void> getStoreSearchItemList(
       String searchText, String? storeID, int offset, String type) async {
