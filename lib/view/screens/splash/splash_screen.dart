@@ -14,6 +14,7 @@ import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/view/base/no_internet_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:video_player/video_player.dart';
 
 class SplashScreen extends StatefulWidget {
   final NotificationBody? body;
@@ -26,18 +27,37 @@ class SplashScreen extends StatefulWidget {
 class SplashScreenState extends State<SplashScreen> {
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
   late StreamSubscription<ConnectivityResult> _onConnectivityChanged;
+  late VideoPlayerController _controller;
+  bool _isPlaying = false;
 
   @override
   void initState() {
     super.initState();
+    _controller = VideoPlayerController.asset('assets/videos/splash.mp4')
+      ..initialize().then((value) {
+        setState(() {});
+        _controller.play();
+        _isPlaying = true;
+      })
+      ..addListener(() {
+        if (_controller.value.position == _controller.value.duration) {
+          _route();
+        }
+      });
 
     bool firstTime = true;
-    _onConnectivityChanged = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+    _onConnectivityChanged = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) {
       if (!firstTime) {
-        bool isNotConnected = result != ConnectivityResult.wifi && result != ConnectivityResult.mobile;
-        isNotConnected ? const SizedBox() : ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        bool isNotConnected = result != ConnectivityResult.wifi &&
+            result != ConnectivityResult.mobile;
+        isNotConnected
+            ? const SizedBox()
+            : ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: isNotConnected ? Colors.red : const Color(0xFFFE0100),
+          backgroundColor:
+              isNotConnected ? Colors.red : const Color(0xFFFE0100),
           duration: Duration(seconds: isNotConnected ? 6000 : 3),
           content: Text(
             isNotConnected ? 'no_connection'.tr : 'connected'.tr,
@@ -52,11 +72,15 @@ class SplashScreenState extends State<SplashScreen> {
     });
 
     Get.find<SplashController>().initSharedData();
-    if ((Get.find<AuthController>().getGuestId().isNotEmpty || Get.find<AuthController>().isLoggedIn()) &&
+    if ((Get.find<AuthController>().getGuestId().isNotEmpty ||
+            Get.find<AuthController>().isLoggedIn()) &&
         Get.find<SplashController>().cacheModule != null) {
       Get.find<CartController>().getCartData();
     }
-    _route();
+
+    Future.delayed(const Duration(seconds: 3)).then((_) {
+      _route();
+    });
   }
 
   @override
@@ -64,6 +88,7 @@ class SplashScreenState extends State<SplashScreen> {
     super.dispose();
 
     _onConnectivityChanged.cancel();
+    _controller.dispose();
   }
 
   void _route() {
@@ -72,21 +97,32 @@ class SplashScreenState extends State<SplashScreen> {
         Timer(const Duration(seconds: 1), () async {
           double? minimumVersion = 0;
           if (GetPlatform.isAndroid) {
-            minimumVersion = Get.find<SplashController>().configModel!.appMinimumVersionAndroid;
+            minimumVersion = Get.find<SplashController>()
+                .configModel!
+                .appMinimumVersionAndroid;
           } else if (GetPlatform.isIOS) {
-            minimumVersion = Get.find<SplashController>().configModel!.appMinimumVersionIos;
+            minimumVersion =
+                Get.find<SplashController>().configModel!.appMinimumVersionIos;
           }
-          if (AppConstants.appVersion < minimumVersion! || Get.find<SplashController>().configModel!.maintenanceMode!) {
-            Get.offNamed(RouteHelper.getUpdateRoute(AppConstants.appVersion < minimumVersion));
+          if (AppConstants.appVersion < minimumVersion! ||
+              Get.find<SplashController>().configModel!.maintenanceMode!) {
+            Get.offNamed(RouteHelper.getUpdateRoute(
+                AppConstants.appVersion < minimumVersion));
           } else {
             if (widget.body != null) {
               if (widget.body!.notificationType == NotificationType.order) {
-                Get.offNamed(RouteHelper.getOrderDetailsRoute(widget.body!.orderId, fromNotification: true));
-              } else if (widget.body!.notificationType == NotificationType.general) {
-                Get.offNamed(RouteHelper.getNotificationRoute(fromNotification: true));
-              } else {
+                Get.offNamed(RouteHelper.getOrderDetailsRoute(
+                    widget.body!.orderId,
+                    fromNotification: true));
+              } else if (widget.body!.notificationType ==
+                  NotificationType.general) {
                 Get.offNamed(
-                    RouteHelper.getChatRoute(notificationBody: widget.body, conversationID: widget.body!.conversationId, fromNotification: true));
+                    RouteHelper.getNotificationRoute(fromNotification: true));
+              } else {
+                Get.offNamed(RouteHelper.getChatRoute(
+                    notificationBody: widget.body,
+                    conversationID: widget.body!.conversationId,
+                    fromNotification: true));
               }
             } else {
               if (Get.find<AuthController>().isLoggedIn()) {
@@ -97,7 +133,8 @@ class SplashScreenState extends State<SplashScreen> {
                   }
                   Get.offNamed(RouteHelper.getInitialRoute(fromSplash: true));
                 } else {
-                  Get.find<LocationController>().navigateToLocationScreen('splash', offNamed: true);
+                  Get.find<LocationController>()
+                      .navigateToLocationScreen('splash', offNamed: true);
                 }
               } else {
                 if (Get.find<SplashController>().showIntro()!) {
@@ -108,13 +145,17 @@ class SplashScreenState extends State<SplashScreen> {
                   }
                 } else {
                   if (Get.find<AuthController>().isGuestLoggedIn()) {
-                    if (Get.find<LocationController>().getUserAddress() != null) {
-                      Get.offNamed(RouteHelper.getInitialRoute(fromSplash: true));
+                    if (Get.find<LocationController>().getUserAddress() !=
+                        null) {
+                      Get.offNamed(
+                          RouteHelper.getInitialRoute(fromSplash: true));
                     } else {
-                      Get.find<LocationController>().navigateToLocationScreen('splash', offNamed: true);
+                      Get.find<LocationController>()
+                          .navigateToLocationScreen('splash', offNamed: true);
                     }
                   } else {
-                    Get.offNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
+                    Get.offNamed(
+                        RouteHelper.getSignInRoute(RouteHelper.splash));
                   }
                 }
               }
@@ -128,7 +169,8 @@ class SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     Get.find<SplashController>().initSharedData();
-    if (Get.find<LocationController>().getUserAddress() != null && Get.find<LocationController>().getUserAddress()!.zoneIds == null) {
+    if (Get.find<LocationController>().getUserAddress() != null &&
+        Get.find<LocationController>().getUserAddress()!.zoneIds == null) {
       Get.find<AuthController>().clearSharedAddress();
     }
 
@@ -137,15 +179,17 @@ class SplashScreenState extends State<SplashScreen> {
       body: GetBuilder<SplashController>(builder: (splashController) {
         return Center(
           child: splashController.hasConnection
-              ? Column(
-                  mainAxisSize: MainAxisSize.min,
+              ? Stack(
                   children: [
-                    Image.asset(
-                      Images.splash,
-                      fit: BoxFit.fill,
+                    VideoPlayer(_controller),
+                    Center(
+                      child: _isPlaying
+                          ? const SizedBox()
+                          : CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  Theme.of(context).primaryColor),
+                            ),
                     ),
-                    const SizedBox(height: Dimensions.paddingSizeSmall),
-                    // Text(AppConstants.APP_NAME, style: robotoMedium.copyWith(fontSize: 25)),
                   ],
                 )
               : NoInternetScreen(child: SplashScreen(body: widget.body)),
