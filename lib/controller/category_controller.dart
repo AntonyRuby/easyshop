@@ -1,3 +1,4 @@
+import 'package:flutter/scheduler.dart';
 import 'package:sixam_mart/data/api/api_checker.dart';
 import 'package:sixam_mart/data/model/response/category_model.dart';
 import 'package:sixam_mart/data/model/response/item_model.dart';
@@ -129,10 +130,36 @@ class CategoryController extends GetxController implements GetxService {
     update();
   }
 
-  void getCategoryStoreList(
+  // void getCategoryStoreList(
+  //     String? categoryID, int offset, String type, bool notify) async {
+  //   _offset = offset;
+  //   update();
+  //   if (offset == 1) {
+  //     if (_type == type) {
+  //       _isSearching = false;
+  //     }
+  //     _type = type;
+  //     if (notify) {}
+  //     _categoryStoreList = null;
+  //   }
+  //   Response response =
+  //       await categoryRepo.getCategoryStoreList(categoryID, offset, type);
+  //   if (response.statusCode == 200) {
+  //     if (offset == 1) {
+  //       _categoryStoreList = [];
+  //     }
+  //     _categoryStoreList!.addAll(StoreModel.fromJson(response.body).stores!);
+  //     _restPageSize = ItemModel.fromJson(response.body).totalSize;
+  //     _isLoading = false;
+  //   } else {
+  //     ApiChecker.checkApi(response);
+  //   }
+  //   update();
+  // }
+
+  Future<void> getCategoryStoreList(
       String? categoryID, int offset, String type, bool notify) async {
     _offset = offset;
-    update();
     if (offset == 1) {
       if (_type == type) {
         _isSearching = false;
@@ -153,7 +180,11 @@ class CategoryController extends GetxController implements GetxService {
     } else {
       ApiChecker.checkApi(response);
     }
-    update();
+
+    // Ensure the update is called after the build phase
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      update();
+    });
   }
 
   void searchData(String? query, String? categoryID, String type) async {
