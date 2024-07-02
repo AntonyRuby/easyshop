@@ -1322,10 +1322,10 @@ class _StoreScreenState extends State<StoreScreen> {
                                               child: ListView.builder(
                                                 scrollDirection:
                                                     Axis.horizontal,
+                                                // itemCount: storeController
+                                                //     .categoryList!.length,
                                                 itemCount: storeController
-                                                    .categoryList!.length,
-                                                // itemCount: categoryController
-                                                //     .!.length,
+                                                    .subCategoryList!.length,
 
                                                 padding: const EdgeInsets.only(
                                                     left: Dimensions

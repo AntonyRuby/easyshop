@@ -295,6 +295,19 @@ class StoreController extends GetxController implements GetxService {
     }
   }
 
+  void setSubCategoryList() {
+    if (Get.find<CategoryController>().subCategoryList != null &&
+        _store != null) {
+      _subCategoryList = [];
+      _subCategoryList!.add(CategoryModel(id: 0, name: 'all'.tr));
+      for (var category in Get.find<CategoryController>().subCategoryList!) {
+        if (_store!.categoryIds!.contains(category.id)) {
+          _subCategoryList!.add(category);
+        }
+      }
+    }
+  }
+
   Future<void> initCheckoutData(int? storeId) async {
     Get.find<CouponController>().removeCouponData(false);
     Get.find<OrderController>().clearPrevData(null);
