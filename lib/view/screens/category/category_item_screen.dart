@@ -86,11 +86,6 @@ class CategoryItemScreenState extends State<CategoryItemScreen> {
         }
       }
 
-      // Debugging prints to check data flow
-      print("Stores: $stores");
-      print("Is Searching: ${catController.isSearching}");
-      print("Category Store List: ${catController.categoryStoreList}");
-
       return WillPopScope(
         onWillPop: () async {
           if (catController.isSearching) {

@@ -33,6 +33,8 @@ class StoreController extends GetxController implements GetxService {
   ItemModel? _storeSearchItemModel;
   int _categoryIndex = 0;
   List<CategoryModel>? _categoryList;
+  List<CategoryModel>? _subCategoryList;
+  int _subCategoryIndex = 0;
   bool _isLoading = false;
   String _storeType = 'all';
   List<ReviewModel>? _storeReviewList;
@@ -58,6 +60,8 @@ class StoreController extends GetxController implements GetxService {
   ItemModel? get storeSearchItemModel => _storeSearchItemModel;
   int get categoryIndex => _categoryIndex;
   List<CategoryModel>? get categoryList => _categoryList;
+  List<CategoryModel>? get subCategoryList => _subCategoryList;
+  int get subCategoryIndex => _subCategoryIndex;
   bool get isLoading => _isLoading;
   String get storeType => _storeType;
   List<ReviewModel>? get storeReviewList => _storeReviewList;

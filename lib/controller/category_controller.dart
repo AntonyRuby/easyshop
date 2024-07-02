@@ -130,33 +130,6 @@ class CategoryController extends GetxController implements GetxService {
     update();
   }
 
-  // void getCategoryStoreList(
-  //     String? categoryID, int offset, String type, bool notify) async {
-  //   _offset = offset;
-  //   update();
-  //   if (offset == 1) {
-  //     if (_type == type) {
-  //       _isSearching = false;
-  //     }
-  //     _type = type;
-  //     if (notify) {}
-  //     _categoryStoreList = null;
-  //   }
-  //   Response response =
-  //       await categoryRepo.getCategoryStoreList(categoryID, offset, type);
-  //   if (response.statusCode == 200) {
-  //     if (offset == 1) {
-  //       _categoryStoreList = [];
-  //     }
-  //     _categoryStoreList!.addAll(StoreModel.fromJson(response.body).stores!);
-  //     _restPageSize = ItemModel.fromJson(response.body).totalSize;
-  //     _isLoading = false;
-  //   } else {
-  //     ApiChecker.checkApi(response);
-  //   }
-  //   update();
-  // }
-
   Future<void> getCategoryStoreList(
       String? categoryID, int offset, String type, bool notify) async {
     _offset = offset;

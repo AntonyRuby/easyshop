@@ -1324,6 +1324,9 @@ class _StoreScreenState extends State<StoreScreen> {
                                                     Axis.horizontal,
                                                 itemCount: storeController
                                                     .categoryList!.length,
+                                                // itemCount: categoryController
+                                                //     .!.length,
+
                                                 padding: const EdgeInsets.only(
                                                     left: Dimensions
                                                         .paddingSizeSmall),
@@ -1356,8 +1359,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                                                 .primaryColor
                                                                 .withOpacity(
                                                                     0.1)
-                                                            : Colors
-                                                                .transparent,
+                                                            : Colors.blue,
                                                       ),
                                                       child: Column(
                                                           mainAxisAlignment:
