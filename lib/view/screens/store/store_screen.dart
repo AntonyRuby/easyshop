@@ -1359,7 +1359,9 @@ class _StoreScreenState extends State<StoreScreen> {
                                                                 .primaryColor
                                                                 .withOpacity(
                                                                     0.1)
-                                                            : Colors.blue,
+                                                            // : Colors.blue,
+                                                            : Colors
+                                                                .transparent,
                                                       ),
                                                       child: Column(
                                                           mainAxisAlignment:
