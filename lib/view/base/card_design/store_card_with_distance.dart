@@ -26,12 +26,18 @@ class StoreCardWithDistance extends StatelessWidget {
   final Store store;
   final bool fromAllStore;
   final bool? isNewStore;
-  const StoreCardWithDistance({Key? key, required this.store, this.fromAllStore = false, this.isNewStore = false}) : super(key: key);
+  const StoreCardWithDistance(
+      {Key? key,
+      required this.store,
+      this.fromAllStore = false,
+      this.isNewStore = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    bool isPharmacy =
-        Get.find<SplashController>().module != null && Get.find<SplashController>().module!.moduleType.toString() == AppConstants.pharmacy;
+    bool isPharmacy = Get.find<SplashController>().module != null &&
+        Get.find<SplashController>().module!.moduleType.toString() ==
+            AppConstants.pharmacy;
     double distance = Get.find<LocationController>().getRestaurantDistance(
       LatLng(double.parse(store.latitude!), double.parse(store.longitude!)),
     );
@@ -58,17 +64,25 @@ class StoreCardWithDistance extends StatelessWidget {
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-              boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.1), spreadRadius: 1, blurRadius: 7, offset: const Offset(0, 1))],
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    spreadRadius: 1,
+                    blurRadius: 7,
+                    offset: const Offset(0, 1))
+              ],
             ),
             child: Column(children: [
               Expanded(
                 flex: 1,
                 child: ClipRRect(
                   borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(Dimensions.radiusDefault), topRight: Radius.circular(Dimensions.radiusDefault)),
+                      topLeft: Radius.circular(Dimensions.radiusDefault),
+                      topRight: Radius.circular(Dimensions.radiusDefault)),
                   child: Stack(clipBehavior: Clip.none, children: [
                     CustomImage(
-                      image: '${Get.find<SplashController>().configModel!.baseUrls!.storeCoverPhotoUrl}'
+                      image:
+                          '${Get.find<SplashController>().configModel!.baseUrls!.storeCoverPhotoUrl}'
                           '/${store.coverPhoto}',
                       fit: BoxFit.cover,
                       height: double.infinity,
@@ -76,10 +90,13 @@ class StoreCardWithDistance extends StatelessWidget {
                     ),
                     DiscountTag(
                       discount: Get.find<StoreController>().getDiscount(store),
-                      discountType: Get.find<StoreController>().getDiscountType(store),
+                      discountType:
+                          Get.find<StoreController>().getDiscountType(store),
                       freeDelivery: store.freeDelivery,
                     ),
-                    Get.find<StoreController>().isOpenNow(store) ? const SizedBox() : const NotAvailableWidget(isStore: true),
+                    Get.find<StoreController>().isOpenNow(store)
+                        ? const SizedBox()
+                        : const NotAvailableWidget(isStore: true),
 
                     /* AddFavouriteView(
                       item: Item(id: store.id),
@@ -87,14 +104,22 @@ class StoreCardWithDistance extends StatelessWidget {
 
                     Positioned(
                       top: 15,
-                      left: Get.find<LocalizationController>().isLtr ? null : 15,
-                      right: Get.find<LocalizationController>().isLtr ? 15 : null,
-                      child: GetBuilder<WishListController>(builder: (wishController) {
-                        bool isWished = wishController.wishStoreIdList.contains(store.id);
+                      left:
+                          Get.find<LocalizationController>().isLtr ? null : 15,
+                      right:
+                          Get.find<LocalizationController>().isLtr ? 15 : null,
+                      child: GetBuilder<WishListController>(
+                          builder: (wishController) {
+                        bool isWished =
+                            wishController.wishStoreIdList.contains(store.id);
                         return InkWell(
                           onTap: () {
                             if (Get.find<AuthController>().isLoggedIn()) {
-                              isWished ? wishController.removeFromWishList(store.id, true) : wishController.addToWishList(null, store, true);
+                              isWished
+                                  ? wishController.removeFromWishList(
+                                      store.id, true)
+                                  : wishController.addToWishList(
+                                      null, store, true);
                             } else {
                               showCustomSnackBar('you_are_not_logged_in'.tr);
                             }
@@ -118,75 +143,117 @@ class StoreCardWithDistance extends StatelessWidget {
                     flex: 3,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 95),
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-                        Flexible(child: Text(store.name ?? '', maxLines: 1, overflow: TextOverflow.ellipsis, style: robotoMedium)),
-                        const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-                        Row(children: [
-                          Icon(Icons.location_on_outlined, color: isPharmacy ? Colors.blue : Theme.of(context).primaryColor, size: 15),
-                          const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-                          Expanded(
-                              child: Text(
-                            store.address ?? '',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: robotoRegular.copyWith(
-                              color: Theme.of(context).disabledColor,
-                              fontSize: Dimensions.fontSizeExtraSmall,
-                            ),
-                          )),
-                        ]),
-                      ]),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                                height: Dimensions.paddingSizeExtraSmall),
+                            Flexible(
+                                child: Text(store.name ?? '',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: robotoMedium)),
+                            const SizedBox(
+                                height: Dimensions.paddingSizeExtraSmall),
+                            Row(children: [
+                              Icon(Icons.location_on_outlined,
+                                  color: isPharmacy
+                                      ? Colors.blue
+                                      : Theme.of(context).primaryColor,
+                                  size: 15),
+                              const SizedBox(
+                                  width: Dimensions.paddingSizeExtraSmall),
+                              Expanded(
+                                  child: Text(
+                                store.address ?? '',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: robotoRegular.copyWith(
+                                  color: Theme.of(context).disabledColor,
+                                  fontSize: Dimensions.fontSizeExtraSmall,
+                                ),
+                              )),
+                            ]),
+                          ]),
                     ),
                   ),
                   Expanded(
                     flex: 3,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(vertical: 3, horizontal: Dimensions.paddingSizeSmall),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(Dimensions.radiusLarge),
-                            boxShadow: [BoxShadow(color: Theme.of(context).disabledColor.withOpacity(0.1), spreadRadius: 1, blurRadius: 3)],
-                          ),
-                          child: Row(children: [
-                            Image.asset(Images.distanceLine, height: 15, width: 15),
-                            const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-                            Text(
-                              '${distance > 100 ? '100+' : distance.toStringAsFixed(2)} ${'km'.tr}',
-                              style: robotoBold.copyWith(color: Theme.of(context).primaryColor, fontSize: Dimensions.fontSizeExtraSmall),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: Dimensions.paddingSizeDefault),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 3,
+                                  horizontal: Dimensions.paddingSizeSmall),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context)
+                                    .primaryColor
+                                    .withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(
+                                    Dimensions.radiusLarge),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Theme.of(context)
+                                          .disabledColor
+                                          .withOpacity(0.1),
+                                      spreadRadius: 1,
+                                      blurRadius: 3)
+                                ],
+                              ),
+                              child: Row(children: [
+                                Image.asset(Images.distanceLine,
+                                    height: 15, width: 15),
+                                const SizedBox(
+                                    width: Dimensions.paddingSizeExtraSmall),
+                                Text(
+                                  '${distance > 100 ? '100+' : distance.toStringAsFixed(2)} ${'km'.tr}',
+                                  style: robotoBold.copyWith(
+                                      color: Theme.of(context).primaryColor,
+                                      fontSize: Dimensions.fontSizeExtraSmall),
+                                ),
+                                const SizedBox(
+                                    width: Dimensions.paddingSizeExtraSmall),
+                                Text('from_you'.tr,
+                                    style: robotoRegular.copyWith(
+                                        color: Theme.of(context).primaryColor,
+                                        fontSize:
+                                            Dimensions.fontSizeExtraSmall)),
+                              ]),
                             ),
-                            const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-                            Text('from_you'.tr,
-                                style: robotoRegular.copyWith(color: Theme.of(context).primaryColor, fontSize: Dimensions.fontSizeExtraSmall)),
-                          ]),
-                        ),
-                        CustomButton(
-                          height: 30,
-                          width: fromAllStore ? 70 : 65,
-                          radius: Dimensions.radiusSmall,
-                          onPressed: () {
-                            if (Get.find<SplashController>().moduleList != null) {
-                              for (ModuleModel module in Get.find<SplashController>().moduleList!) {
-                                if (module.id == store.moduleId) {
-                                  Get.find<SplashController>().setModule(module);
-                                  break;
+                            CustomButton(
+                              height: 30,
+                              width: fromAllStore ? 70 : 65,
+                              radius: Dimensions.radiusSmall,
+                              onPressed: () {
+                                if (Get.find<SplashController>().moduleList !=
+                                    null) {
+                                  for (ModuleModel module
+                                      in Get.find<SplashController>()
+                                          .moduleList!) {
+                                    if (module.id == store.moduleId) {
+                                      Get.find<SplashController>()
+                                          .setModule(module);
+                                      break;
+                                    }
+                                  }
                                 }
-                              }
-                            }
-                            Get.toNamed(
-                              RouteHelper.getStoreRoute(id: store.id, page: 'store'),
-                              arguments: StoreScreen(store: store, fromModule: false),
-                            );
-                          },
-                          buttonText: 'visit'.tr,
-                          color: Theme.of(context).primaryColor,
-                          textColor: Theme.of(context).cardColor,
-                          fontSize: Dimensions.fontSizeSmall,
-                        ),
-                      ]),
+                                Get.toNamed(
+                                  RouteHelper.getStoreRoute(
+                                      id: store.id, page: 'store'),
+                                  arguments: StoreScreen(
+                                      store: store, fromModule: false),
+                                );
+                              },
+                              buttonText: 'visit'.tr,
+                              color: Theme.of(context).primaryColor,
+                              textColor: Theme.of(context).cardColor,
+                              fontSize: Dimensions.fontSizeSmall,
+                            ),
+                          ]),
                     ),
                   ),
                 ]),
@@ -210,7 +277,8 @@ class StoreCardWithDistance extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
                     child: CustomImage(
-                      image: '${Get.find<SplashController>().configModel!.baseUrls!.storeImageUrl}/${store.logo}',
+                      image:
+                          '${Get.find<SplashController>().configModel!.baseUrls!.storeImageUrl}/${store.logo}',
                       fit: BoxFit.cover,
                       height: double.infinity,
                       width: double.infinity,
@@ -224,13 +292,21 @@ class StoreCardWithDistance extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                         color: Theme.of(context).cardColor,
-                        borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 10)]),
-                    child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      Text(store.avgRating!.toStringAsFixed(1), style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall)),
-                      const SizedBox(width: 3),
-                      Icon(Icons.star, color: Theme.of(context).primaryColor, size: 15),
-                    ]),
+                        borderRadius:
+                            BorderRadius.circular(Dimensions.radiusDefault),
+                        boxShadow: const [
+                          BoxShadow(color: Colors.black12, blurRadius: 10)
+                        ]),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(store.avgRating!.toStringAsFixed(1),
+                              style: robotoRegular.copyWith(
+                                  fontSize: Dimensions.fontSizeSmall)),
+                          const SizedBox(width: 3),
+                          Icon(Icons.star,
+                              color: Theme.of(context).primaryColor, size: 15),
+                        ]),
                   ),
                 ),
               ],

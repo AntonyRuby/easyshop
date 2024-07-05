@@ -46,8 +46,13 @@ class StoreCardWidget extends StatelessWidget {
                     }
                   }
                 }
+                // Get.toNamed(
+                //   RouteHelper.getStoreRoute(id: store!.id, page: 'item'),
+                //   arguments: StoreScreen(store: store, fromModule: false),
+                // );
+
                 Get.toNamed(
-                  RouteHelper.getStoreRoute(id: store!.id, page: 'item'),
+                  RouteHelper.getCategoryRoute(),
                   arguments: StoreScreen(store: store, fromModule: false),
                 );
               }

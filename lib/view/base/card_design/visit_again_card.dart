@@ -27,7 +27,7 @@ class VisitAgainCard extends StatelessWidget {
       hoverColor: Colors.transparent,
       onTap: () {
         Get.toNamed(
-          RouteHelper.getStoreRoute(id: store.id, page: 'tore'),
+          RouteHelper.getStoreRoute(id: store.id, page: 'store'),
           arguments: StoreScreen(store: store, fromModule: false),
         );
       },

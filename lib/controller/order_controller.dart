@@ -940,7 +940,9 @@ class OrderController extends GetxController implements GetxService {
     _allTimeSlots = [];
     int minutes = 0;
     DateTime now = DateTime.now();
-    for (int index = 0; index < store.schedules!.length; index++) {
+    // for (int index = 0; index < store.schedules!.length; index++) {
+
+    for (int index = 0; index < (store.schedules?.length ?? 0); index++) {
       DateTime openTime = DateTime(
         now.year,
         now.month,
@@ -1036,7 +1038,8 @@ class OrderController extends GetxController implements GetxService {
         .moduleConfig!
         .module!
         .orderPlaceToScheduleInterval!) {
-      now = now.add(Duration(minutes: interval!));
+      // now = now.add(Duration(minutes: interval!));
+      now = now.add(Duration(minutes: interval ?? 0));
     }
     int day = 0;
     if (dateIndex == 0) {

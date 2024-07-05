@@ -10,6 +10,8 @@ import 'package:sixam_mart/view/screens/home/widget/grocery/middle_section_banne
 
 import 'package:sixam_mart/view/screens/home/widget/grocery/promotional_banner_view.dart';
 
+import '../widget/category_view.dart';
+
 class GroceryHomeScreen extends StatelessWidget {
   const GroceryHomeScreen({Key? key}) : super(key: key);
 
@@ -29,7 +31,7 @@ class GroceryHomeScreen extends StatelessWidget {
         ),
       ),
 
-      //const CategoryView(),
+      // const CategoryView(),
       // isLoggedIn ? const VisitAgainView() : const SizedBox(),
       // const SpecialOfferView(isFood: false, isShop: false),
       //const FlashSaleView(),

@@ -78,46 +78,57 @@ class _StoreScreenState extends State<StoreScreen> {
   }
 
   Future<void> initDataCall() async {
-    if (storeController.isSearching) {
-      storeController.changeSearchStatus(isUpdate: false);
+    if (storeController != null && storeController.isSearching) {
+      storeController!.changeSearchStatus(isUpdate: false);
     }
-    storeController.hideAnimation();
-    await storeController
-        .getStoreDetails(Store(id: widget.store!.id), widget.fromModule,
-            slug: widget.slug)
-        .then((value) {
-      storeController.showButtonAnimation();
-    });
-    if (Get.find<CategoryController>().categoryList == null) {
-      Get.find<CategoryController>().getCategoryList(true);
+    if (storeController != null) {
+      storeController!.hideAnimation();
     }
-    storeController
-        .getStoreBannerList(widget.store!.id ?? storeController.store!.id);
-    storeController.getRestaurantRecommendedItemList(
-      widget.store!.id ?? storeController.store!.id,
-      false,
-    );
-    storeController.getStoreItemList(
-      widget.store!.id ?? storeController.store!.id,
-      1,
-      'all',
-      false,
-    );
-
-    scrollController.addListener(() {
-      if (scrollController.position.userScrollDirection ==
-          ScrollDirection.reverse) {
-        if (storeController.showFavButton) {
-          storeController.changeFavVisibility();
-          storeController.hideAnimation();
+    if (widget.store != null && storeController != null) {
+      await storeController!
+          .getStoreDetails(Store(id: widget.store!.id), widget.fromModule,
+              slug: widget.slug)
+          .then((value) {
+        if (storeController != null) {
+          storeController!.showButtonAnimation();
         }
-      } else {
-        if (!Get.find<StoreController>().showFavButton) {
-          Get.find<StoreController>().changeFavVisibility();
-          Get.find<StoreController>().showButtonAnimation();
-        }
+      });
+    }
+    if (Get.find<CategoryController>() != null) {
+      if (Get.find<CategoryController>().categoryList == null) {
+        Get.find<CategoryController>().getCategoryList(true);
       }
-    });
+    }
+    if (widget.store != null && storeController != null) {
+      storeController!.getStoreBannerList(widget.store!.id);
+      storeController!.getRestaurantRecommendedItemList(
+        widget.store!.id,
+        false,
+      );
+      storeController!.getStoreItemList(
+        widget.store!.id,
+        1,
+        'all',
+        false,
+      );
+    }
+
+    if (storeController != null) {
+      scrollController.addListener(() {
+        if (scrollController.position.userScrollDirection ==
+            ScrollDirection.reverse) {
+          if (storeController.showFavButton) {
+            storeController.changeFavVisibility();
+            storeController.hideAnimation();
+          }
+        } else {
+          if (!Get.find<StoreController>().showFavButton) {
+            Get.find<StoreController>().changeFavVisibility();
+            Get.find<StoreController>().showButtonAnimation();
+          }
+        }
+      });
+    }
   }
 
   @override
@@ -1324,9 +1335,6 @@ class _StoreScreenState extends State<StoreScreen> {
                                                     Axis.horizontal,
                                                 itemCount: storeController
                                                     .categoryList!.length,
-                                                // itemCount: storeController
-                                                //     .subCategoryList!.length,
-
                                                 padding: const EdgeInsets.only(
                                                     left: Dimensions
                                                         .paddingSizeSmall),
@@ -1359,7 +1367,6 @@ class _StoreScreenState extends State<StoreScreen> {
                                                                 .primaryColor
                                                                 .withOpacity(
                                                                     0.1)
-                                                            // : Colors.blue,
                                                             : Colors
                                                                 .transparent,
                                                       ),
@@ -1409,27 +1416,12 @@ class _StoreScreenState extends State<StoreScreen> {
                               ),
                               child: PaginatedListView(
                                 scrollController: scrollController,
-                                onPaginate: (int? offset) {
-                                  storeController.getStoreItemList(
-                                      widget.store!.id,
-                                      offset!,
-                                      storeController.type,
-                                      false);
-                                },
-                                // onPaginateEnd: () {
-                                //   storeController.setCategoryIndex(
-                                //       storeController.categoryIndex + 1);
-                                // },
-                                onPaginateEnd: () {
-                                  // Scroll to the top of the next category list
-                                  storeController.setCategoryIndex(
-                                      storeController.categoryIndex + 1);
-                                  scrollController.animateTo(
-                                    0, // Scroll to the top
-                                    duration: const Duration(milliseconds: 500),
-                                    curve: Curves.easeInOut,
-                                  );
-                                },
+                                onPaginate: (int? offset) =>
+                                    storeController.getStoreItemList(
+                                        widget.store!.id,
+                                        offset!,
+                                        storeController.type,
+                                        false),
                                 totalSize:
                                     storeController.storeItemModel?.totalSize,
                                 offset: storeController.storeItemModel?.offset,

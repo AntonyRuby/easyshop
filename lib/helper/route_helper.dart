@@ -650,7 +650,7 @@ class RouteHelper {
                                   ? HtmlType.refund
                                   : HtmlType.aboutUs,
             )),
-    GetPage(name: categories, page: () => getRoute(const CategoryScreen())),
+    GetPage(name: categories, page: () => getRoute(CategoryScreen())),
     GetPage(
         name: categoryItem,
         page: () {

@@ -28,7 +28,13 @@ class ChatScreen extends StatefulWidget {
   final int? conversationID;
   final int? index;
   final bool fromNotification;
-  const ChatScreen({Key? key, required this.notificationBody, required this.user, this.conversationID, this.index, this.fromNotification = false})
+  const ChatScreen(
+      {Key? key,
+      required this.notificationBody,
+      required this.user,
+      this.conversationID,
+      this.index,
+      this.fromNotification = false})
       : super(key: key);
 
   @override
@@ -49,9 +55,12 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void initCall() {
     if (Get.find<AuthController>().isLoggedIn()) {
-      Get.find<ChatController>().getMessages(1, widget.notificationBody, widget.user, widget.conversationID, firstLoad: true);
+      Get.find<ChatController>().getMessages(
+          1, widget.notificationBody, widget.user, widget.conversationID,
+          firstLoad: true);
 
-      if (Get.find<UserController>().userInfoModel == null || Get.find<UserController>().userInfoModel!.userInfo == null) {
+      if (Get.find<UserController>().userInfoModel == null ||
+          Get.find<UserController>().userInfoModel!.userInfo == null) {
         Get.find<UserController>().getUserInfo();
       }
     }
@@ -70,11 +79,16 @@ class _ChatScreenState extends State<ChatScreen> {
 
       String? baseUrl = '';
       if (widget.notificationBody!.adminId != null) {
-        baseUrl = Get.find<SplashController>().configModel!.baseUrls!.businessLogoUrl;
+        baseUrl =
+            Get.find<SplashController>().configModel!.baseUrls!.businessLogoUrl;
       } else if (widget.notificationBody!.deliverymanId != null) {
-        baseUrl = Get.find<SplashController>().configModel!.baseUrls!.deliveryManImageUrl;
+        baseUrl = Get.find<SplashController>()
+            .configModel!
+            .baseUrls!
+            .deliveryManImageUrl;
       } else {
-        baseUrl = Get.find<SplashController>().configModel!.baseUrls!.storeImageUrl;
+        baseUrl =
+            Get.find<SplashController>().configModel!.baseUrls!.storeImageUrl;
       }
 
       return WillPopScope(
@@ -120,7 +134,8 @@ class _ChatScreenState extends State<ChatScreen> {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
-                          border: Border.all(width: 2, color: Theme.of(context).cardColor),
+                          border: Border.all(
+                              width: 2, color: Theme.of(context).cardColor),
                           color: Theme.of(context).cardColor,
                         ),
                         child: ClipOval(
@@ -139,97 +154,169 @@ class _ChatScreenState extends State<ChatScreen> {
               ? SafeArea(
                   child: Center(
                     child: SizedBox(
-                      width: ResponsiveHelper.isDesktop(context) ? Dimensions.webMaxWidth : MediaQuery.of(context).size.width,
+                      width: ResponsiveHelper.isDesktop(context)
+                          ? Dimensions.webMaxWidth
+                          : MediaQuery.of(context).size.width,
                       child: Column(
                         children: [
                           GetBuilder<ChatController>(builder: (chatController) {
                             return Expanded(
                                 child: chatController.messageModel != null
-                                    ? chatController.messageModel!.messages!.isNotEmpty
+                                    ? chatController
+                                            .messageModel!.messages!.isNotEmpty
                                         ? SingleChildScrollView(
                                             controller: _scrollController,
                                             reverse: true,
                                             child: PaginatedListView(
-                                              scrollController: _scrollController,
+                                              scrollController:
+                                                  _scrollController,
                                               reverse: true,
-                                              totalSize: chatController.messageModel != null ? chatController.messageModel!.totalSize : null,
-                                              offset: chatController.messageModel != null ? chatController.messageModel!.offset : null,
-                                              onPaginate: (int? offset) async => await chatController.getMessages(
+                                              totalSize:
+                                                  chatController.messageModel !=
+                                                          null
+                                                      ? chatController
+                                                          .messageModel!
+                                                          .totalSize
+                                                      : null,
+                                              offset:
+                                                  chatController.messageModel !=
+                                                          null
+                                                      ? chatController
+                                                          .messageModel!.offset
+                                                      : null,
+                                              onPaginate: (int? offset) async =>
+                                                  await chatController
+                                                      .getMessages(
                                                 offset!,
                                                 widget.notificationBody,
                                                 widget.user,
                                                 widget.conversationID,
                                               ),
                                               itemView: ListView.builder(
-                                                physics: const NeverScrollableScrollPhysics(),
+                                                physics:
+                                                    const NeverScrollableScrollPhysics(),
                                                 shrinkWrap: true,
                                                 reverse: true,
-                                                itemCount: chatController.messageModel!.messages!.length,
+                                                itemCount: chatController
+                                                    .messageModel!
+                                                    .messages!
+                                                    .length,
                                                 itemBuilder: (context, index) {
                                                   return MessageBubble(
-                                                    message: chatController.messageModel!.messages![index],
-                                                    user: chatController.messageModel!.conversation!.receiver,
-                                                    userType: widget.notificationBody!.adminId != null
+                                                    message: chatController
+                                                        .messageModel!
+                                                        .messages![index],
+                                                    user: chatController
+                                                        .messageModel!
+                                                        .conversation!
+                                                        .receiver,
+                                                    userType: widget
+                                                                .notificationBody!
+                                                                .adminId !=
+                                                            null
                                                         ? AppConstants.admin
-                                                        : widget.notificationBody!.deliverymanId != null
-                                                            ? AppConstants.deliveryMan
-                                                            : AppConstants.vendor,
+                                                        : widget.notificationBody!
+                                                                    .deliverymanId !=
+                                                                null
+                                                            ? AppConstants
+                                                                .deliveryMan
+                                                            : AppConstants
+                                                                .vendor,
                                                   );
                                                 },
                                               ),
                                             ),
                                           )
-                                        : Center(child: Text('no_message_found'.tr))
-                                    : const Center(child: CircularProgressIndicator()));
+                                        : Center(
+                                            child: Text('no_message_found'.tr))
+                                    : const Center(
+                                        child: CircularProgressIndicator()));
                           }),
                           (chatController.messageModel != null &&
-                                  (chatController.messageModel!.status! || chatController.messageModel!.messages!.isEmpty))
+                                  (chatController.messageModel!.status! ||
+                                      chatController
+                                          .messageModel!.messages!.isEmpty))
                               ? Container(
                                   color: Theme.of(context).cardColor,
                                   child: Column(children: [
-                                    GetBuilder<ChatController>(builder: (chatController) {
+                                    GetBuilder<ChatController>(
+                                        builder: (chatController) {
                                       return chatController.chatImage.isNotEmpty
                                           ? SizedBox(
                                               height: 100,
                                               child: ListView.builder(
-                                                  scrollDirection: Axis.horizontal,
-                                                  itemCount: chatController.chatImage.length,
-                                                  itemBuilder: (BuildContext context, index) {
-                                                    return chatController.chatImage.isNotEmpty
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount: chatController
+                                                      .chatImage.length,
+                                                  itemBuilder:
+                                                      (BuildContext context,
+                                                          index) {
+                                                    return chatController
+                                                            .chatImage
+                                                            .isNotEmpty
                                                         ? Padding(
-                                                            padding: const EdgeInsets.all(8.0),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
                                                             child: Stack(
                                                               children: [
                                                                 Container(
                                                                   width: 100,
                                                                   height: 100,
                                                                   decoration: const BoxDecoration(
-                                                                      color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(20))),
-                                                                  child: ClipRRect(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      borderRadius:
+                                                                          BorderRadius.all(
+                                                                              Radius.circular(20))),
+                                                                  child:
+                                                                      ClipRRect(
                                                                     borderRadius:
-                                                                        const BorderRadius.all(Radius.circular(Dimensions.paddingSizeDefault)),
-                                                                    child: Image.memory(
-                                                                      chatController.chatRawImage[index],
-                                                                      width: 100,
-                                                                      height: 100,
-                                                                      fit: BoxFit.cover,
+                                                                        const BorderRadius
+                                                                            .all(
+                                                                            Radius.circular(Dimensions.paddingSizeDefault)),
+                                                                    child: Image
+                                                                        .memory(
+                                                                      chatController
+                                                                              .chatRawImage[
+                                                                          index],
+                                                                      width:
+                                                                          100,
+                                                                      height:
+                                                                          100,
+                                                                      fit: BoxFit
+                                                                          .cover,
                                                                     ),
                                                                   ),
                                                                 ),
                                                                 Positioned(
                                                                   top: 0,
                                                                   right: 0,
-                                                                  child: InkWell(
-                                                                    onTap: () =>
-                                                                        chatController.removeImage(index, _inputMessageController.text.trim()),
-                                                                    child: Container(
+                                                                  child:
+                                                                      InkWell(
+                                                                    onTap: () => chatController.removeImage(
+                                                                        index,
+                                                                        _inputMessageController
+                                                                            .text
+                                                                            .trim()),
+                                                                    child:
+                                                                        Container(
                                                                       decoration: const BoxDecoration(
-                                                                          color: Colors.white,
+                                                                          color: Colors
+                                                                              .white,
                                                                           borderRadius:
                                                                               BorderRadius.all(Radius.circular(Dimensions.paddingSizeDefault))),
-                                                                      child: const Padding(
-                                                                        padding: EdgeInsets.all(4.0),
-                                                                        child: Icon(Icons.clear, color: Colors.red, size: 15),
+                                                                      child:
+                                                                          const Padding(
+                                                                        padding:
+                                                                            EdgeInsets.all(4.0),
+                                                                        child: Icon(
+                                                                            Icons
+                                                                                .clear,
+                                                                            color:
+                                                                                Colors.red,
+                                                                            size: 15),
                                                                       ),
                                                                     ),
                                                                   ),
@@ -245,76 +332,128 @@ class _ChatScreenState extends State<ChatScreen> {
                                     Row(children: [
                                       InkWell(
                                         onTap: () async {
-                                          Get.find<ChatController>().pickImage(false);
+                                          Get.find<ChatController>()
+                                              .pickImage(false);
                                         },
                                         child: Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-                                          child: Image.asset(Images.image, width: 25, height: 25, color: Theme.of(context).hintColor),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: Dimensions
+                                                  .paddingSizeDefault),
+                                          child: Image.asset(Images.image,
+                                              width: 25,
+                                              height: 25,
+                                              color:
+                                                  Theme.of(context).hintColor),
                                         ),
                                       ),
                                       SizedBox(
                                         height: 25,
-                                        child: VerticalDivider(width: 0, thickness: 1, color: Theme.of(context).hintColor),
+                                        child: VerticalDivider(
+                                            width: 0,
+                                            thickness: 1,
+                                            color: Theme.of(context).hintColor),
                                       ),
-                                      const SizedBox(width: Dimensions.paddingSizeDefault),
+                                      const SizedBox(
+                                          width: Dimensions.paddingSizeDefault),
                                       Expanded(
                                         child: TextField(
-                                          inputFormatters: [LengthLimitingTextInputFormatter(Dimensions.messageInputLength)],
+                                          inputFormatters: [
+                                            LengthLimitingTextInputFormatter(
+                                                Dimensions.messageInputLength)
+                                          ],
                                           controller: _inputMessageController,
-                                          textCapitalization: TextCapitalization.sentences,
+                                          textCapitalization:
+                                              TextCapitalization.sentences,
                                           style: robotoRegular,
                                           keyboardType: TextInputType.multiline,
                                           maxLines: null,
                                           decoration: InputDecoration(
                                             border: InputBorder.none,
                                             hintText: 'type_here'.tr,
-                                            hintStyle: robotoRegular.copyWith(color: Theme.of(context).hintColor, fontSize: Dimensions.fontSizeLarge),
+                                            hintStyle: robotoRegular.copyWith(
+                                                color:
+                                                    Theme.of(context).hintColor,
+                                                fontSize:
+                                                    Dimensions.fontSizeLarge),
                                           ),
                                           onSubmitted: (String newText) {
-                                            if (newText.trim().isNotEmpty && !Get.find<ChatController>().isSendButtonActive) {
-                                              Get.find<ChatController>().toggleSendButtonActivity();
-                                            } else if (newText.isEmpty && Get.find<ChatController>().isSendButtonActive) {
-                                              Get.find<ChatController>().toggleSendButtonActivity();
+                                            if (newText.trim().isNotEmpty &&
+                                                !Get.find<ChatController>()
+                                                    .isSendButtonActive) {
+                                              Get.find<ChatController>()
+                                                  .toggleSendButtonActivity();
+                                            } else if (newText.isEmpty &&
+                                                Get.find<ChatController>()
+                                                    .isSendButtonActive) {
+                                              Get.find<ChatController>()
+                                                  .toggleSendButtonActivity();
                                             }
                                           },
                                           onChanged: (String newText) {
-                                            if (newText.trim().isNotEmpty && !Get.find<ChatController>().isSendButtonActive) {
-                                              Get.find<ChatController>().toggleSendButtonActivity();
-                                            } else if (newText.isEmpty && Get.find<ChatController>().isSendButtonActive) {
-                                              Get.find<ChatController>().toggleSendButtonActivity();
+                                            if (newText.trim().isNotEmpty &&
+                                                !Get.find<ChatController>()
+                                                    .isSendButtonActive) {
+                                              Get.find<ChatController>()
+                                                  .toggleSendButtonActivity();
+                                            } else if (newText.isEmpty &&
+                                                Get.find<ChatController>()
+                                                    .isSendButtonActive) {
+                                              Get.find<ChatController>()
+                                                  .toggleSendButtonActivity();
                                             }
                                           },
                                         ),
                                       ),
-                                      GetBuilder<ChatController>(builder: (chatController) {
+                                      GetBuilder<ChatController>(
+                                          builder: (chatController) {
                                         return chatController.isLoading
                                             ? const Padding(
-                                                padding: EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-                                                child: SizedBox(height: 25, width: 25, child: CircularProgressIndicator()),
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: Dimensions
+                                                        .paddingSizeDefault),
+                                                child: SizedBox(
+                                                    height: 25,
+                                                    width: 25,
+                                                    child:
+                                                        CircularProgressIndicator()),
                                               )
                                             : InkWell(
                                                 onTap: () async {
-                                                  if (chatController.isSendButtonActive) {
-                                                    await chatController.sendMessage(
-                                                      message: _inputMessageController.text,
-                                                      notificationBody: widget.notificationBody,
-                                                      conversationID: widget.conversationID,
+                                                  if (chatController
+                                                      .isSendButtonActive) {
+                                                    await chatController
+                                                        .sendMessage(
+                                                      message:
+                                                          _inputMessageController
+                                                              .text,
+                                                      notificationBody: widget
+                                                          .notificationBody,
+                                                      conversationID:
+                                                          widget.conversationID,
                                                       index: widget.index,
                                                     );
-                                                    _inputMessageController.clear();
+                                                    _inputMessageController
+                                                        .clear();
                                                   } else {
-                                                    showCustomSnackBar('write_something'.tr);
+                                                    showCustomSnackBar(
+                                                        'write_something'.tr);
                                                   }
                                                 },
                                                 child: Padding(
-                                                  padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: Dimensions
+                                                          .paddingSizeDefault),
                                                   child: Image.asset(
                                                     Images.send,
                                                     width: 25,
                                                     height: 25,
-                                                    color: chatController.isSendButtonActive
-                                                        ? Theme.of(context).primaryColor
-                                                        : Theme.of(context).hintColor,
+                                                    color: chatController
+                                                            .isSendButtonActive
+                                                        ? Theme.of(context)
+                                                            .primaryColor
+                                                        : Theme.of(context)
+                                                            .hintColor,
                                                   ),
                                                 ),
                                               );

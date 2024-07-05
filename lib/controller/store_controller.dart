@@ -328,40 +328,49 @@ class StoreController extends GetxController implements GetxService {
           await storeRepo.getStoreDetails(store.id.toString(), fromCart, slug);
       if (response.statusCode == 200) {
         _store = Store.fromJson(response.body);
-        Get.find<OrderController>().initializeTimeSlot(_store!);
-        if (!fromCart && slug.isEmpty) {
-          Get.find<OrderController>().getDistanceInKM(
-            LatLng(
+
+        print('Store details: $_store');
+        if (_store != null) {
+          Get.find<OrderController>().initializeTimeSlot(_store!);
+          if (!fromCart && slug.isEmpty) {
+            LatLng userLocation = LatLng(
               double.parse(
                   Get.find<LocationController>().getUserAddress()!.latitude!),
               double.parse(
                   Get.find<LocationController>().getUserAddress()!.longitude!),
-            ),
-            LatLng(double.parse(_store!.latitude!),
-                double.parse(_store!.longitude!)),
-          );
-        }
-        if (slug.isNotEmpty) {
-          await Get.find<LocationController>().setStoreAddressToUserAddress(
-              LatLng(double.parse(_store!.latitude!),
-                  double.parse(_store!.longitude!)));
-        }
-        if (fromModule) {
-          HomeScreen.loadData(true);
-        } else {
-          Get.find<OrderController>().clearPrevData(_store!.zoneId);
+            );
+            LatLng storeLocation = LatLng(
+              double.parse(_store!.latitude!),
+              double.parse(_store!.longitude!),
+            );
+            Get.find<OrderController>()
+                .getDistanceInKM(userLocation, storeLocation);
+          }
+          if (slug.isNotEmpty) {
+            LatLng storeLocation = LatLng(
+              double.parse(_store!.latitude!),
+              double.parse(_store!.longitude!),
+            );
+            await Get.find<LocationController>()
+                .setStoreAddressToUserAddress(storeLocation);
+          }
+          if (fromModule) {
+            HomeScreen.loadData(true);
+          } else {
+            Get.find<OrderController>().clearPrevData(_store!.zoneId);
+          }
         }
       } else {
         ApiChecker.checkApi(response);
       }
-      Get.find<OrderController>().setOrderType(
-        _store != null
-            ? _store!.delivery!
-                ? 'delivery'
-                : 'take_away'
-            : 'delivery',
-        notify: false,
-      );
+      if (_store != null) {
+        Get.find<OrderController>().setOrderType(
+          _store!.delivery! ? 'delivery' : 'take_away',
+          notify: false,
+        );
+      } else {
+        Get.find<OrderController>().setOrderType('delivery', notify: false);
+      }
 
       _isLoading = false;
       update();
@@ -421,6 +430,8 @@ class StoreController extends GetxController implements GetxService {
       } else {
         if (_storeItemModel == null) {
           _storeItemModel = ItemModel.fromJson(response.body);
+
+          print('Store items: $_storeItemModel');
         } else {
           _storeItemModel!.items!
               .addAll(ItemModel.fromJson(response.body).items!);
