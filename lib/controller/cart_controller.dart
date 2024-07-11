@@ -5,7 +5,8 @@ import 'package:sixam_mart/data/api/api_checker.dart';
 import 'package:sixam_mart/data/model/body/place_order_body.dart';
 import 'package:sixam_mart/data/model/response/cart_model.dart';
 import 'package:sixam_mart/data/model/response/item_model.dart';
-import 'package:sixam_mart/data/model/response/item_model.dart' as item_variation;
+import 'package:sixam_mart/data/model/response/item_model.dart'
+    as item_variation;
 import 'package:sixam_mart/data/model/response/module_model.dart';
 import 'package:sixam_mart/data/model/response/online_cart_model.dart';
 import 'package:sixam_mart/data/repository/cart_repo.dart';
@@ -99,9 +100,16 @@ class CartController extends GetxController implements GetxService {
     double variationWithoutDiscountPrice = 0;
     bool haveVariation = false;
     for (var cartModel in cartList) {
-      isFoodVariation = Get.find<SplashController>().getModuleConfig(cartModel.item!.moduleType).newVariation!;
-      double? discount = cartModel.item!.storeDiscount == 0 ? cartModel.item!.discount : cartModel.item!.storeDiscount;
-      String? discountType = cartModel.item!.storeDiscount == 0 ? cartModel.item!.discountType : 'percent';
+      isFoodVariation = Get.find<SplashController>()
+              .getModuleConfig(cartModel.item!.moduleType)
+              .newVariation ??
+          false;
+      double? discount = cartModel.item!.storeDiscount == 0
+          ? cartModel.item!.discount
+          : cartModel.item!.storeDiscount;
+      String? discountType = cartModel.item!.storeDiscount == 0
+          ? cartModel.item!.discountType
+          : 'percent';
 
       List<AddOns> addOnList = [];
       for (var addOnId in cartModel.addOnIds!) {
@@ -114,18 +122,30 @@ class CartController extends GetxController implements GetxService {
       }
       _addOnsList.add(addOnList);
 
-      _availableList.add(DateConverter.isAvailable(cartModel.item!.availableTimeStarts, cartModel.item!.availableTimeEnds));
+      _availableList.add(DateConverter.isAvailable(
+          cartModel.item!.availableTimeStarts,
+          cartModel.item!.availableTimeEnds));
 
       for (int index = 0; index < addOnList.length; index++) {
-        _addOns = _addOns + (addOnList[index].price! * cartModel.addOnIds![index].quantity!);
+        _addOns = _addOns +
+            (addOnList[index].price! * cartModel.addOnIds![index].quantity!);
       }
 
       if (isFoodVariation) {
-        for (int index = 0; index < cartModel.item!.foodVariations!.length; index++) {
-          for (int i = 0; i < cartModel.item!.foodVariations![index].variationValues!.length; i++) {
+        for (int index = 0;
+            index < cartModel.item!.foodVariations!.length;
+            index++) {
+          for (int i = 0;
+              i <
+                  cartModel
+                      .item!.foodVariations![index].variationValues!.length;
+              i++) {
             if (cartModel.foodVariations![index][i]!) {
               _variationPrice += (PriceConverter.convertWithDiscount(
-                      cartModel.item!.foodVariations![index].variationValues![i].optionPrice!, discount, discountType)! *
+                      cartModel.item!.foodVariations![index].variationValues![i]
+                          .optionPrice!,
+                      discount,
+                      discountType)! *
                   cartModel.quantity!);
             }
           }
@@ -136,20 +156,29 @@ class CartController extends GetxController implements GetxService {
           variationType = cartModel.variation![i].type!;
         }
 
-        for (item_variation.Variation variation in cartModel.item!.variations!) {
+        for (item_variation.Variation variation
+            in cartModel.item!.variations!) {
           if (variation.type == variationType) {
-            _variationPrice = (PriceConverter.convertWithDiscount(variation.price!, discount, discountType)! * cartModel.quantity!);
-            variationWithoutDiscountPrice = (variation.price! * cartModel.quantity!);
+            _variationPrice = (PriceConverter.convertWithDiscount(
+                    variation.price!, discount, discountType)! *
+                cartModel.quantity!);
+            variationWithoutDiscountPrice =
+                (variation.price! * cartModel.quantity!);
             haveVariation = true;
             break;
           }
         }
       }
 
-      double price = haveVariation ? variationWithoutDiscountPrice : (cartModel.item!.price! * cartModel.quantity!);
+      double price = haveVariation
+          ? variationWithoutDiscountPrice
+          : (cartModel.item!.price! * cartModel.quantity!);
       double discountPrice = haveVariation
           ? (variationWithoutDiscountPrice - _variationPrice)
-          : (price - (PriceConverter.convertWithDiscount(cartModel.item!.price!, discount, discountType)! * cartModel.quantity!));
+          : (price -
+              (PriceConverter.convertWithDiscount(
+                      cartModel.item!.price!, discount, discountType)! *
+                  cartModel.quantity!));
 
       _itemPrice = _itemPrice + price;
       _itemDiscountPrice = _itemDiscountPrice + discountPrice;
@@ -190,15 +219,22 @@ class CartController extends GetxController implements GetxService {
     }
   }
 
-  void setQuantity(bool isIncrement, int cartIndex, int? stock, int? quantityLimit) {
+  void setQuantity(
+      bool isIncrement, int cartIndex, int? stock, int? quantityLimit) {
     _isLoading = true;
     update();
 
     if (isIncrement) {
-      if (Get.find<SplashController>().configModel!.moduleConfig!.module!.stock! && cartList[cartIndex].quantity! >= stock!) {
+      if (Get.find<SplashController>()
+              .configModel!
+              .moduleConfig!
+              .module!
+              .stock! &&
+          cartList[cartIndex].quantity! >= stock!) {
         showCustomSnackBar('out_of_stock'.tr);
       } else if (quantityLimit != null) {
-        if (_cartList[cartIndex].quantity! >= quantityLimit && quantityLimit != 0) {
+        if (_cartList[cartIndex].quantity! >= quantityLimit &&
+            quantityLimit != 0) {
           showCustomSnackBar('${'maximum_quantity_limit'.tr} $quantityLimit');
         } else {
           _cartList[cartIndex].quantity = _cartList[cartIndex].quantity! + 1;
@@ -211,26 +247,44 @@ class CartController extends GetxController implements GetxService {
     }
     // _cartList[cartIndex].isLoading = true;
 
-    double discountedPrice = calculateDiscountedPrice(_cartList[cartIndex], _cartList[cartIndex].quantity!);
-    if (Get.find<SplashController>().getModuleConfig(_cartList[cartIndex].item!.moduleType).newVariation!) {
-      Get.find<ItemController>().setExistInCart(_cartList[cartIndex].item, notify: true);
+    double discountedPrice = calculateDiscountedPrice(
+        _cartList[cartIndex], _cartList[cartIndex].quantity!);
+    if (Get.find<SplashController>()
+        .getModuleConfig(_cartList[cartIndex].item!.moduleType)
+        .newVariation!) {
+      Get.find<ItemController>()
+          .setExistInCart(_cartList[cartIndex].item, notify: true);
     }
 
-    updateCartQuantityOnline(_cartList[cartIndex].id!, discountedPrice, _cartList[cartIndex].quantity!);
+    updateCartQuantityOnline(_cartList[cartIndex].id!, discountedPrice,
+        _cartList[cartIndex].quantity!);
   }
 
   double calculateDiscountedPrice(CartModel cartModel, int quantity) {
-    double? discount = cartModel.item!.storeDiscount == 0 ? cartModel.item!.discount : cartModel.item!.storeDiscount;
-    String? discountType = cartModel.item!.storeDiscount == 0 ? cartModel.item!.discountType : 'percent';
+    double? discount = cartModel.item!.storeDiscount == 0
+        ? cartModel.item!.discount
+        : cartModel.item!.storeDiscount;
+    String? discountType = cartModel.item!.storeDiscount == 0
+        ? cartModel.item!.discountType
+        : 'percent';
     double variationPrice = 0;
     double addonPrice = 0;
 
-    if (Get.find<SplashController>().getModuleConfig(cartModel.item!.moduleType).newVariation!) {
-      for (int index = 0; index < cartModel.item!.foodVariations!.length; index++) {
-        for (int i = 0; i < cartModel.item!.foodVariations![index].variationValues!.length; i++) {
+    if (Get.find<SplashController>()
+        .getModuleConfig(cartModel.item!.moduleType)
+        .newVariation!) {
+      for (int index = 0;
+          index < cartModel.item!.foodVariations!.length;
+          index++) {
+        for (int i = 0;
+            i < cartModel.item!.foodVariations![index].variationValues!.length;
+            i++) {
           if (cartModel.foodVariations![index][i]!) {
             variationPrice += (PriceConverter.convertWithDiscount(
-                    cartModel.item!.foodVariations![index].variationValues![i].optionPrice!, discount, discountType)! *
+                    cartModel.item!.foodVariations![index].variationValues![i]
+                        .optionPrice!,
+                    discount,
+                    discountType)! *
                 cartModel.quantity!);
           }
         }
@@ -246,13 +300,15 @@ class CartController extends GetxController implements GetxService {
         }
       }
       for (int index = 0; index < addOnList.length; index++) {
-        addonPrice = addonPrice + (addOnList[index].price! * cartModel.addOnIds![index].quantity!);
+        addonPrice = addonPrice +
+            (addOnList[index].price! * cartModel.addOnIds![index].quantity!);
       }
     }
     double discountedPrice = addonPrice +
         variationPrice +
         (cartModel.item!.price! * quantity) -
-        PriceConverter.calculation(cartModel.item!.price!, discount, discountType!, quantity);
+        PriceConverter.calculation(
+            cartModel.item!.price!, discount, discountType!, quantity);
     return discountedPrice;
   }
 
@@ -272,16 +328,21 @@ class CartController extends GetxController implements GetxService {
 
   void clearCartList() {
     _cartList = [];
-    if ((Get.find<AuthController>().isLoggedIn() || Get.find<AuthController>().isGuestLoggedIn()) &&
-        (Get.find<SplashController>().module != null || Get.find<SplashController>().cacheModule != null)) {
+    if ((Get.find<AuthController>().isLoggedIn() ||
+            Get.find<AuthController>().isGuestLoggedIn()) &&
+        (Get.find<SplashController>().module != null ||
+            Get.find<SplashController>().cacheModule != null)) {
       clearCartOnline();
     }
   }
 
-  int isExistInCart(int? itemID, String variationType, bool isUpdate, int? cartIndex) {
+  int isExistInCart(
+      int? itemID, String variationType, bool isUpdate, int? cartIndex) {
     for (int index = 0; index < _cartList.length; index++) {
       if (_cartList[index].item!.id == itemID &&
-          (_cartList[index].variation!.isNotEmpty ? _cartList[index].variation![0].type == variationType : true)) {
+          (_cartList[index].variation!.isNotEmpty
+              ? _cartList[index].variation![0].type == variationType
+              : true)) {
         if ((isUpdate && index == cartIndex)) {
           return -1;
         } else {
@@ -294,7 +355,8 @@ class CartController extends GetxController implements GetxService {
 
   bool existAnotherStoreItem(int? storeID, int? moduleId) {
     for (CartModel cartModel in _cartList) {
-      if (cartModel.item!.storeId != storeID && cartModel.item!.moduleId == moduleId) {
+      if (cartModel.item!.storeId != storeID &&
+          cartModel.item!.moduleId == moduleId) {
         return true;
       }
     }
@@ -331,8 +393,10 @@ class CartController extends GetxController implements GetxService {
     if (response.statusCode == 200) {
       _onlineCartList = [];
       _cartList = [];
-      response.body.forEach((cart) => _onlineCartList.add(OnlineCartModel.fromJson(cart)));
-      _cartList.addAll(CartHelper.formatOnlineCartToLocalCart(onlineCartModel: _onlineCartList));
+      response.body.forEach(
+          (cart) => _onlineCartList.add(OnlineCartModel.fromJson(cart)));
+      _cartList.addAll(CartHelper.formatOnlineCartToLocalCart(
+          onlineCartModel: _onlineCartList));
       calculationCart();
       success = true;
     } else {
@@ -352,8 +416,10 @@ class CartController extends GetxController implements GetxService {
     if (response.statusCode == 200) {
       _onlineCartList = [];
       _cartList = [];
-      response.body.forEach((cart) => _onlineCartList.add(OnlineCartModel.fromJson(cart)));
-      _cartList.addAll(CartHelper.formatOnlineCartToLocalCart(onlineCartModel: _onlineCartList));
+      response.body.forEach(
+          (cart) => _onlineCartList.add(OnlineCartModel.fromJson(cart)));
+      _cartList.addAll(CartHelper.formatOnlineCartToLocalCart(
+          onlineCartModel: _onlineCartList));
       calculationCart();
       success = true;
     } else {
@@ -365,10 +431,12 @@ class CartController extends GetxController implements GetxService {
     return success;
   }
 
-  Future<void> updateCartQuantityOnline(int cartId, double price, int quantity) async {
+  Future<void> updateCartQuantityOnline(
+      int cartId, double price, int quantity) async {
     _isLoading = true;
     update();
-    Response response = await cartRepo.updateCartQuantityOnline(cartId, price, quantity);
+    Response response =
+        await cartRepo.updateCartQuantityOnline(cartId, price, quantity);
     if (response.statusCode == 200) {
       getCartDataOnline();
       calculationCart();
@@ -380,16 +448,19 @@ class CartController extends GetxController implements GetxService {
   }
 
   Future<void> getCartDataOnline() async {
-    if (Get.find<SplashController>().module != null || Get.find<SplashController>().cacheModule != null) {
+    if (Get.find<SplashController>().module != null ||
+        Get.find<SplashController>().cacheModule != null) {
       print('---------cart data call------');
       _isLoading = true;
       Response response = await cartRepo.getCartDataOnline();
       if (response.statusCode == 200) {
         _onlineCartList = [];
         _cartList = [];
-        response.body.forEach((cart) => _onlineCartList.add(OnlineCartModel.fromJson(cart)));
+        response.body.forEach(
+            (cart) => _onlineCartList.add(OnlineCartModel.fromJson(cart)));
 
-        _cartList.addAll(CartHelper.formatOnlineCartToLocalCart(onlineCartModel: _onlineCartList));
+        _cartList.addAll(CartHelper.formatOnlineCartToLocalCart(
+            onlineCartModel: _onlineCartList));
         print('-------vvvvv->>>> $_cartList');
         calculationCart();
       } else {
@@ -404,8 +475,11 @@ class CartController extends GetxController implements GetxService {
     _isLoading = true;
     bool isSuccess = false;
     update();
-    Response response =
-        await cartRepo.removeCartItemOnline(cartId, Get.find<AuthController>().isLoggedIn() ? null : Get.find<AuthController>().getGuestId());
+    Response response = await cartRepo.removeCartItemOnline(
+        cartId,
+        Get.find<AuthController>().isLoggedIn()
+            ? null
+            : Get.find<AuthController>().getGuestId());
     if (response.statusCode == 200) {
       isSuccess = true;
       await getCartDataOnline();
@@ -450,8 +524,12 @@ class CartController extends GetxController implements GetxService {
     String variant = '';
     for (CartModel cart in _cartList) {
       if (cart.item!.id == itemId) {
-        if (!Get.find<SplashController>().getModuleConfig(cart.item!.moduleType).newVariation!) {
-          variant = (cart.variation != null && cart.variation!.isNotEmpty) ? cart.variation![0].type! : '';
+        if (!Get.find<SplashController>()
+            .getModuleConfig(cart.item!.moduleType)
+            .newVariation!) {
+          variant = (cart.variation != null && cart.variation!.isNotEmpty)
+              ? cart.variation![0].type!
+              : '';
         }
       }
     }
@@ -475,7 +553,11 @@ class CartController extends GetxController implements GetxService {
       item.price.toString(),
       '',
       null,
-      Get.find<SplashController>().getModuleConfig(item.moduleType).newVariation! ? [] : null,
+      Get.find<SplashController>()
+              .getModuleConfig(item.moduleType)
+              .newVariation!
+          ? []
+          : null,
       1,
       [],
       [],

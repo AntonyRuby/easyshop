@@ -1,4 +1,3 @@
-
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sixam_mart/controller/localization_controller.dart';
@@ -14,11 +13,13 @@ class StoreRepo {
   StoreRepo({required this.sharedPreferences, required this.apiClient});
 
   Future<Response> getStoreList(int offset, String filterBy) async {
-    return await apiClient.getData('${AppConstants.storeUri}/$filterBy?offset=$offset&limit=12');
+    return await apiClient
+        .getData('${AppConstants.storeUri}/$filterBy?offset=$offset&limit=12');
   }
 
   Future<Response> getPopularStoreList(String type) async {
-    return await apiClient.getData('${AppConstants.popularStoreUri}?type=$type');
+    return await apiClient
+        .getData('${AppConstants.popularStoreUri}?type=$type');
   }
 
   Future<Response> getLatestStoreList(String type) async {
@@ -26,63 +27,122 @@ class StoreRepo {
   }
 
   Future<Response> getFeaturedStoreList() async {
-    return await apiClient.getData('${AppConstants.storeUri}/all?featured=1&offset=1&limit=50');
+    return await apiClient
+        .getData('${AppConstants.storeUri}/all?featured=1&offset=1&limit=50');
   }
 
   Future<Response> getVisitAgainStoreList() async {
     return await apiClient.getData(AppConstants.visitAgainStoreUri);
   }
 
-  Future<Response> getStoreDetails(String storeID, bool fromCart, String slug) async {
-    Map<String, String>? header ;
-    if(fromCart){
-      AddressModel? addressModel = Get.find<LocationController>().getUserAddress();
+  Future<Response> getStoreDetails(
+      String storeID, bool fromCart, String slug) async {
+    Map<String, String>? header;
+    if (fromCart) {
+      AddressModel? addressModel =
+          Get.find<LocationController>().getUserAddress();
       header = apiClient.updateHeader(
-        sharedPreferences.getString(AppConstants.token), addressModel?.zoneIds, addressModel?.areaIds,
+        sharedPreferences.getString(AppConstants.token),
+        addressModel?.zoneIds,
+        addressModel?.areaIds,
         Get.find<LocalizationController>().locale.languageCode,
-        Get.find<SplashController>().module == null ? Get.find<SplashController>().cacheModule!.id : Get.find<SplashController>().module!.id,
-        addressModel?.latitude, addressModel?.longitude, setHeader: false,
+        Get.find<SplashController>().module == null
+            ? Get.find<SplashController>().cacheModule!.id
+            : Get.find<SplashController>().module!.id,
+        addressModel?.latitude,
+        addressModel?.longitude,
+        setHeader: false,
       );
     }
-    if(slug.isNotEmpty){
+    if (slug.isNotEmpty) {
       header = apiClient.updateHeader(
-        sharedPreferences.getString(AppConstants.token), [], [],
+        sharedPreferences.getString(AppConstants.token),
+        [],
+        [],
         Get.find<LocalizationController>().locale.languageCode,
-        0, '', '', setHeader: false,
+        0,
+        '',
+        '',
+        setHeader: false,
       );
     }
-    return await apiClient.getData('${AppConstants.storeDetailsUri}${slug.isNotEmpty ? slug : storeID}', headers: header);
-  }
-
-  Future<Response> getStoreItemList(int? storeID, int offset, int? categoryID, String type) async {
     return await apiClient.getData(
-      '${AppConstants.storeItemUri}?store_id=$storeID&category_id=$categoryID&offset=$offset&limit=13&type=$type',
-    );
+        '${AppConstants.storeDetailsUri}${slug.isNotEmpty ? slug : storeID}',
+        headers: header);
   }
 
-  Future<Response> getStoreSearchItemList(String searchText, String? storeID, int offset, String type, int? categoryID) async {
+  // Future<Response> getStoreItemList(
+  //     int? storeID, int offset, int? categoryID, String type) async {
+  //   return await apiClient.getData(
+  //     '${AppConstants.storeItemUri}?store_id=$storeID&category_id=$categoryID&offset=$offset&limit=13&type=$type',
+  //   );
+  // }
+  Future<Response> getStoreItemList(
+      int? storeID, int offset, int? categoryID, String type,
+      {List<int>? subCategoryIDs, required int subCategoryId}) async {
+    // Convert subCategoryIDs list to a comma-separated string
+    String subCategoryIDsParam = subCategoryIDs?.join(',') ?? '';
+
+    // Construct the URL with the subCategoryIDs parameter
+    String url =
+        '${AppConstants.storeItemUri}?store_id=$storeID&offset=$offset&limit=13&type=$type';
+
+    // Append category ID if provided
+    if (categoryID != null) {
+      url += '&category_id=$categoryID';
+    }
+
+    // Append subCategoryIDs if provided
+    if (subCategoryIDs != null && subCategoryIDs.isNotEmpty) {
+      String subCategoryIDsParam = subCategoryIDs.join(',');
+      url += '&sub_category_ids=$subCategoryIDsParam';
+    }
+
+    try {
+      // Fetch data from API using constructed URL
+      Response response = await apiClient.getData(url);
+      return response;
+    } catch (e) {
+      // Handle any errors, e.g., network error, parsing error
+      throw Exception('Failed to get store items: $e');
+    }
+  }
+
+  Future<Response> getStoreSearchItemList(String searchText, String? storeID,
+      int offset, String type, int? categoryID) async {
     return await apiClient.getData(
       '${AppConstants.searchUri}items/search?store_id=$storeID&name=$searchText&offset=$offset&limit=10&type=$type&category_id=${categoryID ?? ''}',
     );
   }
 
   Future<Response> getStoreReviewList(String? storeID) async {
-    return await apiClient.getData('${AppConstants.storeReviewUri}?store_id=$storeID');
+    return await apiClient
+        .getData('${AppConstants.storeReviewUri}?store_id=$storeID');
   }
-  
+
   Future<Response> getStoreRecommendedItemList(int? storeId) async {
-    return await apiClient.getData('${AppConstants.storeRecommendedItemUri}?store_id=$storeId&offset=1&limit=50');
+    return await apiClient.getData(
+        '${AppConstants.storeRecommendedItemUri}?store_id=$storeId&offset=1&limit=50');
   }
 
   Future<Response> getCartStoreSuggestedItemList(int? storeId) async {
-    AddressModel? addressModel = Get.find<LocationController>().getUserAddress();
+    AddressModel? addressModel =
+        Get.find<LocationController>().getUserAddress();
     Map<String, String> header = apiClient.updateHeader(
-      sharedPreferences.getString(AppConstants.token), addressModel?.zoneIds, addressModel?.areaIds,
+      sharedPreferences.getString(AppConstants.token),
+      addressModel?.zoneIds,
+      addressModel?.areaIds,
       Get.find<LocalizationController>().locale.languageCode,
-      Get.find<SplashController>().module == null ? Get.find<SplashController>().cacheModule!.id : Get.find<SplashController>().module!.id,
-      addressModel?.latitude, addressModel?.longitude, setHeader: false,
+      Get.find<SplashController>().module == null
+          ? Get.find<SplashController>().cacheModule!.id
+          : Get.find<SplashController>().module!.id,
+      addressModel?.latitude,
+      addressModel?.longitude,
+      setHeader: false,
     );
-    return await apiClient.getData('${AppConstants.cartStoreSuggestedItemsUri}?recommended=1&store_id=$storeId&offset=1&limit=50', headers: header);
+    return await apiClient.getData(
+        '${AppConstants.cartStoreSuggestedItemsUri}?recommended=1&store_id=$storeId&offset=1&limit=50',
+        headers: header);
   }
 
   Future<Response> getStoreBannerList(int? storeId) async {
@@ -92,5 +152,4 @@ class StoreRepo {
   Future<Response> getRecommendedStoreList() async {
     return await apiClient.getData(AppConstants.recommendedStoreUri);
   }
-
 }

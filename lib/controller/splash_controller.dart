@@ -179,6 +179,25 @@ class SplashController extends GetxController implements GetxService {
     return module;
   }
 
+  // Module getModuleConfig(String? moduleType) {
+  //   if (_data == null) {
+  //     throw Exception('_data is null');
+  //   }
+  //   Module? module;
+  //   if (_data?.containsKey('module_config') ?? false) {
+  //     module = Module.fromJson(_data!['module_config'][moduleType] ?? {});
+  //   }
+  //   if (module == null) {
+  //     // Return a default Module object
+  //     module = Module();
+  //     module.newVariation = false; // Set default values
+  //   }
+  //   if (moduleType == 'food') {
+  //     module.newVariation = true;
+  //   }
+  //   return module;
+  // }
+
   Future<void> getModules({Map<String, String>? headers}) async {
     _moduleIndex = 0;
     Response response = await splashRepo.getModules(headers: headers);

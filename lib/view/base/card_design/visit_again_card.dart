@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
-import 'package:sixam_mart/data/model/response/item_model.dart';
 import 'package:sixam_mart/data/model/response/store_model.dart';
 import 'package:sixam_mart/helper/route_helper.dart';
-import 'package:sixam_mart/util/app_constants.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/styles.dart';
-import 'package:sixam_mart/view/base/add_favourite_view.dart';
 import 'package:sixam_mart/view/base/custom_image.dart';
 import 'package:sixam_mart/view/screens/store/store_screen.dart';
 
@@ -15,7 +12,7 @@ class VisitAgainCard extends StatelessWidget {
   final Store store;
   final bool fromFood;
 
-  VisitAgainCard({
+  const VisitAgainCard({
     Key? key,
     required this.store,
     required this.fromFood,

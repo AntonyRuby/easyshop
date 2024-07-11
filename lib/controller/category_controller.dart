@@ -3,6 +3,7 @@ import 'package:sixam_mart/data/api/api_checker.dart';
 import 'package:sixam_mart/data/model/response/category_model.dart';
 import 'package:sixam_mart/data/model/response/item_model.dart';
 import 'package:sixam_mart/data/model/response/store_model.dart';
+import 'package:sixam_mart/data/model/response/subcategory_model.dart';
 import 'package:sixam_mart/data/repository/category_repo.dart';
 import 'package:get/get.dart';
 
@@ -11,7 +12,7 @@ class CategoryController extends GetxController implements GetxService {
   CategoryController({required this.categoryRepo});
 
   List<CategoryModel>? _categoryList;
-  List<CategoryModel>? _subCategoryList;
+  List<SubcategoryModel>? _subCategoryList;
   List<Item>? _categoryItemList;
   List<Store>? _categoryStoreList;
   List<Item>? _searchItemList = [];
@@ -30,7 +31,7 @@ class CategoryController extends GetxController implements GetxService {
   int _offset = 1;
 
   List<CategoryModel>? get categoryList => _categoryList;
-  List<CategoryModel>? get subCategoryList => _subCategoryList;
+  List<SubcategoryModel>? get subCategoryList => _subCategoryList;
   List<Item>? get categoryItemList => _categoryItemList;
   List<Store>? get categoryStoreList => _categoryStoreList;
   List<Item>? get searchItemList => _searchItemList;
@@ -64,29 +65,35 @@ class CategoryController extends GetxController implements GetxService {
     }
   }
 
-  void getSubCategoryList(String? categoryID) async {
+  Future<void> getSubCategoryList(String? subCategoryID) async {
     _subCategoryIndex = 0;
     _subCategoryList = null;
-    _categoryItemList = null;
-    Response response = await categoryRepo.getSubCategoryList(categoryID);
+    _categoryItemList = [];
+    Response response = await categoryRepo.getSubCategoryList(subCategoryID);
     if (response.statusCode == 200) {
-      _subCategoryList = [];
-      _subCategoryList!
-          .add(CategoryModel(id: int.parse(categoryID!), name: 'all'.tr));
-      response.body.forEach((category) =>
-          _subCategoryList!.add(CategoryModel.fromJson(category)));
-      getCategoryItemList(categoryID, 1, 'all', false);
+      print('Subcategory response: ${response.request!.url}');
+      if (response.body != null && response.body.isNotEmpty) {
+        final categories = response.body as List<dynamic>;
+        _subCategoryList = categories
+            .map((category) => SubcategoryModel.fromJson(category))
+            .toList();
+        print('Subcategory list: $_subCategoryList');
+      } else {
+        print('No subcategories found');
+        _subCategoryList = [];
+      }
     } else {
       ApiChecker.checkApi(response);
     }
+    update();
   }
 
-  void setSubCategoryIndex(int index, String? categoryID) {
+  void setSubCategoryIndex(int index, String? subCategoryID) {
     _subCategoryIndex = index;
     if (_isStore) {
       getCategoryStoreList(
           _subCategoryIndex == 0
-              ? categoryID
+              ? subCategoryID
               : _subCategoryList![index].id.toString(),
           1,
           _type,
@@ -94,7 +101,7 @@ class CategoryController extends GetxController implements GetxService {
     } else {
       getCategoryItemList(
           _subCategoryIndex == 0
-              ? categoryID
+              ? subCategoryID
               : _subCategoryList![index].id.toString(),
           1,
           _type,

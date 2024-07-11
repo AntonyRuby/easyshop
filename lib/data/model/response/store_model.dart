@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:sixam_mart/data/model/response/subcategory_model.dart';
+
 class StoreModel {
   int? totalSize;
   String? limit;
@@ -65,6 +67,7 @@ class Store {
   bool? active;
   String? deliveryTime;
   List<int>? categoryIds;
+  List<int>? subCategoryIds;
   int? veg;
   int? nonVeg;
   int? moduleId;
@@ -110,6 +113,7 @@ class Store {
     this.active,
     this.deliveryTime,
     this.categoryIds,
+    this.subCategoryIds,
     this.veg,
     this.nonVeg,
     this.moduleId,
@@ -143,11 +147,10 @@ class Store {
     delivery = json['delivery'];
     takeAway = json['take_away'];
     scheduleOrder = json['schedule_order'];
-    // avgRating = json['avg_rating'].toDouble();
+
     avgRating =
         json['avg_rating'] != null ? json['avg_rating'].toDouble() : 0.0;
-    // double avgRating =
-    //     json['avg_rating'] != null ? json['avg_rating'].toDouble() : 0.0;
+
     tax = json['tax']?.toDouble();
     ratingCount = json['rating_count'];
     selfDeliverySystem = json['self_delivery_system'];
@@ -161,8 +164,6 @@ class Store {
         : 0;
     open = json['open'];
     active = json['active'];
-    // featured = int.parse(json['featured'].toString());
-    // featured = json['featured']?.toString().toInt() ?? 0;
     featured =
         json['featured'] != null ? int.parse(json['featured'].toString()) : 0;
     zoneId = json['zone_id'];
@@ -420,6 +421,7 @@ class Items {
   int? maximumCartQuantity;
   int? isApproved;
   String? unitType;
+  SubcategoryModel? subCategory;
 
   Items({
     this.id,
@@ -459,6 +461,7 @@ class Items {
     this.maximumCartQuantity,
     this.isApproved,
     this.unitType,
+    this.subCategory,
   });
 
   Items.fromJson(Map<String, dynamic> json) {
@@ -499,6 +502,9 @@ class Items {
     maximumCartQuantity = json['maximum_cart_quantity'];
     isApproved = json['is_approved'];
     unitType = json['unit_type'];
+    if (json['subCategory'] != null) {
+      subCategory = SubcategoryModel.fromJson(json['subCategory']);
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -540,6 +546,9 @@ class Items {
     data['maximum_cart_quantity'] = maximumCartQuantity;
     data['is_approved'] = isApproved;
     data['unit_type'] = unitType;
+    if (subCategory != null) {
+      data['subCategory'] = subCategory!.toJson();
+    }
     return data;
   }
 }

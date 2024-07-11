@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sixam_mart/controller/category_controller.dart';
 import 'package:sixam_mart/controller/coupon_controller.dart';
@@ -11,6 +12,7 @@ import 'package:sixam_mart/data/model/response/recommended_product_model.dart';
 import 'package:sixam_mart/data/model/response/store_banner_model.dart';
 import 'package:sixam_mart/data/model/response/store_model.dart';
 import 'package:sixam_mart/data/model/response/review_model.dart';
+import 'package:sixam_mart/data/model/response/subcategory_model.dart';
 import 'package:sixam_mart/data/model/response/zone_response_model.dart';
 import 'package:sixam_mart/data/repository/store_repo.dart';
 import 'package:sixam_mart/helper/date_converter.dart';
@@ -22,7 +24,6 @@ import 'package:sixam_mart/view/screens/home/home_screen.dart';
 class StoreController extends GetxController implements GetxService {
   final StoreRepo storeRepo;
   StoreController({required this.storeRepo});
-
   StoreModel? _storeModel;
   List<Store>? _popularStoreList;
   List<Store>? _latestStoreList;
@@ -33,8 +34,6 @@ class StoreController extends GetxController implements GetxService {
   ItemModel? _storeSearchItemModel;
   int _categoryIndex = 0;
   List<CategoryModel>? _categoryList;
-  List<CategoryModel>? _subCategoryList;
-  int _subCategoryIndex = 0;
   bool _isLoading = false;
   String _storeType = 'all';
   List<ReviewModel>? _storeReviewList;
@@ -49,7 +48,6 @@ class StoreController extends GetxController implements GetxService {
   bool _isSearching = false;
   List<StoreBannerModel>? _storeBanners;
   List<Store>? _recommendedStoreList;
-
   StoreModel? get storeModel => _storeModel;
   List<Store>? get popularStoreList => _popularStoreList;
   List<Store>? get latestStoreList => _latestStoreList;
@@ -60,8 +58,6 @@ class StoreController extends GetxController implements GetxService {
   ItemModel? get storeSearchItemModel => _storeSearchItemModel;
   int get categoryIndex => _categoryIndex;
   List<CategoryModel>? get categoryList => _categoryList;
-  List<CategoryModel>? get subCategoryList => _subCategoryList;
-  int get subCategoryIndex => _subCategoryIndex;
   bool get isLoading => _isLoading;
   String get storeType => _storeType;
   List<ReviewModel>? get storeReviewList => _storeReviewList;
@@ -76,6 +72,13 @@ class StoreController extends GetxController implements GetxService {
   bool get isSearching => _isSearching;
   List<StoreBannerModel>? get storeBanners => _storeBanners;
   List<Store>? get recommendedStoreList => _recommendedStoreList;
+
+  List<SubcategoryModel> _subCategoryList = [];
+  int _subCategoryIndex = 0;
+
+// Use public getters for exposing the values
+  List<SubcategoryModel> get subCategoryList => _subCategoryList;
+  int get subCategoryIndex => _subCategoryIndex;
 
   String filteringUrl(String slug) {
     List<String> routes = Get.currentRoute.split('?');
@@ -283,31 +286,6 @@ class StoreController extends GetxController implements GetxService {
     update();
   }
 
-  void setCategoryList() {
-    if (Get.find<CategoryController>().categoryList != null && _store != null) {
-      _categoryList = [];
-      _categoryList!.add(CategoryModel(id: 0, name: 'all'.tr));
-      for (var category in Get.find<CategoryController>().categoryList!) {
-        if (_store!.categoryIds!.contains(category.id)) {
-          _categoryList!.add(category);
-        }
-      }
-    }
-  }
-
-  void setSubCategoryList() {
-    if (Get.find<CategoryController>().subCategoryList != null &&
-        _store != null) {
-      _subCategoryList = [];
-      _subCategoryList!.add(CategoryModel(id: 0, name: 'all'.tr));
-      for (var category in Get.find<CategoryController>().subCategoryList!) {
-        if (_store!.categoryIds!.contains(category.id)) {
-          _subCategoryList!.add(category);
-        }
-      }
-    }
-  }
-
   Future<void> initCheckoutData(int? storeId) async {
     Get.find<CouponController>().removeCouponData(false);
     Get.find<OrderController>().clearPrevData(null);
@@ -329,7 +307,6 @@ class StoreController extends GetxController implements GetxService {
       if (response.statusCode == 200) {
         _store = Store.fromJson(response.body);
 
-        print('Store details: $_store');
         if (_store != null) {
           Get.find<OrderController>().initializeTimeSlot(_store!);
           if (!fromCart && slug.isEmpty) {
@@ -340,8 +317,8 @@ class StoreController extends GetxController implements GetxService {
                   Get.find<LocationController>().getUserAddress()!.longitude!),
             );
             LatLng storeLocation = LatLng(
-              double.parse(_store!.latitude!),
-              double.parse(_store!.longitude!),
+              double.parse(_store?.latitude ?? '0'),
+              double.parse(_store?.longitude ?? '0'),
             );
             Get.find<OrderController>()
                 .getDistanceInKM(userLocation, storeLocation);
@@ -365,7 +342,7 @@ class StoreController extends GetxController implements GetxService {
       }
       if (_store != null) {
         Get.find<OrderController>().setOrderType(
-          _store!.delivery! ? 'delivery' : 'take_away',
+          _store!.delivery ?? false ? 'delivery' : 'take_away',
           notify: false,
         );
       } else {
@@ -392,11 +369,12 @@ class StoreController extends GetxController implements GetxService {
   }
 
   Future<void> getStoreItemList(
-    int? storeID,
-    int offset,
-    String type,
-    bool notify,
-  ) async {
+      int? storeID,
+      int offset,
+      String type, // Ensure type is of type String
+      bool notify,
+      {int? categoryId,
+      int? subcategoryId}) async {
     if (offset == 1 || _storeItemModel == null) {
       _type = type;
       _storeItemModel = null;
@@ -406,6 +384,9 @@ class StoreController extends GetxController implements GetxService {
     }
 
     int categoryId = 0;
+    int subCategoryId = 0;
+
+    // Ensure _store and _categoryList are not null and correctly accessed
     if (_store != null &&
         _store!.categoryIds!.isNotEmpty &&
         _categoryIndex != 0) {
@@ -418,20 +399,28 @@ class StoreController extends GetxController implements GetxService {
         categoryId = _categoryList![_categoryIndex].id!;
       }
     }
+
+    // Ensure _subCategoryList is not null and correctly accessed
+    if (_subCategoryList.isNotEmpty && _subCategoryIndex != 0) {
+      subCategoryId = _subCategoryList[_subCategoryIndex].id!;
+    }
+
+    // Make sure to pass all required parameters correctly
     Response response = await storeRepo.getStoreItemList(
       storeID,
       offset,
       categoryId,
-      type,
+      type, // Ensure type is passed correctly as a String
+
+      subCategoryId: subCategoryId, // Add subCategoryId to the request
     );
+
     if (response.statusCode == 200) {
       if (offset == 1) {
         _storeItemModel = ItemModel.fromJson(response.body);
       } else {
         if (_storeItemModel == null) {
           _storeItemModel = ItemModel.fromJson(response.body);
-
-          print('Store items: $_storeItemModel');
         } else {
           _storeItemModel!.items!
               .addAll(ItemModel.fromJson(response.body).items!);
@@ -443,11 +432,13 @@ class StoreController extends GetxController implements GetxService {
     } else {
       ApiChecker.checkApi(response);
     }
+
     update();
   }
 
   Future<void> getStoreSearchItemList(
-      String searchText, String? storeID, int offset, String type) async {
+      String searchText, String? storeID, int offset, String type,
+      {int? categoryId, int? subcategoryId}) async {
     if (searchText.isEmpty) {
       showCustomSnackBar('write_item_name'.tr);
     } else {
@@ -501,15 +492,103 @@ class StoreController extends GetxController implements GetxService {
 
   void setCategoryIndex(int index, {bool itemSearching = false}) {
     _categoryIndex = index;
+    setCategoryList(); // Update category list
     if (itemSearching) {
       _storeSearchItemModel = null;
-      getStoreSearchItemList(_searchText, _store!.id.toString(), 1, type);
+      getStoreSearchItemList(
+        _searchText,
+        _store!.id.toString(),
+        1,
+        type,
+        categoryId: _categoryList![_categoryIndex].id,
+      );
     } else {
       _storeItemModel = null;
-      getStoreItemList(_store!.id, 1, Get.find<StoreController>().type, false);
+      getStoreItemList(
+        _store!.id,
+        1,
+        Get.find<StoreController>().type,
+        false,
+        categoryId: _categoryList![_categoryIndex].id,
+      );
     }
-
     update();
+  }
+
+  void setSubCategoryIndex(int index, {bool itemSearching = false}) {
+    if (Get.find<CategoryController>().subCategoryList != null &&
+        _store != null) {
+      _subCategoryIndex = index;
+      setSubCategoryList(); // Update subcategory list
+      if (itemSearching) {
+        _storeSearchItemModel = null;
+        getStoreSearchItemList(
+          _searchText,
+          _store!.id.toString(),
+          1,
+          type,
+          subcategoryId: _subCategoryList[_subCategoryIndex].id,
+        );
+      } else {
+        _storeItemModel = null;
+        getStoreItemList(
+          _store!.id,
+          1,
+          Get.find<StoreController>().type,
+          false,
+          subcategoryId: _subCategoryList[_subCategoryIndex].id,
+        );
+      }
+      update();
+    }
+  }
+
+  void setCategoryList() {
+    if (Get.find<CategoryController>().categoryList != null && _store != null) {
+      _categoryList = [
+        CategoryModel(id: 0, name: 'all'.tr),
+        ...Get.find<CategoryController>()
+            .categoryList!
+            .where((category) => _store!.categoryIds!.contains(category.id)),
+      ];
+
+      // Check if subcategories are not empty
+      if (Get.find<CategoryController>().subCategoryList != null &&
+          _store != null) {
+        _subCategoryList = [
+          SubcategoryModel(id: 0, name: 'all'.tr),
+          ...Get.find<CategoryController>()
+              .subCategoryList!
+              .where((subcategory) =>
+                  _store!.subCategoryIds!.contains(subcategory.id))
+              .map((subcategory) =>
+                  SubcategoryModel(id: subcategory.id, name: subcategory.name)),
+        ];
+      }
+
+      // Use GetBuilder<StoreController>() instead of update()
+      GetBuilder<StoreController>(
+        id: 'store_category_list',
+        builder: (storeController) {
+          return Container();
+        },
+      );
+    }
+  }
+
+  void setSubCategoryList() async {
+    if (Get.find<CategoryController>().subCategoryList != null &&
+        _store != null) {
+      _subCategoryList = [
+        SubcategoryModel(id: 0, name: 'all'.tr),
+        ...Get.find<CategoryController>()
+            .subCategoryList!
+            .where((subcategory) =>
+                _store!.subCategoryIds!.contains(subcategory.id))
+            .map((subcategory) =>
+                SubcategoryModel(id: subcategory.id, name: subcategory.name)),
+      ];
+    }
   }
 
   Future<void> getStoreReviewList(String? storeID) async {

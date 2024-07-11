@@ -14,8 +14,8 @@ import 'package:sixam_mart/view/screens/store/store_screen.dart';
 import 'package:sixam_mart/data/model/response/store_model.dart';
 
 class CategoryView extends StatelessWidget {
-  final Store? store;
-  const CategoryView({Key? key, required this.store}) : super(key: key);
+  // final Store? store;
+  // const CategoryView({Key? key, required this.store}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +73,8 @@ class CategoryView extends StatelessWidget {
                                                       vertical: Dimensions
                                                           .paddingSizeDefault),
                                               child: InkWell(
-                                                onTap: () => Get.toNamed(
+                                                onTap: () =>
+                                                 Get.toNamed(
                                                     RouteHelper
                                                         .getCategoryItemRoute(
                                                   categoryController

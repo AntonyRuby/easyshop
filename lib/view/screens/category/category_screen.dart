@@ -12,11 +12,11 @@ import 'package:sixam_mart/view/base/no_data_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/view/base/web_page_title_widget.dart';
-import 'package:sixam_mart/view/screens/store/store_screen.dart';
 import 'package:sixam_mart/data/model/response/store_model.dart';
 
 class CategoryScreen extends StatefulWidget {
-  const CategoryScreen({super.key});
+  final Store? store;
+  const CategoryScreen({super.key, required this.store});
 
   @override
   State<CategoryScreen> createState() => _CategoryScreenState();
@@ -24,7 +24,6 @@ class CategoryScreen extends StatefulWidget {
 
 class _CategoryScreenState extends State<CategoryScreen> {
   final ScrollController scrollController = ScrollController();
-  Store? store;
 
   @override
   void initState() {
@@ -34,6 +33,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final store = widget.store ?? Get.arguments['store'];
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: CustomAppBar(title: 'categories'.tr),
@@ -79,45 +79,19 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                       itemBuilder: (context, index) {
                                         return InkWell(
                                           onTap: () {
-                                            // Get.toNamed(
-                                            //   RouteHelper.getStoreRoute(
-                                            //       id: store?.id ?? 0,
-                                            //       page: 'item'),
-                                            //   arguments: StoreScreen(
-                                            //     store: store ??
-                                            //         Store(), // Create a new Store object if store is null
-                                            //     fromModule: false,
-                                            //   ),
-                                            // );
-
                                             Get.toNamed(
                                               RouteHelper.getStoreRoute(
-                                                  id: store != null
-                                                      ? store!.id
-                                                      : 0,
+                                                  id: widget.store?.id,
                                                   page: 'item'),
-                                              arguments: StoreScreen(
-                                                  store: store,
-                                                  fromModule: false),
+                                              arguments: {
+                                                'store': store,
+                                                'fromModule': false,
+                                                'selectedCategory':
+                                                    catController
+                                                        .categoryList![index],
+                                              },
                                             );
                                           },
-
-                                          // onTap: ()
-                                          //  => Get.toNamed(
-                                          //   RouteHelper.getStoreRoute(
-                                          //       id: store!.id, page: 'item'),
-                                          //   arguments: StoreScreen(
-                                          //       store: store,
-                                          //       fromModule: false),
-                                          // ),
-
-                                          //  Get.toNamed(
-                                          //     RouteHelper.getCategoryItemRoute(
-                                          //   catController
-                                          //       .categoryList![index].id,
-                                          //   catController
-                                          //       .categoryList![index].name!,
-                                          // )),
                                           child: Container(
                                             decoration: BoxDecoration(
                                               color:

@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/data/model/response/basic_medicine_model.dart';
+import 'package:sixam_mart/data/model/response/subcategory_model.dart';
 
 class ItemModel {
   int? totalSize;
@@ -9,18 +10,26 @@ class ItemModel {
   List<Item>? items;
   List<Categories>? categories;
 
-  ItemModel({this.totalSize, this.limit, this.offset, this.items, this.categories});
+  ItemModel(
+      {this.totalSize, this.limit, this.offset, this.items, this.categories});
 
   ItemModel.fromJson(Map<String, dynamic> json) {
     totalSize = json['total_size'];
     limit = json['limit'].toString();
-    offset = (json['offset'] != null && json['offset'].toString().trim().isNotEmpty) ? int.parse(json['offset'].toString()) : null;
+    offset =
+        (json['offset'] != null && json['offset'].toString().trim().isNotEmpty)
+            ? int.parse(json['offset'].toString())
+            : null;
     if (json['products'] != null) {
       items = [];
       json['products'].forEach((v) {
-        if(v['module_type'] == null || !Get.find<SplashController>().getModuleConfig(v['module_type']).newVariation!
-            || v['variations'] == null || v['variations'].isEmpty
-            || (v['food_variations'] != null && v['food_variations'].isNotEmpty)) {
+        if (v['module_type'] == null ||
+            !Get.find<SplashController>()
+                .getModuleConfig(v['module_type'])
+                .newVariation! ||
+            v['variations'] == null ||
+            v['variations'].isEmpty ||
+            (v['food_variations'] != null && v['food_variations'].isNotEmpty)) {
           items!.add(Item.fromJson(v));
         }
       });
@@ -28,9 +37,13 @@ class ItemModel {
     if (json['items'] != null) {
       items = [];
       json['items'].forEach((v) {
-        if(v['module_type'] == null || !Get.find<SplashController>().getModuleConfig(v['module_type']).newVariation!
-            || v['variations'] == null || v['variations'].isEmpty
-            || (v['food_variations'] != null && v['food_variations'].isNotEmpty)) {
+        if (v['module_type'] == null ||
+            !Get.find<SplashController>()
+                .getModuleConfig(v['module_type'])
+                .newVariation! ||
+            v['variations'] == null ||
+            v['variations'].isEmpty ||
+            (v['food_variations'] != null && v['food_variations'].isNotEmpty)) {
           items!.add(Item.fromJson(v));
         }
       });
@@ -92,41 +105,43 @@ class Item {
   int? organic;
   int? quantityLimit;
   int? flashSale;
+  SubcategoryModel? subCategory;
 
-  Item(
-      {this.id,
-        this.name,
-        this.description,
-        this.image,
-        this.images,
-        this.categoryId,
-        this.categoryIds,
-        this.variations,
-        this.foodVariations,
-        this.addOns,
-        this.choiceOptions,
-        this.price,
-        this.tax,
-        this.discount,
-        this.discountType,
-        this.availableTimeStarts,
-        this.availableTimeEnds,
-        this.storeId,
-        this.storeName,
-        this.zoneId,
-        this.storeDiscount,
-        this.scheduleOrder,
-        this.avgRating,
-        this.ratingCount,
-        this.veg,
-        this.moduleId,
-        this.moduleType,
-        this.unitType,
-        this.stock,
-        this.organic,
-        this.quantityLimit,
-        this.flashSale,
-      });
+  Item({
+    this.id,
+    this.name,
+    this.description,
+    this.image,
+    this.images,
+    this.categoryId,
+    this.categoryIds,
+    this.variations,
+    this.foodVariations,
+    this.addOns,
+    this.choiceOptions,
+    this.price,
+    this.tax,
+    this.discount,
+    this.discountType,
+    this.availableTimeStarts,
+    this.availableTimeEnds,
+    this.storeId,
+    this.storeName,
+    this.zoneId,
+    this.storeDiscount,
+    this.scheduleOrder,
+    this.avgRating,
+    this.ratingCount,
+    this.veg,
+    this.moduleId,
+    this.moduleType,
+    this.unitType,
+    this.stock,
+    this.organic,
+    this.quantityLimit,
+    this.flashSale,
+    this.subCategory,
+  });
 
   Item.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -159,7 +174,7 @@ class Item {
         json['add_ons'].forEach((v) {
           addOns!.add(AddOns.fromJson(v));
         });
-      } else if(json['addons'] != null){
+      } else if (json['addons'] != null) {
         json['addons'].forEach((v) {
           addOns!.add(AddOns.fromJson(v));
         });
@@ -170,6 +185,9 @@ class Item {
       json['choice_options'].forEach((v) {
         choiceOptions!.add(ChoiceOptions.fromJson(v));
       });
+    }
+    if (json['subcategory'] != null) {
+      subCategory = SubcategoryModel.fromJson(json['subcategory']);
     }
     price = json['price'].toDouble();
     tax = json['tax']?.toDouble();
@@ -216,8 +234,7 @@ class Item {
       data['add_ons'] = addOns!.map((v) => v.toJson()).toList();
     }
     if (choiceOptions != null) {
-      data['choice_options'] =
-          choiceOptions!.map((v) => v.toJson()).toList();
+      data['choice_options'] = choiceOptions!.map((v) => v.toJson()).toList();
     }
     data['price'] = price;
     data['tax'] = tax;
@@ -241,22 +258,9 @@ class Item {
     data['organic'] = organic;
     data['maximum_cart_quantity'] = quantityLimit;
     data['flash_sale'] = flashSale;
-    return data;
-  }
-}
-
-class CategoryIds {
-  String? id;
-
-  CategoryIds({this.id});
-
-  CategoryIds.fromJson(Map<String, dynamic> json) {
-    id = json['id'].toString();
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
+    if (subCategory != null) {
+      data['subcategory'] = subCategory!.toJson();
+    }
     return data;
   }
 }
@@ -288,10 +292,7 @@ class AddOns {
   String? name;
   double? price;
 
-  AddOns(
-      {this.id,
-        this.name,
-        this.price});
+  AddOns({this.id, this.name, this.price});
 
   AddOns.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -338,13 +339,19 @@ class FoodVariation {
   bool? required;
   List<VariationValue>? variationValues;
 
-  FoodVariation({this.name, this.multiSelect, this.min, this.max, this.required, this.variationValues});
+  FoodVariation(
+      {this.name,
+      this.multiSelect,
+      this.min,
+      this.max,
+      this.required,
+      this.variationValues});
 
   FoodVariation.fromJson(Map<String, dynamic> json) {
-    if(json['max'] != null) {
+    if (json['max'] != null) {
       name = json['name'];
       multiSelect = json['type'] == 'multi';
-      min =  multiSelect! ? int.parse(json['min'].toString()) : 0;
+      min = multiSelect! ? int.parse(json['min'].toString()) : 0;
       max = multiSelect! ? int.parse(json['max'].toString()) : 0;
       required = json['required'] == 'on';
       if (json['values'] != null) {

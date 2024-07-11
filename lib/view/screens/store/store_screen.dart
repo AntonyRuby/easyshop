@@ -1333,14 +1333,41 @@ class _StoreScreenState extends State<StoreScreen> {
                                               child: ListView.builder(
                                                 scrollDirection:
                                                     Axis.horizontal,
+                                                // itemCount: storeController
+                                                //     .categoryList!.length,
                                                 itemCount: storeController
-                                                    .categoryList!.length,
+                                                    .categoryList!
+                                                    .where(
+                                                      (element) =>
+                                                          element.id ==
+                                                          (Get.arguments[
+                                                                      'selectedCategory']
+                                                                  as CategoryModel)
+                                                              .id,
+                                                    )
+                                                    .first
+                                                    .subcategories!
+                                                    .length,
                                                 padding: const EdgeInsets.only(
                                                     left: Dimensions
                                                         .paddingSizeSmall),
                                                 physics:
                                                     const BouncingScrollPhysics(),
                                                 itemBuilder: (context, index) {
+                                                  var subcategory =
+                                                      storeController
+                                                              .categoryList!
+                                                              .where(
+                                                                (element) =>
+                                                                    element
+                                                                        .id ==
+                                                                    (Get.arguments['selectedCategory']
+                                                                            as CategoryModel)
+                                                                        .id,
+                                                              )
+                                                              .first
+                                                              .subcategories![
+                                                          index];
                                                   return InkWell(
                                                     onTap: () => storeController
                                                         .setCategoryIndex(
@@ -1376,10 +1403,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                                                   .center,
                                                           children: [
                                                             Text(
-                                                              storeController
-                                                                  .categoryList![
-                                                                      index]
-                                                                  .name!,
+                                                              subcategory.name!,
                                                               style: index ==
                                                                       storeController
                                                                           .categoryIndex
@@ -1434,6 +1458,17 @@ class _StoreScreenState extends State<StoreScreen> {
                                               null)
                                       ? storeController.storeItemModel!.items
                                       : null,
+                                  // items: (storeController
+                                  //             .categoryList!.isNotEmpty &&
+                                  //         storeController.storeItemModel !=
+                                  //             null)
+                                  //     ? storeController.storeItemModel!.items!
+                                  //         .where((item) =>
+                                  //             item.subCategoryId ==
+                                  //             storeController
+                                  //                 .selectedSubCategoryId)
+                                  //         .toList()
+                                  //     : null,
                                   inStorePage: true,
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: Dimensions.paddingSizeSmall,

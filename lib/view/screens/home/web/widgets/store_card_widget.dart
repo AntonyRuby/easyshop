@@ -18,7 +18,6 @@ import 'package:sixam_mart/view/base/discount_tag.dart';
 import 'package:sixam_mart/view/base/hover/on_hover.dart';
 import 'package:sixam_mart/view/base/not_available_widget.dart';
 import 'package:sixam_mart/view/base/rating_bar.dart';
-import 'package:sixam_mart/view/screens/store/store_screen.dart';
 
 class StoreCardWidget extends StatelessWidget {
   final Store? store;
@@ -46,14 +45,16 @@ class StoreCardWidget extends StatelessWidget {
                     }
                   }
                 }
-                // Get.toNamed(
-                //   RouteHelper.getStoreRoute(id: store!.id, page: 'item'),
-                //   arguments: StoreScreen(store: store, fromModule: false),
-                // );
 
                 Get.toNamed(
-                  RouteHelper.getCategoryRoute(),
-                  arguments: StoreScreen(store: store, fromModule: false),
+                  RouteHelper
+                      .getCategoryRoute(), // Ensure this route is correct
+                  arguments: {
+                    'store': store
+                  }, // Pass store object as an argument
+                  parameters: {
+                    'id': store!.id.toString(), // Pass ID as a parameter
+                  },
                 );
               }
             },

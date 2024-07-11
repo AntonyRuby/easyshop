@@ -505,22 +505,38 @@ class RouteHelper {
         name: search,
         page: () => getRoute(SearchScreen(queryText: Get.parameters['query']))),
     GetPage(
-        name: store,
-        page: () {
-          return getRoute(
-              Get.arguments ??
-                  StoreScreen(
-                    store: Store(
-                        id: Get.parameters['id'] != 'null' &&
-                                Get.parameters['id'] != null
-                            ? int.parse(Get.parameters['id']!)
-                            : null),
-                    fromModule: Get.parameters['page'] != null &&
-                        Get.parameters['page'] == 'module',
-                    slug: Get.parameters['slug'] ?? '',
-                  ),
-              byPuss: Get.parameters['slug']?.isNotEmpty ?? false);
-        }),
+      name: store,
+      page: () {
+        final arguments = Get.arguments;
+        print(arguments);
+        final store = arguments != null && arguments.containsKey('store')
+            ? arguments['store'] as Store
+            : Store(
+                id: Get.parameters['id'] != 'null' &&
+                        Get.parameters['id'] != null
+                    ? int.parse(Get.parameters['id']!)
+                    : null,
+              );
+
+        final fromModule =
+            arguments != null && arguments.containsKey('fromModule')
+                ? arguments['fromModule'] as bool
+                : Get.parameters['page'] != null &&
+                    Get.parameters['page'] == 'module';
+
+        final slug = Get.parameters['slug'] ?? '';
+        final byPuss = slug.isNotEmpty;
+
+        return getRoute(
+          StoreScreen(
+            store: store,
+            fromModule: fromModule,
+            slug: slug,
+          ),
+          byPuss: byPuss,
+        );
+      },
+    ),
     GetPage(
         name: orderDetails,
         page: () {
@@ -650,7 +666,22 @@ class RouteHelper {
                                   ? HtmlType.refund
                                   : HtmlType.aboutUs,
             )),
-    GetPage(name: categories, page: () => getRoute(CategoryScreen())),
+    GetPage(
+      name: categories,
+      page: () {
+        final arguments = Get.arguments;
+        final store = arguments != null && arguments.containsKey('store')
+            ? arguments['store'] as Store
+            : Store(
+                id: Get.parameters['id'] != 'null' &&
+                        Get.parameters['id'] != null
+                    ? int.parse(Get.parameters['id']!)
+                    : null,
+              );
+
+        return CategoryScreen(store: store);
+      },
+    ),
     GetPage(
         name: categoryItem,
         page: () {
