@@ -6,7 +6,6 @@ import 'package:sixam_mart/controller/store_controller.dart';
 import 'package:sixam_mart/data/model/response/store_model.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/styles.dart';
-import 'package:sixam_mart/view/screens/home/grocery/widget/components/custom_triangle_shape.dart';
 import 'package:sixam_mart/view/base/card_design/visit_again_card.dart';
 
 class VisitAgainView extends StatefulWidget {
@@ -27,29 +26,22 @@ class _VisitAgainViewState extends State<VisitAgainView> {
           ? stores.isNotEmpty
               ? Padding(
                   padding: const EdgeInsets.only(
-                      bottom: Dimensions.paddingSizeDefault),
-                  child: Stack(clipBehavior: Clip.none, children: [
-                    Container(
-                      height: 150,
-                      width: double.infinity,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          top: Dimensions.paddingSizeSmall),
-                      child: Column(children: [
+                    top: Dimensions.paddingSizeSmall,
+                    left: Dimensions.paddingSizeDefault,
+                  ),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                         Text(
                             widget.fromFood!
                                 ? "wanna_try_again".tr
                                 : "visit_again".tr,
-                            style: robotoBold.copyWith(
-                                color: Theme.of(context).cardColor)),
+                            style: robotoBold.copyWith(fontSize: 18)),
                         const SizedBox(height: Dimensions.paddingSizeSmall),
                         Text(
                           'get_your_recent_purchase_from_the_shop_you_recently_visited'
                               .tr,
                           style: robotoRegular.copyWith(
-                              color: Theme.of(context).cardColor,
                               fontSize: Dimensions.fontSizeSmall),
                         ),
                         const SizedBox(height: Dimensions.paddingSizeSmall),
@@ -57,29 +49,19 @@ class _VisitAgainViewState extends State<VisitAgainView> {
                           itemCount: stores.length,
                           options: CarouselOptions(
                             aspectRatio: 2.0,
-                            enlargeCenterPage: true,
                             disableCenter: true,
+                            viewportFraction: 0.5,
+                            padEnds: false,
                           ),
                           itemBuilder:
                               (BuildContext context, int index, int realIndex) {
                             return VisitAgainCard(
-                                store: stores[index],
-                                fromFood: widget.fromFood!);
+                              store: stores[index],
+                              fromFood: widget.fromFood!,
+                            );
                           },
                         ),
                       ]),
-                    ),
-                    const Positioned(
-                      top: 20,
-                      left: 10,
-                      child: TriangleWidget(),
-                    ),
-                    const Positioned(
-                      top: 10,
-                      right: 100,
-                      child: TriangleWidget(),
-                    ),
-                  ]),
                 )
               : const SizedBox()
           : const VisitAgainShimmerView();
@@ -96,7 +78,7 @@ class VisitAgainShimmerView extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeDefault),
       child: Stack(clipBehavior: Clip.none, children: [
         Container(
-          height: 150,
+          height: 250,
           width: double.infinity,
           color: Theme.of(context).primaryColor,
         ),
@@ -137,16 +119,6 @@ class VisitAgainShimmerView extends StatelessWidget {
               ),
             ]),
           ),
-        ),
-        const Positioned(
-          top: 20,
-          left: 10,
-          child: TriangleWidget(),
-        ),
-        const Positioned(
-          top: 10,
-          right: 100,
-          child: TriangleWidget(),
         ),
       ]),
     );

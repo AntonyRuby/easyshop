@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sixam_mart/controller/category_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
-import 'package:sixam_mart/data/model/response/item_model.dart';
 import 'package:sixam_mart/data/model/response/store_model.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/helper/route_helper.dart';
@@ -12,8 +13,6 @@ import 'package:sixam_mart/view/base/item_view.dart';
 import 'package:sixam_mart/view/base/menu_drawer.dart';
 import 'package:sixam_mart/view/base/veg_filter_widget.dart';
 import 'package:sixam_mart/view/base/web_menu_bar.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class CategoryItemScreen extends StatefulWidget {
   final String? categoryID;
@@ -26,48 +25,26 @@ class CategoryItemScreen extends StatefulWidget {
   CategoryItemScreenState createState() => CategoryItemScreenState();
 }
 
-class CategoryItemScreenState extends State<CategoryItemScreen>
-    with TickerProviderStateMixin {
+class CategoryItemScreenState extends State<CategoryItemScreen> {
   final ScrollController scrollController = ScrollController();
   final ScrollController storeScrollController = ScrollController();
-  TabController? _tabController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-
-    _tabController = TabController(length: 2, initialIndex: 0, vsync: this);
+    // Fetch the category store list
     Get.find<CategoryController>().getSubCategoryList(widget.categoryID);
+    Get.find<CategoryController>().getCategoryStoreList(
+      widget.categoryID,
+      1,
+      Get.find<CategoryController>().type,
+      true,
+    );
+
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
               scrollController.position.maxScrollExtent &&
-          Get.find<CategoryController>().categoryItemList != null &&
-          !Get.find<CategoryController>().isLoading) {
-        int pageSize = (Get.find<CategoryController>().pageSize! / 10).ceil();
-        if (Get.find<CategoryController>().offset < pageSize) {
-          if (kDebugMode) {
-            print('end of the page');
-          }
-          Get.find<CategoryController>().showBottomLoader();
-          Get.find<CategoryController>().getCategoryItemList(
-            Get.find<CategoryController>().subCategoryIndex == 0
-                ? widget.categoryID
-                : Get.find<CategoryController>()
-                    .subCategoryList![
-                        Get.find<CategoryController>().subCategoryIndex]
-                    .id
-                    .toString(),
-            Get.find<CategoryController>().offset + 1,
-            Get.find<CategoryController>().type,
-            false,
-          );
-        }
-      }
-    });
-    storeScrollController.addListener(() {
-      if (storeScrollController.position.pixels ==
-              storeScrollController.position.maxScrollExtent &&
           Get.find<CategoryController>().categoryStoreList != null &&
           !Get.find<CategoryController>().isLoading) {
         int pageSize =
@@ -97,18 +74,7 @@ class CategoryItemScreenState extends State<CategoryItemScreen>
   @override
   Widget build(BuildContext context) {
     return GetBuilder<CategoryController>(builder: (catController) {
-      List<Item>? item;
       List<Store>? stores;
-      if (catController.isSearching
-          ? catController.searchItemList != null
-          : catController.categoryItemList != null) {
-        item = [];
-        if (catController.isSearching) {
-          item.addAll(catController.searchItemList!);
-        } else {
-          item.addAll(catController.categoryItemList!);
-        }
-      }
       if (catController.isSearching
           ? catController.searchStoreList != null
           : catController.categoryStoreList != null) {
@@ -211,33 +177,18 @@ class CategoryItemScreenState extends State<CategoryItemScreen>
                               type,
                             );
                           } else {
-                            if (catController.isStore) {
-                              catController.getCategoryStoreList(
-                                catController.subCategoryIndex == 0
-                                    ? widget.categoryID
-                                    : catController
-                                        .subCategoryList![
-                                            catController.subCategoryIndex]
-                                        .id
-                                        .toString(),
-                                1,
-                                type,
-                                true,
-                              );
-                            } else {
-                              catController.getCategoryItemList(
-                                catController.subCategoryIndex == 0
-                                    ? widget.categoryID
-                                    : catController
-                                        .subCategoryList![
-                                            catController.subCategoryIndex]
-                                        .id
-                                        .toString(),
-                                1,
-                                type,
-                                true,
-                              );
-                            }
+                            catController.getCategoryStoreList(
+                              catController.subCategoryIndex == 0
+                                  ? widget.categoryID
+                                  : catController
+                                      .subCategoryList![
+                                          catController.subCategoryIndex]
+                                      .id
+                                      .toString(),
+                              1,
+                              type,
+                              true,
+                            );
                           }
                         }),
                   ],
@@ -266,8 +217,20 @@ class CategoryItemScreenState extends State<CategoryItemScreen>
                         physics: const BouncingScrollPhysics(),
                         itemBuilder: (context, index) {
                           return InkWell(
-                            onTap: () => catController.setSubCategoryIndex(
-                                index, widget.categoryID),
+                            onTap: () {
+                              catController.setSubCategoryIndex(
+                                  index, widget.categoryID);
+                              String? categoryId =
+                                  catController.subCategoryIndex == 0
+                                      ? widget.categoryID
+                                      : catController
+                                          .subCategoryList![
+                                              catController.subCategoryIndex]
+                                          .id
+                                          .toString();
+                              catController.getCategoryStoreList(
+                                  categoryId, 1, catController.type, true);
+                            },
                             child: Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: Dimensions.paddingSizeSmall,
@@ -307,57 +270,29 @@ class CategoryItemScreenState extends State<CategoryItemScreen>
                       ),
                     ))
                   : const SizedBox(),
-              Center(
-                  child: Container(
-                width: Dimensions.webMaxWidth,
-                color: Theme.of(context).cardColor,
-                child: TabBar(
-                  controller: _tabController,
-                  indicatorColor: Theme.of(context).primaryColor,
-                  indicatorWeight: 3,
-                  labelColor: Theme.of(context).primaryColor,
-                  unselectedLabelColor: Theme.of(context).disabledColor,
-                  unselectedLabelStyle: robotoRegular.copyWith(
-                      color: Theme.of(context).disabledColor,
-                      fontSize: Dimensions.fontSizeSmall),
-                  labelStyle: robotoBold.copyWith(
-                      fontSize: Dimensions.fontSizeSmall,
-                      color: Theme.of(context).primaryColor),
-                  tabs: [
-                    Tab(text: 'item'.tr),
-                    Tab(
-                        text: Get.find<SplashController>()
-                                .configModel!
-                                .moduleConfig!
-                                .module!
-                                .showRestaurantText!
-                            ? 'restaurants'.tr
-                            : 'stores'.tr),
-                  ],
-                ),
-              )),
+              Text(Get.find<SplashController>()
+                      .configModel!
+                      .moduleConfig!
+                      .module!
+                      .showRestaurantText!
+                  ? 'restaurants'.tr
+                  : 'stores'.tr),
               Expanded(
-                  child: NotificationListener(
-                onNotification: (dynamic scrollNotification) {
-                  if (scrollNotification is ScrollEndNotification) {
-                    if ((_tabController!.index == 1 &&
-                            !catController.isStore) ||
-                        _tabController!.index == 0 && catController.isStore) {
-                      catController.setRestaurant(_tabController!.index == 1);
-                      if (catController.isSearching) {
-                        catController.searchData(
-                          catController.searchText,
-                          catController.subCategoryIndex == 0
-                              ? widget.categoryID
-                              : catController
-                                  .subCategoryList![
-                                      catController.subCategoryIndex]
-                                  .id
-                                  .toString(),
-                          catController.type,
-                        );
-                      } else {
-                        if (_tabController!.index == 1) {
+                child: NotificationListener(
+                  onNotification: (dynamic scrollNotification) {
+                    if (scrollNotification is ScrollEndNotification) {
+                      // Fetch more data if scrolled to the bottom
+                      if (scrollController.position.pixels ==
+                              scrollController.position.maxScrollExtent &&
+                          catController.categoryStoreList != null &&
+                          !catController.isLoading) {
+                        int pageSize =
+                            (catController.restPageSize! / 10).ceil();
+                        if (catController.offset < pageSize) {
+                          if (kDebugMode) {
+                            print('End of the page');
+                          }
+                          catController.showBottomLoader();
                           catController.getCategoryStoreList(
                             catController.subCategoryIndex == 0
                                 ? widget.categoryID
@@ -366,68 +301,42 @@ class CategoryItemScreenState extends State<CategoryItemScreen>
                                         catController.subCategoryIndex]
                                     .id
                                     .toString(),
-                            1,
-                            catController.type,
-                            false,
-                          );
-                        } else {
-                          catController.getCategoryItemList(
-                            catController.subCategoryIndex == 0
-                                ? widget.categoryID
-                                : catController
-                                    .subCategoryList![
-                                        catController.subCategoryIndex]
-                                    .id
-                                    .toString(),
-                            1,
+                            catController.offset + 1,
                             catController.type,
                             false,
                           );
                         }
                       }
                     }
-                  }
-                  return false;
-                },
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    SingleChildScrollView(
-                      controller: scrollController,
-                      child: ItemsView(
-                        isStore: false,
-                        items: item,
-                        stores: null,
-                        noDataText: 'no_category_item_found'.tr,
-                      ),
+                    return false;
+                  },
+                  child: SingleChildScrollView(
+                    controller: scrollController,
+                    child: ItemsView(
+                      isStore: true,
+                      items: null,
+                      stores: stores,
+                      noDataText: Get.find<SplashController>()
+                              .configModel!
+                              .moduleConfig!
+                              .module!
+                              .showRestaurantText!
+                          ? 'no_category_restaurant_found'.tr
+                          : 'no_category_store_found'.tr,
                     ),
-                    SingleChildScrollView(
-                      controller: storeScrollController,
-                      child: ItemsView(
-                        isStore: true,
-                        items: null,
-                        stores: stores,
-                        noDataText: Get.find<SplashController>()
-                                .configModel!
-                                .moduleConfig!
-                                .module!
-                                .showRestaurantText!
-                            ? 'no_category_restaurant_found'.tr
-                            : 'no_category_store_found'.tr,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              )),
+              ),
               catController.isLoading
                   ? Center(
                       child: Padding(
-                      padding:
-                          const EdgeInsets.all(Dimensions.paddingSizeSmall),
-                      child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                              Theme.of(context).primaryColor)),
-                    ))
+                        padding:
+                            const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                        child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Theme.of(context).primaryColor)),
+                      ),
+                    )
                   : const SizedBox(),
             ]),
           )),

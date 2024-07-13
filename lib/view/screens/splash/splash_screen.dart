@@ -9,11 +9,10 @@ import 'package:sixam_mart/controller/wishlist_controller.dart';
 import 'package:sixam_mart/data/model/body/notification_body.dart';
 import 'package:sixam_mart/helper/route_helper.dart';
 import 'package:sixam_mart/util/app_constants.dart';
-import 'package:sixam_mart/util/dimensions.dart';
-import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/view/base/no_internet_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:video_player/video_player.dart';
 
 class SplashScreen extends StatefulWidget {
   final NotificationBody? body;
@@ -26,10 +25,23 @@ class SplashScreen extends StatefulWidget {
 class SplashScreenState extends State<SplashScreen> {
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
   late StreamSubscription<ConnectivityResult> _onConnectivityChanged;
+  late VideoPlayerController _controller;
+  bool _isPlaying = false;
 
   @override
   void initState() {
     super.initState();
+    _controller = VideoPlayerController.asset('assets/videos/splash.mp4')
+      ..initialize().then((value) {
+        setState(() {});
+        _controller.play();
+        _isPlaying = true;
+      })
+      ..addListener(() {
+        if (_controller.value.position == _controller.value.duration) {
+          _route();
+        }
+      });
 
     bool firstTime = true;
     _onConnectivityChanged = Connectivity()
@@ -63,7 +75,10 @@ class SplashScreenState extends State<SplashScreen> {
         Get.find<SplashController>().cacheModule != null) {
       Get.find<CartController>().getCartData();
     }
-    _route();
+
+    Future.delayed(const Duration(seconds: 3)).then((_) {
+      _route();
+    });
   }
 
   @override
@@ -71,6 +86,7 @@ class SplashScreenState extends State<SplashScreen> {
     super.dispose();
 
     _onConnectivityChanged.cancel();
+    _controller.dispose();
   }
 
   void _route() {
@@ -158,40 +174,25 @@ class SplashScreenState extends State<SplashScreen> {
 
     return Scaffold(
       key: _globalKey,
-      body: GetBuilder<SplashController>(
-        builder: (splashController) {
-          return Center(
-            child: splashController.hasConnection
-                ? Stack(
-                    children: [
-                      Image.asset(
-                        Images.splash,
-                        fit: BoxFit.cover,
-                        height: double.infinity, // Cover the full screen height
-                        width: double.infinity, // Cover the full screen width
-                      ),
-                      const Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SizedBox(height: Dimensions.paddingSizeSmall),
-                            // Text(AppConstants.APP_NAME, style: robotoMedium.copyWith(fontSize: 25)),
-                          ],
-                        ),
-                      ),
-                    ],
-                  )
-                : NoInternetScreen(
-                    child: SplashScreen(
-                      body: widget.body,
+      body: GetBuilder<SplashController>(builder: (splashController) {
+        return Center(
+          child: splashController.hasConnection
+              ? Stack(
+                  children: [
+                    VideoPlayer(_controller),
+                    Center(
+                      child: _isPlaying
+                          ? const SizedBox()
+                          : CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  Theme.of(context).primaryColor),
+                            ),
                     ),
-                  ),
-          );
-        },
-      ),
+                  ],
+                )
+              : NoInternetScreen(child: SplashScreen(body: widget.body)),
+        );
+      }),
     );
   }
 }

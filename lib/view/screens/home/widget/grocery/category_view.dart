@@ -290,9 +290,9 @@ class FoodCategoryView extends StatelessWidget {
     return Stack(children: [
       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         SizedBox(
-          height: 160,
+          height: 350,
           child: categoryController.categoryList != null
-              ? ListView.builder(
+              ? GridView.builder(
                   controller: scrollController,
                   physics: const BouncingScrollPhysics(),
                   shrinkWrap: true,
@@ -300,7 +300,14 @@ class FoodCategoryView extends StatelessWidget {
                   padding: const EdgeInsets.only(
                       left: Dimensions.paddingSizeDefault,
                       top: Dimensions.paddingSizeDefault),
-                  itemCount: categoryController.categoryList!.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 1,
+                    mainAxisSpacing: 20,
+                    childAspectRatio: 5 / 3,
+                  ),
+                  // itemCount: categoryController.categoryList!.length,
+                  itemCount: 16,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.only(

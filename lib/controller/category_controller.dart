@@ -138,7 +138,7 @@ class CategoryController extends GetxController implements GetxService {
       }
       _type = type;
       if (notify) {
-        update();
+        // update();
       }
       _categoryStoreList = null;
     }

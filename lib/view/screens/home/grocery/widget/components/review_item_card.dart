@@ -90,7 +90,7 @@ class ReviewItemCard extends StatelessWidget {
                         ),
                       ),
                       Expanded(
-                        flex: 4,
+                        flex: 2,
                         child: Padding(
                           padding:
                               const EdgeInsets.all(Dimensions.paddingSizeSmall),
@@ -100,13 +100,16 @@ class ReviewItemCard extends StatelessWidget {
                                 : CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                item!.storeName!,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: robotoRegular.copyWith(
-                                    color: Theme.of(context).disabledColor,
-                                    fontSize: Dimensions.fontSizeSmall),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  item!.storeName!,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: robotoRegular.copyWith(
+                                      color: Theme.of(context).disabledColor,
+                                      fontSize: Dimensions.fontSizeSmall),
+                                ),
                               ),
 
                               Text(item!.name!,
@@ -173,7 +176,7 @@ class ReviewItemCard extends StatelessWidget {
             )
           : Container(
               width: 210,
-              height: 285,
+              height: 255,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
                 color: Theme.of(context).cardColor,
@@ -186,7 +189,7 @@ class ReviewItemCard extends StatelessWidget {
                 ],
               ),
               child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
                       child: Stack(children: [
@@ -202,8 +205,8 @@ class ReviewItemCard extends StatelessWidget {
                                   '${Get.find<SplashController>().configModel!.baseUrls!.itemImageUrl}'
                                   '/${item!.image}',
                               fit: BoxFit.cover,
-                              width: double.infinity,
-                              height: double.infinity,
+                              width: 170,
+                              height: 170,
                             ),
                           ),
                         ),
@@ -357,11 +360,15 @@ class ReviewItemCard extends StatelessWidget {
                                             const SizedBox(
                                                 height: Dimensions
                                                     .paddingSizeExtraSmall),
-                                            Text(item!.name!,
-                                                style: robotoBold,
-                                                maxLines: 1,
-                                                overflow:
-                                                    TextOverflow.ellipsis),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 2.0, bottom: 2),
+                                              child: Text(item!.name!,
+                                                  style: robotoBold,
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis),
+                                            ),
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
@@ -433,18 +440,27 @@ class ReviewItemCard extends StatelessWidget {
                                                       : const SizedBox(),
                                                   // SizedBox(height: item!.discount! > 0 ? Dimensions.paddingSizeExtraSmall : 0),
 
-                                                  Text(
-                                                    PriceConverter.convertPrice(
-                                                      Get.find<ItemController>()
-                                                          .getStartingPrice(
-                                                              item!),
-                                                      discount: item!.discount,
-                                                      discountType:
-                                                          item!.discountType,
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 2.0,
+                                                            bottom: 2),
+                                                    child: Text(
+                                                      PriceConverter
+                                                          .convertPrice(
+                                                        Get.find<
+                                                                ItemController>()
+                                                            .getStartingPrice(
+                                                                item!),
+                                                        discount:
+                                                            item!.discount,
+                                                        discountType:
+                                                            item!.discountType,
+                                                      ),
+                                                      style: robotoMedium,
+                                                      textDirection:
+                                                          TextDirection.ltr,
                                                     ),
-                                                    style: robotoMedium,
-                                                    textDirection:
-                                                        TextDirection.ltr,
                                                   ),
                                                 ]),
                                           ],
