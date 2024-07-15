@@ -507,9 +507,29 @@ class RouteHelper {
     GetPage(
         name: search,
         page: () => getRoute(SearchScreen(queryText: Get.parameters['query']))),
+    // GetPage(
+    //     name: store,
+    //     page: () {
+    //       return getRoute(
+    //           Get.arguments ??
+    //               StoreScreen(
+    //                 store: Store(
+    //                     id: Get.parameters['id'] != 'null' &&
+    //                             Get.parameters['id'] != null
+    //                         ? int.parse(Get.parameters['id']!)
+    //                         : null),
+    //                 fromModule: Get.parameters['page'] != null &&
+    //                     Get.parameters['page'] == 'module',
+    //                 slug: Get.parameters['slug'] ?? '',
+    //               ),
+    //           byPuss: Get.parameters['slug']?.isNotEmpty ?? false);
+    //     }),
     GetPage(
         name: store,
         page: () {
+          List<int> decode =
+              base64Decode(Get.parameters['name']!.replaceAll(' ', '+'));
+          String data = utf8.decode(decode);
           return getRoute(
               Get.arguments ??
                   StoreScreen(
@@ -521,6 +541,7 @@ class RouteHelper {
                     fromModule: Get.parameters['page'] != null &&
                         Get.parameters['page'] == 'module',
                     slug: Get.parameters['slug'] ?? '',
+                    categoryName: data,
                   ),
               byPuss: Get.parameters['slug']?.isNotEmpty ?? false);
         }),
@@ -653,7 +674,24 @@ class RouteHelper {
                                   ? HtmlType.refund
                                   : HtmlType.aboutUs,
             )),
-    GetPage(name: categories, page: () => getRoute(const CategoryScreen())),
+    // GetPage(name: categories, page: () => getRoute(const CategoryScreen())),
+    GetPage(
+      name: categories,
+      page: () {
+        final arguments = Get.arguments;
+        final store = arguments != null && arguments.containsKey('store')
+            ? arguments['store'] as Store
+            : Store(
+                id: Get.parameters['id'] != 'null' &&
+                        Get.parameters['id'] != null
+                    ? int.parse(Get.parameters['id']!)
+                    : null,
+              );
+
+        return CategoryScreen(store: store);
+      },
+    ),
+
     GetPage(
         name: categoryItem,
         page: () {

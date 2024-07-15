@@ -13,13 +13,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/view/base/web_page_title_widget.dart';
 import 'package:sixam_mart/data/model/response/store_model.dart';
+import 'package:sixam_mart/view/screens/store/store_screen.dart';
 
 class CategoryScreen extends StatefulWidget {
-  // final Store? store;
-  const CategoryScreen({
-    super.key,
-  });
-  // const CategoryScreen({super.key, required this.store});
+  final Store? store;
+
+  const CategoryScreen({super.key, required this.store});
 
   @override
   State<CategoryScreen> createState() => _CategoryScreenState();
@@ -36,7 +35,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final store = widget.store ?? Get.arguments['store'];
+    final store = widget.store ?? Get.arguments['store'];
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: CustomAppBar(title: 'categories'.tr),
@@ -81,27 +80,29 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                           catController.categoryList!.length,
                                       itemBuilder: (context, index) {
                                         return InkWell(
-                                          // onTap: () {
-                                          //   Get.toNamed(
-                                          //     RouteHelper.getStoreRoute(
-                                          //         id: widget.store?.id,
-                                          //         page: 'item'),
-                                          //     arguments: {
-                                          //       'store': store,
-                                          //       'fromModule': false,
-                                          //       'selectedCategory':
-                                          //           catController
-                                          //               .categoryList![index],
-                                          //     },
-                                          //   );
-                                          // },
-                                          onTap: () => Get.toNamed(
-                                              RouteHelper.getCategoryItemRoute(
-                                            catController
-                                                .categoryList![index].id,
-                                            catController
-                                                .categoryList![index].name!,
-                                          )),
+                                          onTap: () {
+                                            // Get.toNamed(
+                                            //   RouteHelper.getStoreRoute(
+                                            //       id: widget.store?.id,
+                                            //       page: 'item'),
+                                            //   arguments: {
+                                            //     'store': widget.store,
+                                            //     'fromModule': false,
+                                            //     'selectedCategory':
+                                            //         catController
+                                            //             .categoryList![index],
+                                            //   },
+                                            // );
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      StoreScreen(
+                                                        store: store,
+                                                        fromModule: false,
+                                                      )),
+                                            );
+                                          },
                                           child: Container(
                                             decoration: BoxDecoration(
                                               color:

@@ -54,7 +54,7 @@ class StoreCardWithDistance extends StatelessWidget {
         }
         Get.toNamed(
           RouteHelper.getStoreRoute(id: store.id, page: 'store'),
-          arguments: StoreScreen(store: store, fromModule: false),
+          arguments: StoreScreen(store: store, fromModule: false, categoryName: '',),
         );
       },
       child: Stack(

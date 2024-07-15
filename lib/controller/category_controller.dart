@@ -63,15 +63,37 @@ class CategoryController extends GetxController implements GetxService {
     }
   }
 
+  // void getSubCategoryList(String? categoryID) async {
+  //   _subCategoryIndex = 0;
+  //   _subCategoryList = null;
+  //   _categoryItemList = null;
+  //   Response response = await categoryRepo.getSubCategoryList(categoryID);
+  //   if (response.statusCode == 200) {
+  //     _subCategoryList = [];
+  //     _subCategoryList!
+  //         .add(CategoryModel(id: int.parse(categoryID!), name: 'all'.tr));
+  //     response.body.forEach((category) =>
+  //         _subCategoryList!.add(CategoryModel.fromJson(category)));
+  //     getCategoryItemList(categoryID, 1, 'all', false);
+  //   } else {
+  //     ApiChecker.checkApi(response);
+  //   }
+  // }
+
   void getSubCategoryList(String? categoryID) async {
+    if (categoryID == null) {
+      // Handle the case where categoryID is null
+      print("Category ID is null");
+      return;
+    }
+
     _subCategoryIndex = 0;
-    _subCategoryList = null;
+    _subCategoryList = [];
     _categoryItemList = null;
     Response response = await categoryRepo.getSubCategoryList(categoryID);
     if (response.statusCode == 200) {
-      _subCategoryList = [];
       _subCategoryList!
-          .add(CategoryModel(id: int.parse(categoryID!), name: 'all'.tr));
+          .add(CategoryModel(id: int.parse(categoryID), name: 'all'.tr));
       response.body.forEach((category) =>
           _subCategoryList!.add(CategoryModel.fromJson(category)));
       getCategoryItemList(categoryID, 1, 'all', false);

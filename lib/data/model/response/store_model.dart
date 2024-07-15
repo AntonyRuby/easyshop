@@ -79,6 +79,7 @@ class Store {
   String? announcementMessage;
   int? itemCount;
   List<Items>? items;
+  int? isRestaurant;
 
   Store({
     this.id,
@@ -124,6 +125,7 @@ class Store {
     this.announcementMessage,
     this.itemCount,
     this.items,
+    this.isRestaurant,
   });
 
   Store.fromJson(Map<String, dynamic> json) {

@@ -76,8 +76,12 @@ class SplashScreenState extends State<SplashScreen> {
       Get.find<CartController>().getCartData();
     }
 
-    Future.delayed(const Duration(seconds: 3)).then((_) {
-      _route();
+    // Wait for the data to be loaded
+    Get.find<SplashController>().getConfigData().then((isSuccess) {
+      if (isSuccess) {
+        // Navigate away from the SplashScreen
+        _route();
+      }
     });
   }
 
