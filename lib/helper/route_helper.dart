@@ -527,9 +527,9 @@ class RouteHelper {
     GetPage(
         name: store,
         page: () {
-          List<int> decode =
-              base64Decode(Get.parameters['name']!.replaceAll(' ', '+'));
-          String data = utf8.decode(decode);
+          // List<int> decode =
+          //     base64Decode(Get.parameters['name']!.replaceAll(' ', '+'));
+          // String data = utf8.decode(decode);
           return getRoute(
               Get.arguments ??
                   StoreScreen(
@@ -541,7 +541,7 @@ class RouteHelper {
                     fromModule: Get.parameters['page'] != null &&
                         Get.parameters['page'] == 'module',
                     slug: Get.parameters['slug'] ?? '',
-                    categoryName: data,
+                    // categoryName: data,
                   ),
               byPuss: Get.parameters['slug']?.isNotEmpty ?? false);
         }),

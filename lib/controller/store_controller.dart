@@ -12,6 +12,7 @@ import 'package:sixam_mart/data/model/response/store_banner_model.dart';
 import 'package:sixam_mart/data/model/response/store_model.dart';
 import 'package:sixam_mart/data/model/response/review_model.dart';
 import 'package:sixam_mart/data/model/response/zone_response_model.dart';
+import 'package:sixam_mart/data/repository/category_repo.dart';
 import 'package:sixam_mart/data/repository/store_repo.dart';
 import 'package:sixam_mart/helper/date_converter.dart';
 import 'package:get/get.dart';
@@ -21,8 +22,16 @@ import 'package:sixam_mart/view/screens/home/home_screen.dart';
 
 class StoreController extends GetxController implements GetxService {
   final StoreRepo storeRepo;
-  StoreController({required this.storeRepo});
+  final CategoryRepo? categoryRepo;
 
+  StoreController({required this.storeRepo, this.categoryRepo});
+  List<CategoryModel>? _subCategoryList;
+
+  int _subCategoryIndex = 0;
+  List<Item>? _categoryItemList;
+  List<Store>? _categoryStoreList;
+  List<Item>? get categoryItemList => _categoryItemList;
+  List<Store>? get categoryStoreList => _categoryStoreList;
   StoreModel? _storeModel;
   List<Store>? _popularStoreList;
   List<Store>? _latestStoreList;
@@ -47,6 +56,12 @@ class StoreController extends GetxController implements GetxService {
   bool _isSearching = false;
   List<StoreBannerModel>? _storeBanners;
   List<Store>? _recommendedStoreList;
+  int _offset = 1;
+  int? _pageSize;
+  int? _restPageSize;
+  bool _isStore = false;
+  int get subCategoryIndex => _subCategoryIndex;
+  List<bool>? _interestSelectedList;
 
   StoreModel? get storeModel => _storeModel;
   List<Store>? get popularStoreList => _popularStoreList;
@@ -72,6 +87,11 @@ class StoreController extends GetxController implements GetxService {
   bool get isSearching => _isSearching;
   List<StoreBannerModel>? get storeBanners => _storeBanners;
   List<Store>? get recommendedStoreList => _recommendedStoreList;
+  List<CategoryModel>? get subCategoryList => _subCategoryList;
+  int get offset => _offset;
+  int? get pageSize => _pageSize;
+  int? get restPageSize => _restPageSize;
+  List<bool>? get interestSelectedList => _interestSelectedList;
 
   String filteringUrl(String slug) {
     List<String> routes = Get.currentRoute.split('?');
@@ -82,6 +102,11 @@ class StoreController extends GetxController implements GetxService {
       replace = '${routes[0]}?slug=${_store!.id}';
     }
     return replace;
+  }
+
+  void addInterestSelection(int index) {
+    _interestSelectedList![index] = !_interestSelectedList![index];
+    update();
   }
 
   void pickPrescriptionImage(
@@ -118,6 +143,133 @@ class StoreController extends GetxController implements GetxService {
       _currentState = true;
       update();
     });
+  }
+
+  void getSubCategoryList(String? categoryID) async {
+    if (categoryID == null) {
+      // Handle the case where categoryID is null
+      print("Category ID is null");
+      return;
+    }
+
+    _subCategoryIndex = 0;
+    _subCategoryList = [];
+    _categoryItemList = null;
+    Response response = await categoryRepo!.getSubCategoryList(categoryID);
+    if (response.statusCode == 200) {
+      _subCategoryList!
+          .add(CategoryModel(id: int.parse(categoryID), name: 'all'.tr));
+      response.body.forEach((category) =>
+          _subCategoryList!.add(CategoryModel.fromJson(category)));
+      getCategoryItemList(categoryID, 1, 'all', false);
+    } else {
+      ApiChecker.checkApi(response);
+    }
+  }
+
+  void setSubCategoryIndex(int index, String? categoryID) {
+    _subCategoryIndex = index;
+    if (_isStore) {
+      getCategoryStoreList(
+          _subCategoryIndex == 0
+              ? categoryID
+              : _subCategoryList![index].id.toString(),
+          1,
+          _type,
+          true);
+    } else {
+      getCategoryItemList(
+          _subCategoryIndex == 0
+              ? categoryID
+              : _subCategoryList![index].id.toString(),
+          1,
+          _type,
+          true);
+    }
+  }
+
+  Future<void> getCategoryList(bool reload, {bool allCategory = false}) async {
+    if (_categoryList == null || reload) {
+      _categoryList = null;
+      Response? response = await categoryRepo?.getCategoryList(allCategory);
+      if (response != null) {
+        if (response.statusCode == 200) {
+          _categoryList = [];
+          _interestSelectedList = [];
+          response.body.forEach((category) {
+            _categoryList!.add(CategoryModel.fromJson(category));
+            _interestSelectedList!.add(false);
+          });
+        } else {
+          ApiChecker.checkApi(response);
+        }
+      } else {
+        // handle the case when response is null
+        // ApiChecker.checkApi(response!);
+      }
+      update();
+    }
+  }
+
+  void getCategoryItemList(
+      String? categoryID, int offset, String type, bool notify) async {
+    _offset = offset;
+    if (offset == 1) {
+      if (_type == type) {
+        _isSearching = false;
+      }
+      _type = type;
+      if (notify) {
+        update();
+      }
+      _categoryItemList = null;
+    }
+    Response response =
+        await categoryRepo!.getCategoryItemList(categoryID, offset, type);
+    if (response.statusCode == 200) {
+      if (offset == 1) {
+        _categoryItemList = [];
+      }
+      _categoryItemList!.addAll(ItemModel.fromJson(response.body).items!);
+      _pageSize = ItemModel.fromJson(response.body).totalSize;
+      _isLoading = false;
+    } else {
+      ApiChecker.checkApi(response);
+    }
+    update();
+  }
+
+  void getCategoryStoreList(
+      String? categoryID, int offset, String type, bool notify) async {
+    _offset = offset;
+    if (offset == 1) {
+      if (_type == type) {
+        _isSearching = false;
+      }
+      _type = type;
+      if (notify) {
+        // update();
+      }
+      _categoryStoreList = null;
+    }
+    Response? response =
+        await categoryRepo?.getCategoryStoreList(categoryID, offset, type);
+    if (response != null) {
+      if (response.statusCode == 200) {
+        if (offset == 1) {
+          _categoryStoreList = [];
+        }
+        _categoryStoreList!.addAll(StoreModel.fromJson(response.body).stores!);
+        _restPageSize = ItemModel.fromJson(response.body).totalSize;
+        _isLoading = false;
+      } else {
+        ApiChecker.checkApi(response);
+      }
+    } else {
+      // handle the case when response is null
+      // ApiChecker.checkApi(response!);
+    }
+    update();
   }
 
   Future<void> getRestaurantRecommendedItemList(
