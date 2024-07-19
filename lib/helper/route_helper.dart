@@ -48,7 +48,6 @@ import 'package:sixam_mart/view/screens/forget/forget_pass_screen.dart';
 import 'package:sixam_mart/view/screens/forget/new_pass_screen.dart';
 import 'package:sixam_mart/view/screens/forget/verification_screen.dart';
 import 'package:sixam_mart/view/screens/html/html_viewer_screen.dart';
-import 'package:sixam_mart/view/screens/interest/interest_screen.dart';
 import 'package:sixam_mart/view/screens/language/language_screen.dart';
 import 'package:sixam_mart/view/screens/location/access_location_screen.dart';
 import 'package:sixam_mart/view/screens/location/map_screen.dart';
@@ -468,7 +467,7 @@ class RouteHelper {
                     canRoute: Get.parameters['route'] == 'true',
                   );
         }),
-    GetPage(name: interest, page: () => const InterestScreen()),
+
     GetPage(
         name: main,
         page: () => getRoute(DashboardScreen(
