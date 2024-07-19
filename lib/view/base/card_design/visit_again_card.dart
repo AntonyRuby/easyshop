@@ -57,7 +57,7 @@ class VisitAgainCard extends StatelessWidget {
                   image:
                       '${Get.find<SplashController>().configModel!.baseUrls!.storeImageUrl}/${store.logo}',
                   fit: BoxFit.cover,
-                  height: 124,
+                  height: 114,
                   width: 144,
                 ),
               ),

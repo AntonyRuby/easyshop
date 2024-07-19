@@ -231,11 +231,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ResponsiveHelper.isDesktop(context)
                                       ? Colors.transparent
                                       : Theme.of(context).colorScheme.surface,
-                              toolbarHeight: 100,
+                              toolbarHeight: 115,
                               title: Container(
                                 width: Dimensions.webMaxWidth,
                                 height: Get.find<LocalizationController>().isLtr
-                                    ? 100
+                                    ? 120
                                     : 80,
                                 color: Theme.of(context).colorScheme.surface,
                                 child: Column(
@@ -350,15 +350,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               CrossAxisAlignment
                                                                   .stretch,
                                                           children: [
-                                                            Text(
-                                                              'Delivering to:',
-                                                              style:
-                                                                  robotoRegular
-                                                                      .copyWith(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize: Dimensions
-                                                                    .fontSizeExtraSmall,
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .only(
+                                                                      bottom:
+                                                                          2.0),
+                                                              child: Text(
+                                                                'Delivering to:',
+                                                                style:
+                                                                    robotoRegular
+                                                                        .copyWith(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize:
+                                                                      Dimensions
+                                                                          .fontSizeExtraSmall,
+                                                                ),
                                                               ),
                                                             ),
                                                             Text(
@@ -454,8 +462,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     delegate: SliverDelegate(
                                         child: Center(
                                             child: Container(
-                                      height: 50, width: Dimensions.webMaxWidth,
-                                      // color: Theme.of(context).colorScheme.background,
+                                      height: 50,
+                                      width: Dimensions.webMaxWidth,
                                       padding: const EdgeInsets.symmetric(
                                           horizontal:
                                               Dimensions.paddingSizeSmall),

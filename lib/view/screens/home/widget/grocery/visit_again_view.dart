@@ -48,7 +48,7 @@ class _VisitAgainViewState extends State<VisitAgainView> {
                         CarouselSlider.builder(
                           itemCount: stores.length,
                           options: CarouselOptions(
-                            aspectRatio: 2.0,
+                            aspectRatio: 1.90,
                             disableCenter: true,
                             viewportFraction: 0.5,
                             padEnds: false,

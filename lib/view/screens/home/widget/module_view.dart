@@ -13,7 +13,9 @@ import 'package:sixam_mart/view/base/title_widget.dart';
 import 'package:sixam_mart/view/screens/address/widget/address_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sixam_mart/view/screens/home/grocery/widget/components/review_item_card.dart';
 import 'package:sixam_mart/view/screens/home/widget/banner_view.dart';
+import 'package:sixam_mart/view/screens/home/widget/popular_item_view.dart';
 import 'package:sixam_mart/view/screens/home/widget/popular_store_view.dart';
 import 'package:sixam_mart/view/screens/home/widget/grocery/visit_again_view.dart';
 import 'package:sixam_mart/view/screens/home/widget/grocery/best_reviewed_item_view.dart';
@@ -198,6 +200,7 @@ class ModuleView extends StatelessWidget {
       //     fit: BoxFit.fitWidth,
       //   ),
       // ),
+     
       const BestReviewItemView(),
       const PopularStoreView(isPopular: false, isFeatured: true),
       const SizedBox(height: 120),
