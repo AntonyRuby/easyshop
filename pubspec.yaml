@@ -51,6 +51,7 @@ dependencies:
   universal_html: ^2.0.8
   url_launcher: ^6.1.2
   url_strategy: ^0.2.0
+  video_player: ^2.3.4
   youtube_player_iframe: ^3.1.0
 
 dependency_overrides:
@@ -67,6 +68,7 @@ flutter:
 
   assets:
     - assets/image/
+    - assets/videos/splash.mp4
     - assets/language/
 
   fonts:

@@ -75,7 +75,7 @@ class _ItemsViewState extends State<ItemsView> {
                     mainAxisSpacing: ResponsiveHelper.isDesktop(context)
                         ? Dimensions.paddingSizeExtremeLarge
                         : widget.stores != null && widget.isStore
-                            ? Dimensions.paddingSizeLarge
+                            ? Dimensions.paddingSizeExtremeLarge
                             : Dimensions.paddingSizeSmall,
                     // childAspectRatio: ResponsiveHelper.isDesktop(context) && widget.isStore ? (1/0.6)
                     //     : ResponsiveHelper.isMobile(context) ? widget.stores != null && widget.isStore ? 2 : 3.8

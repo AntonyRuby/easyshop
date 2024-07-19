@@ -12,9 +12,13 @@ import 'package:sixam_mart/view/base/no_data_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/view/base/web_page_title_widget.dart';
+import 'package:sixam_mart/data/model/response/store_model.dart';
+import 'package:sixam_mart/view/screens/store/store_screen.dart';
 
 class CategoryScreen extends StatefulWidget {
-  const CategoryScreen({Key? key}) : super(key: key);
+  final Store? store;
+
+  const CategoryScreen({super.key, required this.store});
 
   @override
   State<CategoryScreen> createState() => _CategoryScreenState();
@@ -31,8 +35,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final store = widget.store ?? Get.arguments['store'];
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: CustomAppBar(title: 'categories'.tr),
       endDrawer: const MenuDrawer(),
       endDrawerEnableOpenDragGesture: false,
@@ -63,7 +68,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                             : ResponsiveHelper.isTab(context)
                                                 ? 4
                                                 : 3,
-                                        childAspectRatio: (1 / 1),
+                                        childAspectRatio: (0.75 / 0.90),
                                         mainAxisSpacing:
                                             Dimensions.paddingSizeSmall,
                                         crossAxisSpacing:
@@ -75,13 +80,30 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                           catController.categoryList!.length,
                                       itemBuilder: (context, index) {
                                         return InkWell(
-                                          onTap: () => Get.toNamed(
-                                              RouteHelper.getCategoryItemRoute(
-                                            catController
-                                                .categoryList![index].id,
-                                            catController
-                                                .categoryList![index].name!,
-                                          )),
+                                          onTap: () {
+                                            //   Get.toNamed(
+                                            //     RouteHelper.getStoreRoute(
+                                            //         id: widget.store?.id,
+                                            //         page: 'item'),
+                                            //     arguments: {
+                                            //       'store': widget.store,
+                                            //       'fromModule': false,
+                                            //       'selectedCategory':
+                                            //           catController
+                                            //               .categoryList![index]
+                                            //               .id,
+                                            //     },
+                                            //   );
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      StoreScreen(
+                                                        store: store,
+                                                        fromModule: false,
+                                                      )),
+                                            );
+                                          },
                                           child: Container(
                                             decoration: BoxDecoration(
                                               color:
@@ -107,8 +129,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                                             Dimensions
                                                                 .radiusSmall),
                                                     child: CustomImage(
-                                                      height: 50,
-                                                      width: 50,
+                                                      height: 100,
+                                                      width: 100,
                                                       fit: BoxFit.cover,
                                                       image:
                                                           '${Get.find<SplashController>().configModel!.baseUrls!.categoryImageUrl}/${catController.categoryList![index].image}',
@@ -116,7 +138,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                                   ),
                                                   const SizedBox(
                                                       height: Dimensions
-                                                          .paddingSizeExtraSmall),
+                                                          .paddingSizeSmall),
                                                   Text(
                                                     catController
                                                         .categoryList![index]

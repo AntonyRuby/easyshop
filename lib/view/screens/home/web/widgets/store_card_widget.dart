@@ -46,10 +46,33 @@ class StoreCardWidget extends StatelessWidget {
                     }
                   }
                 }
-                Get.toNamed(
-                  RouteHelper.getStoreRoute(id: store!.id, page: 'item'),
-                  arguments: StoreScreen(store: store, fromModule: false),
-                );
+
+                ModuleModel? module = Get.find<SplashController>().module;
+
+                if (module != null) {
+                  if (module.moduleType == 'grocery' ||
+                      module.moduleType == 'Butcheries' ||
+                      module.moduleType == 'Pharmacies' ||
+                      module.moduleType == 'PetShop') {
+                    Get.toNamed(
+                      RouteHelper.getCategoryRoute(),
+                      arguments: {
+                        'store': store
+                      }, // Pass store object as an argument
+                      parameters: {
+                        'id': store!.id.toString(), // Pass ID as a parameter
+                      },
+                    );
+                  } else {
+                    Get.toNamed(
+                      RouteHelper.getStoreRoute(id: store!.id, page: 'item'),
+                      arguments: StoreScreen(store: store, fromModule: false),
+                    );
+                  }
+                } else {
+                  // Handle the case when module is null
+                  print('Module is null');
+                }
               }
             },
             borderRadius: BorderRadius.circular(Dimensions.radiusDefault),

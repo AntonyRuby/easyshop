@@ -653,7 +653,24 @@ class RouteHelper {
                                   ? HtmlType.refund
                                   : HtmlType.aboutUs,
             )),
-    GetPage(name: categories, page: () => getRoute(const CategoryScreen())),
+    // GetPage(name: categories, page: () => getRoute(const CategoryScreen())),
+    GetPage(
+      name: categories,
+      page: () {
+        final arguments = Get.arguments;
+        final store = arguments != null && arguments.containsKey('store')
+            ? arguments['store'] as Store
+            : Store(
+                id: Get.parameters['id'] != 'null' &&
+                        Get.parameters['id'] != null
+                    ? int.parse(Get.parameters['id']!)
+                    : null,
+              );
+
+        return CategoryScreen(store: store);
+      },
+    ),
+
     GetPage(
         name: categoryItem,
         page: () {
