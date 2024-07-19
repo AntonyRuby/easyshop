@@ -7,13 +7,15 @@ import 'package:sixam_mart/util/styles.dart';
 class PaginatedListView extends StatefulWidget {
   final ScrollController scrollController;
   final Function(int? offset) onPaginate;
+  final Function? onPaginateEnd;
   final int? totalSize;
   final int? offset;
   final Widget itemView;
   final bool enabledPagination;
   final bool reverse;
+
   const PaginatedListView({
-    super.key,
+    Key? key,
     required this.scrollController,
     required this.onPaginate,
     required this.totalSize,
@@ -21,7 +23,8 @@ class PaginatedListView extends StatefulWidget {
     required this.itemView,
     this.enabledPagination = true,
     this.reverse = false,
-  });
+    this.onPaginateEnd,
+  }) : super(key: key);
 
   @override
   State<PaginatedListView> createState() => _PaginatedListViewState();
@@ -41,6 +44,12 @@ class _PaginatedListViewState extends State<PaginatedListView> {
 
     widget.scrollController.addListener(() {
       if (widget.scrollController.position.pixels ==
+          widget.scrollController.position.maxScrollExtent) {
+        if (widget.onPaginateEnd != null) {
+          widget.onPaginateEnd!();
+        }
+      }
+      if (widget.scrollController.position.pixels ==
               widget.scrollController.position.maxScrollExtent &&
           widget.totalSize != null &&
           !_isLoading &&
@@ -53,10 +62,8 @@ class _PaginatedListViewState extends State<PaginatedListView> {
   }
 
   void _paginate() async {
-    if (!mounted) return;
     int pageSize = (widget.totalSize! / 10).ceil();
     if (_offset! < pageSize && !_offsetList.contains(_offset! + 1)) {
-      if (!mounted) return;
       setState(() {
         _offset = _offset! + 1;
         _offsetList.add(_offset);
@@ -68,8 +75,7 @@ class _PaginatedListViewState extends State<PaginatedListView> {
         _isLoading = false;
       });
     } else {
-      if (_isLoading) {
-        if (!mounted) return;
+      if (widget.enabledPagination != null) if (_isLoading) {
         setState(() {
           _isLoading = false;
         });

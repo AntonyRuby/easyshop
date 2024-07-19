@@ -1411,6 +1411,16 @@ class _StoreScreenState extends State<StoreScreen> {
                                         offset!,
                                         storeController.type,
                                         false),
+                                onPaginateEnd: () {
+                                  // Scroll to the top of the next category list
+                                  storeController.setCategoryIndex(
+                                      storeController.categoryIndex + 1);
+                                  scrollController.animateTo(
+                                    0, // Scroll to the top
+                                    duration: const Duration(milliseconds: 500),
+                                    curve: Curves.easeInOut,
+                                  );
+                                },
                                 totalSize:
                                     storeController.storeItemModel?.totalSize,
                                 offset: storeController.storeItemModel?.offset,
