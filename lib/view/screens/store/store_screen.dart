@@ -1169,7 +1169,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                             height: ResponsiveHelper.isDesktop(
                                                     context)
                                                 ? 150
-                                                : 125,
+                                                : 200,
                                             child: ListView.builder(
                                               scrollDirection: Axis.horizontal,
                                               itemCount: storeController
