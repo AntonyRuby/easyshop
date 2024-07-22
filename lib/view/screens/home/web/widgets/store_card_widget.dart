@@ -54,10 +54,14 @@ class StoreCardWidget extends StatelessWidget {
                       module.moduleType == 'Butcheries' ||
                       module.moduleType == 'Pharmacies' ||
                       module.moduleType == 'PetShop') {
+                    int selectedIndex = 0;
                     Get.toNamed(
                       RouteHelper.getCategoryRoute(),
                       arguments: {
-                        'store': store
+                        'store': store,
+                        'categoryID':
+                            store!.categoryIds![selectedIndex].toString(),
+                        'categoryName': store!.name ?? '',
                       }, // Pass store object as an argument
                       parameters: {
                         'id': store!.id.toString(), // Pass ID as a parameter

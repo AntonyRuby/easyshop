@@ -53,9 +53,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       SizedBox(
                         width: Dimensions.webMaxWidth,
                         child: GetBuilder<CategoryController>(
-                            builder: (catController) {
-                          return catController.categoryList != null
-                              ? catController.categoryList!.isNotEmpty
+                            builder: (categoryController) {
+                          return categoryController.categoryList != null
+                              ? categoryController.categoryList!.isNotEmpty
                                   ? GridView.builder(
                                       physics:
                                           const NeverScrollableScrollPhysics(),
@@ -76,8 +76,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                       ),
                                       padding: const EdgeInsets.all(
                                           Dimensions.paddingSizeSmall),
-                                      itemCount:
-                                          catController.categoryList!.length,
+                                      itemCount: categoryController
+                                          .categoryList!.length,
                                       itemBuilder: (context, index) {
                                         return InkWell(
                                           onTap: () {
@@ -94,6 +94,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                             //               .id,
                                             //     },
                                             //   );
+
+                                            //                      Get.toNamed(RouteHelper.getCategoryItemRoute(
+                                            //   categoryController.categoryList![index].id,
+                                            //   categoryController.categoryList![index].name!,
+                                            // )),
+
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -101,6 +107,18 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                                       StoreScreen(
                                                         store: store,
                                                         fromModule: false,
+                                                        selectedIndex: index,
+                                                        categoryID:
+                                                            categoryController
+                                                                .categoryList![
+                                                                    index]
+                                                                .id
+                                                                .toString(),
+                                                        categoryName:
+                                                            categoryController
+                                                                .categoryList![
+                                                                    index]
+                                                                .name!,
                                                       )),
                                             );
                                           },
@@ -133,14 +151,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                                       width: 100,
                                                       fit: BoxFit.cover,
                                                       image:
-                                                          '${Get.find<SplashController>().configModel!.baseUrls!.categoryImageUrl}/${catController.categoryList![index].image}',
+                                                          '${Get.find<SplashController>().configModel!.baseUrls!.categoryImageUrl}/${categoryController.categoryList![index].image}',
                                                     ),
                                                   ),
                                                   const SizedBox(
                                                       height: Dimensions
                                                           .paddingSizeSmall),
                                                   Text(
-                                                    catController
+                                                    categoryController
                                                         .categoryList![index]
                                                         .name!,
                                                     textAlign: TextAlign.center,

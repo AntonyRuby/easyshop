@@ -200,7 +200,7 @@ class ModuleView extends StatelessWidget {
       //     fit: BoxFit.fitWidth,
       //   ),
       // ),
-     
+
       const BestReviewItemView(),
       const PopularStoreView(isPopular: false, isFeatured: true),
       const SizedBox(height: 120),

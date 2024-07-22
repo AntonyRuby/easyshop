@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/controller/category_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
+import 'package:sixam_mart/data/model/response/item_model.dart';
 import 'package:sixam_mart/data/model/response/store_model.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/helper/route_helper.dart';
@@ -18,8 +19,7 @@ class CategoryItemScreen extends StatefulWidget {
   final String? categoryID;
   final String categoryName;
   const CategoryItemScreen(
-      {Key? key, required this.categoryID, required this.categoryName})
-      : super(key: key);
+      {super.key, required this.categoryID, required this.categoryName});
 
   @override
   CategoryItemScreenState createState() => CategoryItemScreenState();
@@ -342,6 +342,215 @@ class CategoryItemScreenState extends State<CategoryItemScreen> {
           )),
         ),
       );
+    });
+  }
+}
+
+class SubCategoryItemScreen extends StatefulWidget {
+  final String? categoryID;
+  final String categoryName;
+  const SubCategoryItemScreen(
+      {super.key, required this.categoryID, required this.categoryName});
+
+  @override
+  SubCategoryItemScreenState createState() => SubCategoryItemScreenState();
+}
+
+class SubCategoryItemScreenState extends State<SubCategoryItemScreen>
+    with TickerProviderStateMixin {
+  final ScrollController scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    Get.find<CategoryController>().getSubCategoryList(widget.categoryID);
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+              scrollController.position.maxScrollExtent &&
+          Get.find<CategoryController>().categoryItemList != null &&
+          !Get.find<CategoryController>().isLoading) {
+        int pageSize = (Get.find<CategoryController>().pageSize! / 10).ceil();
+        if (Get.find<CategoryController>().offset < pageSize) {
+          if (kDebugMode) {
+            print('end of the page');
+          }
+          Get.find<CategoryController>().showBottomLoader();
+          Get.find<CategoryController>().getCategoryItemList(
+            Get.find<CategoryController>().subCategoryIndex == 0
+                ? widget.categoryID
+                : Get.find<CategoryController>()
+                    .subCategoryList![
+                        Get.find<CategoryController>().subCategoryIndex]
+                    .id
+                    .toString(),
+            Get.find<CategoryController>().offset + 1,
+            Get.find<CategoryController>().type,
+            false,
+          );
+        }
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<CategoryController>(builder: (catController) {
+      List<Item>? item;
+      if (catController.isSearching
+          ? catController.searchItemList != null
+          : catController.categoryItemList != null) {
+        item = [];
+        if (catController.isSearching) {
+          item.addAll(catController.searchItemList!);
+        } else {
+          item.addAll(catController.categoryItemList!);
+        }
+      }
+
+      return Column(children: [
+        Row(
+          children: [
+            catController.isSearching
+                ? TextField(
+                    autofocus: true,
+                    textInputAction: TextInputAction.search,
+                    decoration: const InputDecoration(
+                      hintText: 'Search...',
+                      border: InputBorder.none,
+                    ),
+                    style: robotoRegular.copyWith(
+                        fontSize: Dimensions.fontSizeLarge),
+                    onSubmitted: (String query) {
+                      catController.searchData(
+                        query,
+                        catController.subCategoryIndex == 0
+                            ? widget.categoryID
+                            : catController
+                                .subCategoryList![
+                                    catController.subCategoryIndex]
+                                .id
+                                .toString(),
+                        catController.type,
+                      );
+                    })
+                : Text(widget.categoryName,
+                    style: robotoRegular.copyWith(
+                      fontSize: Dimensions.fontSizeLarge,
+                      color: Theme.of(context).textTheme.bodyLarge!.color,
+                    )),
+            IconButton(
+                onPressed: () => catController.toggleSearch(),
+                icon: Icon(
+                  catController.isSearching ? Icons.close_sharp : Icons.search,
+                  color: Theme.of(context).textTheme.bodyLarge!.color,
+                )),
+          ],
+        ),
+        (catController.subCategoryList != null && !catController.isSearching)
+            ? Container(
+                height: 40,
+                width: Dimensions.webMaxWidth,
+                color: Theme.of(context).cardColor,
+                padding: const EdgeInsets.symmetric(
+                    vertical: Dimensions.paddingSizeExtraSmall),
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: catController.subCategoryList!.length,
+                  padding:
+                      const EdgeInsets.only(left: Dimensions.paddingSizeSmall),
+                  physics: const BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () => catController.setSubCategoryIndex(
+                          index, widget.categoryID),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: Dimensions.paddingSizeSmall,
+                            vertical: Dimensions.paddingSizeExtraSmall),
+                        margin: const EdgeInsets.only(
+                            right: Dimensions.paddingSizeSmall),
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.circular(Dimensions.radiusSmall),
+                          color: index == catController.subCategoryIndex
+                              ? Theme.of(context).primaryColor.withOpacity(0.1)
+                              : Colors.transparent,
+                        ),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                catController.subCategoryList![index].name!,
+                                style: index == catController.subCategoryIndex
+                                    ? robotoMedium.copyWith(
+                                        fontSize: Dimensions.fontSizeSmall,
+                                        color: Theme.of(context).primaryColor)
+                                    : robotoRegular.copyWith(
+                                        fontSize: Dimensions.fontSizeSmall),
+                              ),
+                            ]),
+                      ),
+                    );
+                  },
+                ),
+              )
+            : const SizedBox(),
+        NotificationListener(
+          onNotification: (dynamic scrollNotification) {
+            if (scrollNotification is ScrollEndNotification) {
+              if (catController.isSearching) {
+                catController.searchData(
+                  catController.searchText,
+                  catController.subCategoryIndex == 0
+                      ? widget.categoryID
+                      : catController
+                          .subCategoryList![catController.subCategoryIndex].id
+                          .toString(),
+                  catController.type,
+                );
+              } else {
+                if (catController.offset <
+                    (Get.find<CategoryController>().pageSize! / 10).ceil()) {
+                  if (kDebugMode) {
+                    print('end of the page');
+                  }
+                  Get.find<CategoryController>().showBottomLoader();
+                  Get.find<CategoryController>().getCategoryItemList(
+                    catController.subCategoryIndex == 0
+                        ? widget.categoryID
+                        : catController
+                            .subCategoryList![catController.subCategoryIndex].id
+                            .toString(),
+                    catController.offset + 1,
+                    catController.type,
+                    false,
+                  );
+                }
+              }
+            }
+            return false;
+          },
+          child: SingleChildScrollView(
+            controller: scrollController,
+            child: ItemsView(
+              isStore: false,
+              items: item,
+              stores: null,
+              noDataText: 'no_category_item_found'.tr,
+            ),
+          ),
+        ),
+        catController.isLoading
+            ? Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                  child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).primaryColor)),
+                ),
+              )
+            : const SizedBox(),
+      ]);
     });
   }
 }

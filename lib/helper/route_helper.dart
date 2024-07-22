@@ -666,7 +666,9 @@ class RouteHelper {
                     : null,
               );
 
-        return CategoryScreen(store: store);
+        return CategoryScreen(
+          store: store,
+        );
       },
     ),
 

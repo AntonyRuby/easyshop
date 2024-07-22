@@ -31,6 +31,7 @@ import 'package:sixam_mart/view/base/veg_filter_widget.dart';
 import 'package:sixam_mart/view/base/web_item_view.dart';
 import 'package:sixam_mart/view/base/web_item_widget.dart';
 import 'package:sixam_mart/view/base/web_menu_bar.dart';
+import 'package:sixam_mart/view/screens/category/category_item_screen.dart';
 import 'package:sixam_mart/view/screens/checkout/checkout_screen.dart';
 import 'package:sixam_mart/view/screens/search/widget/custom_check_box.dart';
 import 'package:sixam_mart/view/screens/store/widget/customizable_space_bar.dart';
@@ -46,11 +47,17 @@ class StoreScreen extends StatefulWidget {
   final Store? store;
   final bool fromModule;
   final String slug;
+  final int? selectedIndex;
+  final String? categoryID;
+  final String? categoryName;
   const StoreScreen(
       {super.key,
       required this.store,
       required this.fromModule,
-      this.slug = ''});
+      this.slug = '',
+      this.selectedIndex,
+      this.categoryID,
+      this.categoryName});
 
   @override
   State<StoreScreen> createState() => _StoreScreenState();
@@ -73,6 +80,7 @@ class _StoreScreenState extends State<StoreScreen> {
   @override
   void dispose() {
     super.dispose();
+    Get.find<CategoryController>().getSubCategoryList(widget.categoryID);
 
     scrollController.dispose();
   }
@@ -1317,130 +1325,152 @@ class _StoreScreenState extends State<StoreScreen> {
                                             const SizedBox(
                                                 height: Dimensions
                                                     .paddingSizeSmall),
-                                            SizedBox(
-                                              height: 30,
-                                              child: ListView.builder(
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                itemCount: storeController
-                                                    .categoryList!.length,
-                                                padding: const EdgeInsets.only(
-                                                    left: Dimensions
-                                                        .paddingSizeSmall),
-                                                physics:
-                                                    const BouncingScrollPhysics(),
-                                                itemBuilder: (context, index) {
-                                                  return InkWell(
-                                                    onTap: () => storeController
-                                                        .setCategoryIndex(
-                                                            index),
-                                                    child: Container(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                          horizontal: Dimensions
-                                                              .paddingSizeSmall,
-                                                          vertical: Dimensions
-                                                              .paddingSizeExtraSmall),
-                                                      margin: const EdgeInsets
-                                                          .only(
-                                                          right: Dimensions
-                                                              .paddingSizeSmall),
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius
-                                                            .circular(Dimensions
-                                                                .radiusDefault),
-                                                        color: index ==
-                                                                storeController
-                                                                    .categoryIndex
-                                                            ? Theme.of(context)
-                                                                .primaryColor
-                                                                .withOpacity(
-                                                                    0.1)
-                                                            : Colors
-                                                                .transparent,
-                                                      ),
-                                                      child: Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Text(
-                                                              storeController
-                                                                  .categoryList![
-                                                                      index]
-                                                                  .name!,
-                                                              style: index ==
-                                                                      storeController
-                                                                          .categoryIndex
-                                                                  ? robotoMedium.copyWith(
-                                                                      fontSize:
-                                                                          Dimensions
-                                                                              .fontSizeSmall,
-                                                                      color: Theme.of(
-                                                                              context)
-                                                                          .primaryColor)
-                                                                  : robotoRegular
-                                                                      .copyWith(
-                                                                          fontSize:
-                                                                              Dimensions.fontSizeSmall),
-                                                            ),
-                                                          ]),
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            ),
+
+                                            // SizedBox(
+                                            //   height: 30,
+                                            //   child: ListView.builder(
+                                            //     scrollDirection:
+                                            //         Axis.horizontal,
+                                            //     itemCount: storeController
+                                            //         .categoryList!.length,
+                                            //     padding: const EdgeInsets.only(
+                                            //         left: Dimensions
+                                            //             .paddingSizeSmall),
+                                            //     physics:
+                                            //         const BouncingScrollPhysics(),
+                                            //     itemBuilder: (context, index) {
+                                            //       return InkWell(
+                                            //         onTap: () => storeController
+                                            //             .setCategoryIndex(
+                                            //                 index),
+                                            //         child: Container(
+                                            //           padding: const EdgeInsets
+                                            //               .symmetric(
+                                            //               horizontal: Dimensions
+                                            //                   .paddingSizeSmall,
+                                            //               vertical: Dimensions
+                                            //                   .paddingSizeExtraSmall),
+                                            //           margin: const EdgeInsets
+                                            //               .only(
+                                            //               right: Dimensions
+                                            //                   .paddingSizeSmall),
+                                            //           decoration: BoxDecoration(
+                                            //             borderRadius: BorderRadius
+                                            //                 .circular(Dimensions
+                                            //                     .radiusDefault),
+                                            //             color: index ==
+                                            //                     storeController
+                                            //                         .categoryIndex
+                                            //                 ? Theme.of(context)
+                                            //                     .primaryColor
+                                            //                     .withOpacity(
+                                            //                         0.1)
+                                            //                 : Colors
+                                            //                     .transparent,
+                                            //           ),
+                                            //           child: Column(
+                                            //               mainAxisAlignment:
+                                            //                   MainAxisAlignment
+                                            //                       .center,
+                                            //               children: [
+                                            //                 Text(
+                                            //                   storeController
+                                            //                       .categoryList![
+                                            //                           index]
+                                            //                       .name!,
+                                            //                   style: index ==
+                                            //                           storeController
+                                            //                               .categoryIndex
+                                            //                       ? robotoMedium.copyWith(
+                                            //                           fontSize:
+                                            //                               Dimensions
+                                            //                                   .fontSizeSmall,
+                                            //                           color: Theme.of(
+                                            //                                   context)
+                                            //                               .primaryColor)
+                                            //                       : robotoRegular
+                                            //                           .copyWith(
+                                            //                               fontSize:
+                                            //                                   Dimensions.fontSizeSmall),
+                                            //                 ),
+                                            //               ]),
+                                            //         ),
+                                            //       );
+                                            //     },
+                                            //   ),
+                                            // ),
                                           ],
                                         ),
                                       ))),
                                 )
                               : const SliverToBoxAdapter(child: SizedBox()),
+                      // ResponsiveHelper.isDesktop(context)
+                      //     ? const SliverToBoxAdapter(child: SizedBox())
+                      //     : SliverToBoxAdapter(
+                      //         child: Container(
+                      //         width: Dimensions.webMaxWidth,
+                      //         decoration: BoxDecoration(
+                      //           color: Theme.of(context).colorScheme.surface,
+                      //         ),
+                      //         child: PaginatedListView(
+                      //           scrollController: scrollController,
+                      //           onPaginate: (int? offset) =>
+                      //               storeController.getStoreItemList(
+                      //                   widget.store!.id,
+                      //                   offset!,
+                      //                   storeController.type,
+                      //                   false),
+                      //           onPaginateEnd: () {
+                      //             // Scroll to the top of the next category list
+                      //             storeController.setCategoryIndex(
+                      //                 storeController.categoryIndex + 1);
+                      //             scrollController.animateTo(
+                      //               0, // Scroll to the top
+                      //               duration: const Duration(milliseconds: 500),
+                      //               curve: Curves.easeInOut,
+                      //             );
+                      //           },
+                      //           totalSize:
+                      //               storeController.storeItemModel?.totalSize,
+                      //           offset: storeController.storeItemModel?.offset,
+                      //           itemView: ItemsView(
+                      //             isStore: false,
+                      //             stores: null,
+                      //             items: (storeController
+                      //                         .categoryList!.isNotEmpty &&
+                      //                     storeController.storeItemModel !=
+                      //                         null)
+                      //                 ? storeController.storeItemModel!.items
+                      //                 : null,
+                      //             inStorePage: true,
+                      //             padding: const EdgeInsets.symmetric(
+                      //               horizontal: Dimensions.paddingSizeSmall,
+                      //               vertical: Dimensions.paddingSizeSmall,
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       )),
+
                       ResponsiveHelper.isDesktop(context)
                           ? const SliverToBoxAdapter(child: SizedBox())
                           : SliverToBoxAdapter(
                               child: Container(
-                              width: Dimensions.webMaxWidth,
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.surface,
-                              ),
-                              child: PaginatedListView(
-                                scrollController: scrollController,
-                                onPaginate: (int? offset) =>
-                                    storeController.getStoreItemList(
-                                        widget.store!.id,
-                                        offset!,
-                                        storeController.type,
-                                        false),
-                                onPaginateEnd: () {
-                                  // Scroll to the top of the next category list
-                                  storeController.setCategoryIndex(
-                                      storeController.categoryIndex + 1);
-                                  scrollController.animateTo(
-                                    0, // Scroll to the top
-                                    duration: const Duration(milliseconds: 500),
-                                    curve: Curves.easeInOut,
-                                  );
-                                },
-                                totalSize:
-                                    storeController.storeItemModel?.totalSize,
-                                offset: storeController.storeItemModel?.offset,
-                                itemView: ItemsView(
-                                  isStore: false,
-                                  stores: null,
-                                  items: (storeController
-                                              .categoryList!.isNotEmpty &&
-                                          storeController.storeItemModel !=
-                                              null)
-                                      ? storeController.storeItemModel!.items
-                                      : null,
-                                  inStorePage: true,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: Dimensions.paddingSizeSmall,
-                                    vertical: Dimensions.paddingSizeSmall,
-                                  ),
+                                width: Dimensions.webMaxWidth,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.surface,
                                 ),
+                                child: widget.store != null
+                                    ? SubCategoryItemScreen(
+                                        categoryID: widget.store!
+                                            .categoryIds![widget.selectedIndex!]
+                                            .toString(),
+                                        categoryName: widget.store!.name ?? '',
+                                      )
+                                    : const Center(
+                                        child: Text(
+                                            'Loading...')), // or any other widget you want to display when store is null
                               ),
-                            )),
+                            )
                     ],
                   )
                 : const StoreDetailsScreenShimmerView();
