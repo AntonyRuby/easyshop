@@ -31,6 +31,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   void initState() {
     super.initState();
     Get.find<CategoryController>().getCategoryList(false);
+    debugPrint('storename ${widget.store!.name}');
   }
 
   @override
@@ -99,7 +100,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                             //   categoryController.categoryList![index].id,
                                             //   categoryController.categoryList![index].name!,
                                             // )),
-
+                                            debugPrint(
+                                                'categoryId ${categoryController.categoryList?[index].id}');
+                                            debugPrint(
+                                                'categoryName ${categoryController.categoryList?[index].name}');
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -110,7 +114,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                                         selectedIndex: index,
                                                         categoryID:
                                                             categoryController
-                                                                .categoryList![
+                                                                .categoryList?[
                                                                     index]
                                                                 .id
                                                                 .toString(),

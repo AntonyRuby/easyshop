@@ -446,6 +446,56 @@ class SubCategoryItemScreenState extends State<SubCategoryItemScreen>
                 )),
           ],
         ),
+        // (catController.subCategoryList != null && !catController.isSearching)
+        //     ? Container(
+        //         height: 40,
+        //         width: Dimensions.webMaxWidth,
+        //         color: Theme.of(context).cardColor,
+        //         padding: const EdgeInsets.symmetric(
+        //             vertical: Dimensions.paddingSizeExtraSmall),
+        //         child: ListView.builder(
+        //           scrollDirection: Axis.horizontal,
+        //           itemCount: catController.subCategoryList!.length,
+        //           padding:
+        //               const EdgeInsets.only(left: Dimensions.paddingSizeSmall),
+        //           physics: const BouncingScrollPhysics(),
+        //           itemBuilder: (context, index) {
+        //             return InkWell(
+        //               onTap: () => catController.setSubCategoryIndex(
+        //                   index, widget.categoryID),
+        //               child: Container(
+        //                 padding: const EdgeInsets.symmetric(
+        //                     horizontal: Dimensions.paddingSizeSmall,
+        //                     vertical: Dimensions.paddingSizeExtraSmall),
+        //                 margin: const EdgeInsets.only(
+        //                     right: Dimensions.paddingSizeSmall),
+        //                 decoration: BoxDecoration(
+        //                   borderRadius:
+        //                       BorderRadius.circular(Dimensions.radiusSmall),
+        //                   color: index == catController.subCategoryIndex
+        //                       ? Theme.of(context).primaryColor.withOpacity(0.1)
+        //                       : Colors.transparent,
+        //                 ),
+        //                 child: Column(
+        //                     mainAxisAlignment: MainAxisAlignment.center,
+        //                     children: [
+        //                       Text(
+        //                         catController.subCategoryList![index].name!,
+        //                         style: index == catController.subCategoryIndex
+        //                             ? robotoMedium.copyWith(
+        //                                 fontSize: Dimensions.fontSizeSmall,
+        //                                 color: Theme.of(context).primaryColor)
+        //                             : robotoRegular.copyWith(
+        //                                 fontSize: Dimensions.fontSizeSmall),
+        //                       ),
+        //                     ]),
+        //               ),
+        //             );
+        //           },
+        //         ),
+        //       )
+        //     : const SizedBox(),
+
         (catController.subCategoryList != null && !catController.isSearching)
             ? Container(
                 height: 40,
@@ -460,6 +510,8 @@ class SubCategoryItemScreenState extends State<SubCategoryItemScreen>
                       const EdgeInsets.only(left: Dimensions.paddingSizeSmall),
                   physics: const BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
+                    print(
+                        'Subcategory: ${catController.subCategoryList![index].name}');
                     return InkWell(
                       onTap: () => catController.setSubCategoryIndex(
                           index, widget.categoryID),
@@ -477,18 +529,19 @@ class SubCategoryItemScreenState extends State<SubCategoryItemScreen>
                               : Colors.transparent,
                         ),
                         child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                catController.subCategoryList![index].name!,
-                                style: index == catController.subCategoryIndex
-                                    ? robotoMedium.copyWith(
-                                        fontSize: Dimensions.fontSizeSmall,
-                                        color: Theme.of(context).primaryColor)
-                                    : robotoRegular.copyWith(
-                                        fontSize: Dimensions.fontSizeSmall),
-                              ),
-                            ]),
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              catController.subCategoryList![index].name!,
+                              style: index == catController.subCategoryIndex
+                                  ? robotoMedium.copyWith(
+                                      fontSize: Dimensions.fontSizeSmall,
+                                      color: Theme.of(context).primaryColor)
+                                  : robotoRegular.copyWith(
+                                      fontSize: Dimensions.fontSizeSmall),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },

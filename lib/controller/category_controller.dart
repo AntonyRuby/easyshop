@@ -63,38 +63,163 @@ class CategoryController extends GetxController implements GetxService {
     }
   }
 
+  // void getSubCategoryList(String? categoryID) async {
+  //   _subCategoryIndex = 0;
+  //   _subCategoryList = null;
+  //   _categoryItemList = null;
+  //   Response response = await categoryRepo.getSubCategoryList(categoryID);
+  //   if (response.statusCode == 200) {
+  //     _subCategoryList = [];
+  //     _subCategoryList!
+  //         .add(CategoryModel(id: int.parse(categoryID!), name: 'all'.tr));
+  //     response.body.forEach((category) =>
+  //         _subCategoryList!.add(CategoryModel.fromJson(category)));
+  //     getCategoryItemList(categoryID, 1, 'all', false);
+  //   } else {
+  //     ApiChecker.checkApi(response);
+  //   }
+  // }
+  // void getSubCategoryList(String? categoryID) async {
+  //   _subCategoryIndex = 0;
+  //   _subCategoryList = null;
+  //   _categoryItemList = null;
+  //   Response response = await categoryRepo.getSubCategoryList(categoryID);
+  //   if (response.statusCode == 200) {
+  //     print('Response body: ${response.body}'); // print the response body
+  //     _subCategoryList = [];
+  //     _subCategoryList!
+  //         .add(CategoryModel(id: int.parse(categoryID!), name: 'all'.tr));
+  //     response.body.forEach((category) {
+  //       print('Categoryyy: $category'); // print each category
+  //       _subCategoryList!.add(CategoryModel.fromJson(category));
+  //     });
+  //     print(
+  //         'Sub Categorys list: $_subCategoryList'); // print the sub category list
+  //     getCategoryItemList(categoryID, 1, 'all', false);
+  //   } else {
+  //     ApiChecker.checkApi(response);
+  //   }
+  // }
   void getSubCategoryList(String? categoryID) async {
     _subCategoryIndex = 0;
-    _subCategoryList = null;
+    _subCategoryList = []; // Initialize to an empty list
     _categoryItemList = null;
+    print('Getting subcategory list for category ID: $categoryID');
     Response response = await categoryRepo.getSubCategoryList(categoryID);
+    print('Response status code: ${response.statusCode}');
     if (response.statusCode == 200) {
-      _subCategoryList = [];
-      _subCategoryList!
-          .add(CategoryModel(id: int.parse(categoryID!), name: 'all'.tr));
-      response.body.forEach((category) =>
-          _subCategoryList!.add(CategoryModel.fromJson(category)));
+      print('Response body: ${response.body}');
+      if (response.body != null && response.body.isNotEmpty) {
+        print('Response body is not empty, adding subcategories to list');
+        response.body.forEach((category) {
+          print('Adding subcategory: $category');
+          _subCategoryList!.add(CategoryModel.fromJson(category));
+        });
+        print('Sub category list: $_subCategoryList');
+        // Call setSubCategoryIndex after the list has been populated
+        setSubCategoryIndex(0, categoryID);
+      } else {
+        print('Response body is empty');
+        // Handle the case when the response body is empty
+        // You can show an error message to the user, or take some other action
+        print('No subcategories found for category ID: $categoryID');
+      }
       getCategoryItemList(categoryID, 1, 'all', false);
     } else {
       ApiChecker.checkApi(response);
+      print('Error getting subcategory list: ${response.statusCode}');
     }
   }
+
+  // void setSubCategoryIndex(int index, String? categoryID) {
+  //   _subCategoryIndex = index;
+  //   if (_isStore) {
+  //     getCategoryStoreList(
+  //         _subCategoryIndex == 0
+  //             ? categoryID
+  //             : _subCategoryList![index].id.toString(),
+  //         1,
+  //         _type,
+  //         true);
+  //   } else {
+  //     getCategoryItemList(
+  //         _subCategoryIndex == 0
+  //             ? categoryID
+  //             : _subCategoryList![index].id.toString(),
+  //         1,
+  //         _type,
+  //         true);
+  //   }
+  // }
+
+  // void setSubCategoryIndex(int index, String? categoryID) {
+  //   _subCategoryIndex = index;
+  //   if (_isStore) {
+  //     getCategoryStoreList(
+  //         _subCategoryIndex == 0
+  //             ? categoryID ?? '' // Use an empty string if categoryID is null
+  //             : _subCategoryList![index].id.toString(),
+  //         1,
+  //         _type,
+  //         true);
+  //   } else {
+  //     getCategoryItemList(
+  //         _subCategoryIndex == 0
+  //             ? categoryID ?? '' // Use an empty string if categoryID is null
+  //             : _subCategoryList![index].id.toString(),
+  //         1,
+  //         _type,
+  //         true);
+  //   }
+  // }
+
+  // void getCategoryItemList(
+  //     String? categoryID, int offset, String type, bool notify) async {
+  //   _offset = offset;
+  //   if (offset == 1) {
+  //     if (_type == type) {
+  //       _isSearching = false;
+  //     }
+  //     _type = type;
+  //     if (notify) {
+  //       update();
+  //     }
+  //     _categoryItemList = null;
+  //   }
+  //   Response response =
+  //       await categoryRepo.getCategoryItemList(categoryID, offset, type);
+  //   if (response.statusCode == 200) {
+  //     if (offset == 1) {
+  //       _categoryItemList = [];
+  //     }
+  //     _categoryItemList!.addAll(ItemModel.fromJson(response.body).items!);
+  //     _pageSize = ItemModel.fromJson(response.body).totalSize;
+  //     _isLoading = false;
+  //   } else {
+  //     ApiChecker.checkApi(response);
+  //   }
+  //   update();
+  // }
 
   void setSubCategoryIndex(int index, String? categoryID) {
     _subCategoryIndex = index;
     if (_isStore) {
       getCategoryStoreList(
           _subCategoryIndex == 0
-              ? categoryID
-              : _subCategoryList![index].id.toString(),
+              ? categoryID ?? '' // Use an empty string if categoryID is null
+              : _subCategoryList != null && index < _subCategoryList!.length
+                  ? _subCategoryList![index].id.toString()
+                  : '', // Use an empty string if _subCategoryList is null or index is out of bounds
           1,
           _type,
           true);
     } else {
       getCategoryItemList(
           _subCategoryIndex == 0
-              ? categoryID
-              : _subCategoryList![index].id.toString(),
+              ? categoryID ?? '' // Use an empty string if categoryID is null
+              : _subCategoryList != null && index < _subCategoryList!.length
+                  ? _subCategoryList![index].id.toString()
+                  : '', // Use an empty string if _subCategoryList is null or index is out of bounds
           1,
           _type,
           true);
@@ -112,16 +237,18 @@ class CategoryController extends GetxController implements GetxService {
       if (notify) {
         update();
       }
-      _categoryItemList = null;
+      _categoryItemList = []; // Initialize to an empty list
     }
     Response response =
         await categoryRepo.getCategoryItemList(categoryID, offset, type);
     if (response.statusCode == 200) {
-      if (offset == 1) {
-        _categoryItemList = [];
+      if (response.body != null && response.body.isNotEmpty) {
+        _categoryItemList!.addAll(ItemModel.fromJson(response.body).items!);
+        _pageSize = ItemModel.fromJson(response.body).totalSize;
+      } else {
+        print('Response body is empty');
+        // Handle the case when the response body is empty
       }
-      _categoryItemList!.addAll(ItemModel.fromJson(response.body).items!);
-      _pageSize = ItemModel.fromJson(response.body).totalSize;
       _isLoading = false;
     } else {
       ApiChecker.checkApi(response);

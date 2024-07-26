@@ -73,7 +73,12 @@ class _StoreScreenState extends State<StoreScreen> {
   @override
   void initState() {
     super.initState();
-
+    debugPrint('categoryName ${widget.store!.name}');
+    debugPrint('categoryName ${widget.categoryID}');
+    debugPrint('categoryName ${widget.categoryName}');
+    print('Category ID: ${widget.store!.categoryIds![widget.selectedIndex!]}');
+    print('Category Name: ${widget.store!.name ?? ''}');
+    print('Selected Index: ${widget.selectedIndex!}');
     initDataCall();
   }
 
@@ -1325,7 +1330,15 @@ class _StoreScreenState extends State<StoreScreen> {
                                             const SizedBox(
                                                 height: Dimensions
                                                     .paddingSizeSmall),
+// if (module.moduleType == 'grocery' ||
+//                       module.moduleType == 'Butcheries' ||
+//                       module.moduleType == 'Pharmacies' ||
+//                       module.moduleType == 'PetShop') {
+//                     int selectedIndex = 0;
 
+                                            // } else {
+
+                                            // }
                                             // SizedBox(
                                             //   height: 30,
                                             //   child: ListView.builder(
@@ -1460,17 +1473,27 @@ class _StoreScreenState extends State<StoreScreen> {
                                   color: Theme.of(context).colorScheme.surface,
                                 ),
                                 child: widget.store != null
-                                    ? SubCategoryItemScreen(
-                                        categoryID: widget.store!
-                                            .categoryIds![widget.selectedIndex!]
-                                            .toString(),
-                                        categoryName: widget.store!.name ?? '',
-                                      )
-                                    : const Center(
-                                        child: Text(
-                                            'Loading...')), // or any other widget you want to display when store is null
+                                    ? (widget.store!.categoryIds!.isNotEmpty &&
+                                            widget.selectedIndex! <
+                                                widget
+                                                    .store!.categoryIds!.length)
+                                        ? SubCategoryItemScreen(
+                                            categoryID: widget
+                                                .store!
+                                                .categoryIds![
+                                                    widget.selectedIndex!]
+                                                .toString(),
+                                            categoryName:
+                                                widget.store!.name ?? '',
+                                          )
+                                        : const Center(
+                                            child: Text(
+                                                'No categories available'), // or any other widget you want to display when categoryIds is empty
+                                          )
+                                    : const Center(child: Text('Loading...')),
+                                // or any other widget you want to display when store is null
                               ),
-                            )
+                            ),
                     ],
                   )
                 : const StoreDetailsScreenShimmerView();

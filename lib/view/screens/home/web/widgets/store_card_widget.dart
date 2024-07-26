@@ -59,9 +59,6 @@ class StoreCardWidget extends StatelessWidget {
                       RouteHelper.getCategoryRoute(),
                       arguments: {
                         'store': store,
-                        'categoryID':
-                            store!.categoryIds![selectedIndex].toString(),
-                        'categoryName': store!.name ?? '',
                       }, // Pass store object as an argument
                       parameters: {
                         'id': store!.id.toString(), // Pass ID as a parameter
