@@ -65,22 +65,51 @@ class ItemWidget extends StatelessWidget {
     double? discount;
     String? discountType;
     bool isAvailable;
+    // if (isStore) {
+    //   discount = store!.discount != null ? store!.discount!.discount : 0;
+    //   discountType =
+    //       store!.discount != null ? store!.discount!.discountType : 'percent';
+    //   // bool _isClosedToday = Get.find<StoreController>().isRestaurantClosed(true, store.active, store.offDay);
+    //   // _isAvailable = DateConverter.isAvailable(store.openingTime, store.closeingTime) && store.active && !_isClosedToday;
+    //   isAvailable = store!.open == 1 && store!.active!;
+    // } else {
+    //   discount = (item!.storeDiscount == 0 || isCampaign)
+    //       ? item!.discount
+    //       : item!.storeDiscount;
+    //   discountType = (item!.storeDiscount == 0 || isCampaign)
+    //       ? item!.discountType
+    //       : 'percent';
+    //   isAvailable = DateConverter.isAvailable(
+    //       item!.availableTimeStarts, item!.availableTimeEnds);
+    // }
     if (isStore) {
-      discount = store!.discount != null ? store!.discount!.discount : 0;
-      discountType =
-          store!.discount != null ? store!.discount!.discountType : 'percent';
-      // bool _isClosedToday = Get.find<StoreController>().isRestaurantClosed(true, store.active, store.offDay);
-      // _isAvailable = DateConverter.isAvailable(store.openingTime, store.closeingTime) && store.active && !_isClosedToday;
-      isAvailable = store!.open == 1 && store!.active!;
+      if (store != null) {
+        discount = store!.discount != null ? store!.discount!.discount : 0;
+        discountType =
+            store!.discount != null ? store!.discount!.discountType : 'percent';
+        isAvailable = store!.open == 1 && store!.active!;
+      } else {
+        // Handle the case where store is null
+        discount = 0;
+        discountType = 'percent';
+        isAvailable = false;
+      }
     } else {
-      discount = (item!.storeDiscount == 0 || isCampaign)
-          ? item!.discount
-          : item!.storeDiscount;
-      discountType = (item!.storeDiscount == 0 || isCampaign)
-          ? item!.discountType
-          : 'percent';
-      isAvailable = DateConverter.isAvailable(
-          item!.availableTimeStarts, item!.availableTimeEnds);
+      if (item != null) {
+        discount = (item!.storeDiscount == 0 || isCampaign)
+            ? item!.discount
+            : item!.storeDiscount;
+        discountType = (item!.storeDiscount == 0 || isCampaign)
+            ? item!.discountType
+            : 'percent';
+        isAvailable = DateConverter.isAvailable(
+            item!.availableTimeStarts, item!.availableTimeEnds);
+      } else {
+        // Handle the case where item is null
+        discount = 0;
+        discountType = 'percent';
+        isAvailable = false;
+      }
     }
 
     return InkWell(
@@ -157,7 +186,7 @@ class ItemWidget extends StatelessWidget {
                           child: CustomImage(
                             image:
                                 '${isCampaign ? baseUrls!.campaignImageUrl : isStore ? baseUrls!.storeImageUrl : baseUrls!.itemImageUrl}'
-                                '/${isStore ? store != null ? store!.logo : '' : item!.image}',
+                                '/${isStore ? store != null ? store!.logo : '' : item?.image}',
                             height: imageHeight ??
                                 (desktop
                                     ? 120
@@ -179,7 +208,9 @@ class ItemWidget extends StatelessWidget {
                             )
                           : const SizedBox(),
                       !isStore
-                          ? OrganicTag(item: item!, placeInImage: true)
+                          ? item != null
+                              ? OrganicTag(item: item!, placeInImage: true)
+                              : const SizedBox() // or some other default widget
                           : const SizedBox(),
                       isAvailable
                           ? const SizedBox()
@@ -198,7 +229,9 @@ class ItemWidget extends StatelessWidget {
                               crossAxisAlignment: WrapCrossAlignment.center,
                               children: [
                                 Text(
-                                  isStore ? store!.name! : item!.name!,
+                                  isStore
+                                      ? store?.name ?? ''
+                                      : item?.name ?? '',
                                   style: robotoMedium.copyWith(
                                       fontSize: Dimensions.fontSizeSmall),
                                   maxLines: 1,
@@ -229,8 +262,8 @@ class ItemWidget extends StatelessWidget {
                                   ? Dimensions.paddingSizeExtraSmall
                                   : 0),
                           (isStore
-                                  ? store!.address != null
-                                  : item!.storeName != null)
+                                  ? store?.address != null
+                                  : item?.storeName != null)
                               ? Text(
                                   isStore
                                       ? store!.address ?? ''
@@ -253,12 +286,12 @@ class ItemWidget extends StatelessWidget {
                           !isStore
                               ? RatingBar(
                                   rating: isStore
-                                      ? store!.avgRating
-                                      : item!.avgRating,
+                                      ? store?.avgRating
+                                      : item?.avgRating,
                                   size: desktop ? 15 : 12,
                                   ratingCount: isStore
-                                      ? store!.ratingCount
-                                      : item!.ratingCount,
+                                      ? store?.ratingCount
+                                      : item?.ratingCount,
                                 )
                               : const SizedBox(),
                           SizedBox(
@@ -291,7 +324,7 @@ class ItemWidget extends StatelessWidget {
                                 )
                               : Row(children: [
                                   Text(
-                                    PriceConverter.convertPrice(item!.price,
+                                    PriceConverter.convertPrice(item?.price,
                                         discount: discount,
                                         discountType: discountType),
                                     style: robotoMedium.copyWith(
@@ -346,7 +379,7 @@ class ItemWidget extends StatelessWidget {
                                     ? wishController.wishStoreIdList
                                         .contains(store!.id)
                                     : wishController.wishItemIdList
-                                        .contains(item!.id);
+                                        .contains(item?.id);
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal:

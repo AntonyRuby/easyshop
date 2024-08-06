@@ -72,6 +72,8 @@ class ItemModel {
 
 class Item {
   int? id;
+  int? storeId;
+  int? selectedIndex;
   String? name;
   String? description;
   String? image;
@@ -88,7 +90,6 @@ class Item {
   String? discountType;
   String? availableTimeStarts;
   String? availableTimeEnds;
-  int? storeId;
   String? storeName;
   int? zoneId;
   double? storeDiscount;

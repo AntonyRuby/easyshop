@@ -22,7 +22,9 @@ import 'package:sixam_mart/view/screens/store/store_screen.dart';
 
 class StoreCardWidget extends StatelessWidget {
   final Store? store;
-  const StoreCardWidget({Key? key, required this.store}) : super(key: key);
+  final int? index;
+  const StoreCardWidget({Key? key, required this.store, this.index})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -55,11 +57,13 @@ class StoreCardWidget extends StatelessWidget {
                       module.moduleType == 'Pharmacies' ||
                       module.moduleType == 'PetShop') {
                     int selectedIndex = 0;
+                    print(store!.toJson());
                     Get.toNamed(
                       RouteHelper.getCategoryRoute(),
                       arguments: {
                         'store': store,
-                      }, // Pass store object as an argument
+                        'selectedIndex': selectedIndex,
+                      },
                       parameters: {
                         'id': store!.id.toString(), // Pass ID as a parameter
                       },

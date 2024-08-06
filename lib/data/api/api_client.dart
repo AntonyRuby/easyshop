@@ -83,7 +83,7 @@ class ApiClient extends GetxService {
   }
 
   Future<Response> getData(String uri,
-      {Map<String, dynamic>? query, Map<String, String>? headers}) async {
+      {Map<String, dynamic>? query, Map<String, String>? headers, Map<String, String>? params}) async {
     try {
       String urlValue = appBaseUrl + uri;
       if (kDebugMode) {

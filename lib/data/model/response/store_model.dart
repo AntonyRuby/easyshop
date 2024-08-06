@@ -143,12 +143,13 @@ class Store {
     delivery = json['delivery'];
     takeAway = json['take_away'];
     scheduleOrder = json['schedule_order'];
-    avgRating = json['avg_rating'].toDouble();
+    // avgRating = json['avg_rating'].toDouble() ?? 0.0;
+    avgRating = json['avg_rating']?.toDouble() ?? 0.0;
     tax = json['tax']?.toDouble();
     ratingCount = json['rating_count'];
     selfDeliverySystem = json['self_delivery_system'];
     posSystem = json['pos_system'];
-    minimumShippingCharge = json['minimum_shipping_charge'].toDouble();
+    minimumShippingCharge = json['minimum_shipping_charge'].toDouble() ?? 0.0;
     maximumShippingCharge = json['maximum_shipping_charge']?.toDouble();
     perKmShippingCharge = json['per_km_shipping_charge'] != null
         ? json['per_km_shipping_charge'].toDouble()

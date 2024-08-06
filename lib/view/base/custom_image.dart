@@ -69,7 +69,7 @@ class CustomImage extends StatelessWidget {
       height: height,
       width: width,
       fit: fit,
-      fadeInDuration: const Duration(seconds: 1),
+      // fadeInDuration: const Duration(seconds: ),
       errorBuilder: (context, exception, stacktrace) => Image.asset(
         imageValue,
         height: height,

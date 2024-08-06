@@ -7,7 +7,7 @@ class CategoryRepo {
   final ApiClient apiClient;
   CategoryRepo({required this.apiClient});
 
-  Future<Response> getCategoryList(bool allCategory) async {
+  Future<Response> getCategoryList(bool allCategory, String? storeId) async {
     return await apiClient.getData(AppConstants.categoryUri,
         headers: allCategory
             ? {
@@ -18,18 +18,25 @@ class CategoryRepo {
             : null);
   }
 
-  Future<Response> getSubCategoryList(String? parentID) async {
+  Future<Response> getSubCategoryList(String? parentID, String? storeId) async {
     return await apiClient.getData('${AppConstants.subCategoryUri}$parentID');
   }
 
   Future<Response> getCategoryItemList(
-      String? categoryID, int offset, String type) async {
+    String? categoryID,
+    int offset,
+    String type,
+  ) async {
     return await apiClient.getData(
         '${AppConstants.categoryItemUri}$categoryID?limit=10&offset=$offset&type=$type');
   }
 
   Future<Response> getCategoryStoreList(
-      String? categoryID, int offset, String type) async {
+    String? categoryID,
+    int offset,
+    String type,
+   
+  ) async {
     return await apiClient.getData(
         '${AppConstants.categoryStoreUri}$categoryID?limit=10&offset=$offset&type=$type');
   }

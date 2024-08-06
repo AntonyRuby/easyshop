@@ -14,6 +14,7 @@ import 'package:sixam_mart/view/screens/home/web/widgets/store_card_widget.dart'
 class ItemsView extends StatefulWidget {
   final List<Item?>? items;
   final List<Store?>? stores;
+  final String? storeId;
   final bool isStore;
   final EdgeInsetsGeometry padding;
   final bool isScrollable;
@@ -35,7 +36,8 @@ class ItemsView extends StatefulWidget {
       this.isCampaign = false,
       this.inStorePage = false,
       this.isFeatured = false,
-      this.isFoodOrGrocery = true})
+      this.isFoodOrGrocery = true,
+      this.storeId})
       : super(key: key);
 
   @override
@@ -106,7 +108,10 @@ class _ItemsViewState extends State<ItemsView> {
                   itemBuilder: (context, index) {
                     return widget.stores != null && widget.isStore
                         ? widget.isFoodOrGrocery! && widget.isStore
-                            ? StoreCardWidget(store: widget.stores![index])
+                            ? StoreCardWidget(
+                                store: widget.stores![index],
+                                index: index,
+                              )
                             : StoreCardWithDistance(
                                 store: widget.stores![index]!,
                                 fromAllStore: true)

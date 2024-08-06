@@ -196,6 +196,7 @@ class RouteHelper {
       '$resetPassword?phone=$phone&token=$token&page=$page';
   static String getSearchRoute({String? queryText}) =>
       '$search?query=${queryText ?? ''}';
+
   static String getStoreRoute({required int? id, required String page}) {
     if (kIsWeb) {
       // Define MetaSEO object
@@ -250,6 +251,11 @@ class RouteHelper {
 
   static String getHtmlRoute(String page) => '$html?page=$page';
   static String getCategoryRoute() => categories;
+
+  // static String getCategoryRoute({int? storeId}) {
+  //   return '/category?storeId=$storeId';
+  // }
+
   static String getCategoryItemRoute(int? id, String name) {
     List<int> encoded = utf8.encode(name);
     String data = base64Encode(encoded);
@@ -665,10 +671,14 @@ class RouteHelper {
                     ? int.parse(Get.parameters['id']!)
                     : null,
               );
+        // final storeId = arguments != null && arguments.containsKey('storeId')
+        //     ? arguments['storeId'] as String
+        //     : Get.parameters['storeId'];
 
         return CategoryScreen(
-          store: store,
-        );
+            // store: store,
+            // storeId: storeId,
+            );
       },
     ),
 

@@ -13,12 +13,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/view/base/web_page_title_widget.dart';
 import 'package:sixam_mart/data/model/response/store_model.dart';
+import 'package:sixam_mart/view/screens/category/category_item_screen.dart';
 import 'package:sixam_mart/view/screens/store/store_screen.dart';
 
 class CategoryScreen extends StatefulWidget {
   final Store? store;
+  // final int? selectedIndex;
+  final String? storeId;
 
-  const CategoryScreen({super.key, required this.store});
+  const CategoryScreen({
+    super.key,
+    this.store,
+    this.storeId,
+  });
 
   @override
   State<CategoryScreen> createState() => _CategoryScreenState();
@@ -30,13 +37,33 @@ class _CategoryScreenState extends State<CategoryScreen> {
   @override
   void initState() {
     super.initState();
-    Get.find<CategoryController>().getCategoryList(false);
-    debugPrint('storename ${widget.store!.name}');
+
+    // Fetch the category list with the storeId
+    Get.find<CategoryController>().getCategoryList(
+      false,
+      storeId: widget.storeId,
+    );
   }
+
+  //  int? storeId;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   storeId = widget.storeId;
+  //   if (Get.parameters['storeId'] != null) {
+  //     storeId = int.tryParse(Get.parameters['storeId']);
+  //   }
+
+  //   // Fetch the category list with the storeId
+  //   Get.find<CategoryController>().getCategoryList(
+  //     false,
+  //     storeId: storeId,
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
-    final store = widget.store ?? Get.arguments['store'];
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: CustomAppBar(title: 'categories'.tr),
@@ -82,48 +109,73 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                       itemBuilder: (context, index) {
                                         return InkWell(
                                           onTap: () {
-                                            //   Get.toNamed(
-                                            //     RouteHelper.getStoreRoute(
-                                            //         id: widget.store?.id,
-                                            //         page: 'item'),
-                                            //     arguments: {
-                                            //       'store': widget.store,
-                                            //       'fromModule': false,
-                                            //       'selectedCategory':
-                                            //           catController
-                                            //               .categoryList![index]
-                                            //               .id,
-                                            //     },
-                                            //   );
-
-                                            //                      Get.toNamed(RouteHelper.getCategoryItemRoute(
-                                            //   categoryController.categoryList![index].id,
-                                            //   categoryController.categoryList![index].name!,
-                                            // )),
                                             debugPrint(
                                                 'categoryId ${categoryController.categoryList?[index].id}');
                                             debugPrint(
                                                 'categoryName ${categoryController.categoryList?[index].name}');
+                                            debugPrint('categoryIndex $index');
+
+                                            // Navigator.push(
+                                            //   context,
+                                            //   MaterialPageRoute(
+                                            //     builder: (context) =>
+                                            //         SubCategoryItemScreen(
+                                            //       storeId: widget.storeId,
+                                            //       selectedIndex: index,
+                                            //       categoryID: categoryController
+                                            //           .categoryList?[index].id
+                                            //           .toString(),
+                                            //       categoryName:
+                                            //           categoryController
+                                            //               .categoryList![index]
+                                            //               .name!,
+                                            //     ),
+                                            //   ),
+                                            // );
+                                            // Navigator.push(
+                                            //   context,
+                                            //   MaterialPageRoute(
+                                            //     builder: (context) =>
+                                            //         StoreScreen(
+                                            //       store: widget.store,
+                                            //       fromModule: true,
+                                            //       storeId: widget.storeId,
+                                            //       selectedIndex: index,
+                                            //       categoryID: categoryController
+                                            //           .categoryList?[index].id
+                                            //           .toString(),
+                                            //       categoryName:
+                                            //           categoryController
+                                            //               .categoryList?[index]
+                                            //               .name!,
+                                            //     ),
+                                            //   ),
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      StoreScreen(
-                                                        store: store,
-                                                        fromModule: false,
-                                                        selectedIndex: index,
-                                                        categoryID:
-                                                            categoryController
-                                                                .categoryList?[
-                                                                    index]
-                                                                .id
-                                                                .toString(),
-                                                        categoryName:
-                                                            categoryController
-                                                                .categoryList![
-                                                                    index]
-                                                                .name!,
-                                                      )),
+                                                builder: (context) =>
+                                                    StoreScreen(
+                                                  store: widget.store,
+                                                  fromModule: false,
+                                                  storeId: widget.storeId,
+                                                  selectedIndex: index,
+                                                  categoryID: categoryController
+                                                      .categoryList?[index].id
+                                                      .toString(),
+                                                  categoryName:
+                                                      categoryController
+                                                          .categoryList?[index]
+                                                          .name!,
+                                                ),
+                                              ),
+                                              // Get.toNamed(
+                                              //   RouteHelper.getStoreRoute(
+                                              //       id: widget.store?.id,
+                                              //       page: 'item'),
+                                              //   arguments: StoreScreen(
+                                              //       store: widget.store,
+                                              //       fromModule: false),
+                                              //   // );
                                             );
                                           },
                                           child: Container(

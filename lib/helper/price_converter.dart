@@ -6,13 +6,21 @@ import 'package:sixam_mart/util/styles.dart';
 import '../widget/animated_flip_counter.dart';
 
 class PriceConverter {
-  static String convertPrice(double? price,
-      {double? discount, String? discountType, bool forDM = false}) {
+  static String convertPrice(
+    double? price, {
+    double? discount,
+    String? discountType,
+    bool forDM = false,
+  }) {
+    if (price == null) {
+      return 'N/A'; // or some other default text
+    }
+
     if (discount != null && discountType != null) {
       if (discountType == 'amount') {
-        price = price! - discount;
+        price -= discount;
       } else if (discountType == 'percent') {
-        price = price! - ((discount / 100) * price);
+        price -= (discount / 100) * price;
       }
     }
     bool isRightSide =
