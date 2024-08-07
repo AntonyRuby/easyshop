@@ -45,23 +45,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
     );
   }
 
-  //  int? storeId;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   storeId = widget.storeId;
-  //   if (Get.parameters['storeId'] != null) {
-  //     storeId = int.tryParse(Get.parameters['storeId']);
-  //   }
-
-  //   // Fetch the category list with the storeId
-  //   Get.find<CategoryController>().getCategoryList(
-  //     false,
-  //     storeId: storeId,
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,41 +98,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                                 'categoryName ${categoryController.categoryList?[index].name}');
                                             debugPrint('categoryIndex $index');
 
-                                            // Navigator.push(
-                                            //   context,
-                                            //   MaterialPageRoute(
-                                            //     builder: (context) =>
-                                            //         SubCategoryItemScreen(
-                                            //       storeId: widget.storeId,
-                                            //       selectedIndex: index,
-                                            //       categoryID: categoryController
-                                            //           .categoryList?[index].id
-                                            //           .toString(),
-                                            //       categoryName:
-                                            //           categoryController
-                                            //               .categoryList![index]
-                                            //               .name!,
-                                            //     ),
-                                            //   ),
-                                            // );
-                                            // Navigator.push(
-                                            //   context,
-                                            //   MaterialPageRoute(
-                                            //     builder: (context) =>
-                                            //         StoreScreen(
-                                            //       store: widget.store,
-                                            //       fromModule: true,
-                                            //       storeId: widget.storeId,
-                                            //       selectedIndex: index,
-                                            //       categoryID: categoryController
-                                            //           .categoryList?[index].id
-                                            //           .toString(),
-                                            //       categoryName:
-                                            //           categoryController
-                                            //               .categoryList?[index]
-                                            //               .name!,
-                                            //     ),
-                                            //   ),
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -168,14 +116,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                                           .name!,
                                                 ),
                                               ),
-                                              // Get.toNamed(
-                                              //   RouteHelper.getStoreRoute(
-                                              //       id: widget.store?.id,
-                                              //       page: 'item'),
-                                              //   arguments: StoreScreen(
-                                              //       store: widget.store,
-                                              //       fromModule: false),
-                                              //   // );
                                             );
                                           },
                                           child: Container(
